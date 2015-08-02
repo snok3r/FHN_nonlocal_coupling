@@ -128,7 +128,9 @@ namespace FHN_nonlocal_coupling
         {	// integrating at point (t[j], x[i]) from -l to l
             double sum = 0;
             int k; // k is iteration variable for integrating (n+1 in number)
-            for (k = 0; k < n + 1; k++) sum += Kernel(this.x[i] - this.x[k]) * this.u[j, k];
+            sum += Kernel(this.x[i] - this.x[0]) * this.u[j, 0];
+            for (k = 1; k < n; k++) sum += 2 * Kernel(this.x[i] - this.x[k]) * this.u[j, k];
+            sum += Kernel(this.x[i] - this.x[n]) * this.u[j, n];
 
             return this.h * sum / 2;
         }
