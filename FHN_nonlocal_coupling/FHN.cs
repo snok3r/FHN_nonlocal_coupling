@@ -9,8 +9,9 @@ namespace FHN_nonlocal_coupling
     class FHN
     {
         // variables and arrays
+        private bool eq_diff; // bool for deciding which equation solves
         private int n, m;
-        private float h, hx, ht; // steps h for integrating
+        private float h, hx, ht; // steps (h is for integrating)
         private float l, TB; // bounds; l is for x and TB/TBound is for t
         private float[] x, t;
 
@@ -52,9 +53,15 @@ namespace FHN_nonlocal_coupling
             get { return this.gamma; }
             set { this.gamma = value; }
         }
+        
+        public bool Eq
+        {
+            get { return this.eq_diff; }
+            set { this.eq_diff = value; }
+        }
 
         // constructors
-        public FHN(float eps = 0.08F, float gamma = 0.8F, float l = 3.0F, float TB = 3.0F, int m = 49, int n = 99)
+        public FHN(float eps = 0.08F, float gamma = 0.8F, float l = 3.0F, float TB = 3.0F, int m = 49, int n = 99, bool eq_diff = false)
         {
             this.eps = eps;
             this.gamma = gamma;
@@ -62,15 +69,17 @@ namespace FHN_nonlocal_coupling
             this.TB = TB;
             this.n = n;
             this.m = m;
+            this.eq_diff = eq_diff;
 
-            Load(m, n);
+            Load(m, n, eq_diff);
         }
 
         // methods
-        public void Load(int m = 49, int n = 99)
+        public void Load(int m = 49, int n = 99, bool eq_diff = false)
         {   // initialize/declare arrays and steps
             this.n = n;
             this.m = m;
+            this.eq_diff = eq_diff;
 
             this.h = 2 * this.l / n;
             this.hx = 2 * this.l / n;
@@ -86,21 +95,48 @@ namespace FHN_nonlocal_coupling
             this.v = new double[m + 1, n + 1];
             for (int i = 0; i < n + 1; i++)
             {	// setting an initial waves at t = 0
-                this.u[0, i] = u0(x[i]);
-                this.v[0, i] = v0(x[i]);
+                this.u[0, i] = u_x_0(x[i]);
+                this.v[0, i] = v_x_0(x[i]);
+            }
+
+            if (eq_diff) 
+            {   // if it is a diffusion equation, then sets initials
+                for (int j = 0; j < m + 1; j++)
+                {   // setting an initial waves at x = -l and x = l
+                    this.u[j, 0] = u_0_t(t[j]); // at x = -l
+                    this.v[j, 0] = v_0_t(t[j]); // at x = -l
+
+                    this.u[j, n] = u_l_t(t[j]); // at x = l
+                    this.v[j, n] = v_l_t(t[j]); // at x = l
+                }
             }
         }
 
-        public void Solve()
+        public void Solve() 
 	    {
-            for (int j = 0; j < m; j++)
-            {
-                for (int i = 0; i < n + 1; i++)
+            if (this.eq_diff)
+            {   // reaction-diffusion equation
+                for (int j = 0; j < m; j++)
                 {
-                    this.u[j + 1, i] = - this.u[j, i] + Intergral(j, i) + f(this.u[j, i]) - this.v[j, i];
-                    this.v[j + 1, i] = this.eps * (this.u[j, i] - this.gamma * this.v[j, i]);
+                    for (int i = 1; i < n; i++)
+                    {
+                        this.u[j + 1, i] = this.u[j, i] + this.ht / (this.hx * this.hx) * (this.u[j, i - 1] - 2 * this.u[j, i] + this.u[j, i + 1]) + this.ht * f(this.u[j, i]) - this.ht * this.v[j, i];
+                        this.v[j + 1, i] = this.v[j, i] + this.ht * this.eps * (this.u[j, i] - this.gamma * this.v[j, i]);
+                    }
                 }
             }
+            else
+            {   // with nonlocal coupling
+                for (int j = 0; j < m; j++)
+                {
+                    for (int i = 0; i < n + 1; i++)
+                    {
+                        this.u[j + 1, i] = this.u[j, i] * (1 - this.ht) + this.ht * (Integral(j, i) + f(this.u[j, i]) - this.v[j, i]);
+                        this.v[j + 1, i] = this.v[j, i] + this.ht * this.eps * (this.u[j, i] - this.gamma * this.v[j, i]);
+                    }
+                }
+            }
+
 	    }
 
         public float GetX(int i)
@@ -124,7 +160,7 @@ namespace FHN_nonlocal_coupling
         }
 
         // various functions
-        private double Intergral(int j, int i)
+        private double Integral(int j, int i)
         {	// integrating at point (t[j], x[i]) from -l to l
             double sum = 0;
             int k; // k is iteration variable for integrating (n+1 in number)
@@ -137,22 +173,43 @@ namespace FHN_nonlocal_coupling
 
         private double Kernel(float z)
         {
-            return z*z+z+1;
+            return z;
         }
 
         private double f(double u)
         {	// f(0) = f(1) = 0; f'(0) < 0 and f'(1) < 0 ???
-            return Math.Cos(u);
+            return u * 0;
         }
 
-        private double u0(float x)
+        private double u_x_0(float x)
         {	// initial u wave at t = 0
-            return x;
+            return 1.0/2.0 * (1 + Math.Tanh(x/(2*Math.Sqrt(2))));
         }
 
-        private double v0(float x)
+        private double v_x_0(float x)
         {	// initial v wave at t = 0
-            return x*x+1;
+            return (1 + Math.Tanh(x / (2 * Math.Sqrt(2)))); ;
         }
+
+        private double u_0_t(float t)
+        {   // initial u wave at x = -l
+            return 1.0 / 2.0 * (1 + Math.Tanh(t / (2 * Math.Sqrt(2)))); 
+        }
+
+        private double v_0_t(float t)
+        {   // initial v wave at x = -l
+            return (1 + Math.Tanh(t / (2 * Math.Sqrt(2))));
+        }
+
+        private double u_l_t(float t)
+        {   // initial u wave at x = l
+            return 1.0 / 2.0 * (1 + Math.Tanh(t / (2 * Math.Sqrt(2))));
+        }
+
+        private double v_l_t(float t)
+        {   // initial v wave at x = l
+            return (1 + Math.Tanh(t / (2 * Math.Sqrt(2))));
+        }
+
     }
 }
