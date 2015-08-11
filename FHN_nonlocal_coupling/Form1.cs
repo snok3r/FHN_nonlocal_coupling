@@ -56,8 +56,10 @@ namespace FHN_nonlocal_coupling
         {
             chart1.ChartAreas[0].AxisX.Minimum = - pde.L - 0.1;
             chart1.ChartAreas[0].AxisX.Maximum = pde.L + 0.1;
-            chart1.ChartAreas[0].AxisY.Minimum = -10;
-            chart1.ChartAreas[0].AxisY.Maximum = 10;
+
+            chart1.ChartAreas[0].AxisY.Maximum = 2;
+            chart1.ChartAreas[0].AxisY.Minimum = - chart1.ChartAreas[0].AxisY.Maximum;
+
             chart1.ChartAreas[0].AxisX.Interval = 2;
             chart1.ChartAreas[0].AxisY.Interval = 2;
         }
@@ -109,12 +111,6 @@ namespace FHN_nonlocal_coupling
                 trBarT.Value += 1;
                 Plot(trBarT.Value);
             }
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            rdBtnTmr.Checked = false;
-            timerT.Enabled = false;
         }
 
         private void btnStopTimer_Click(object sender, EventArgs e)

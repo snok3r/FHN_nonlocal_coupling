@@ -20,25 +20,25 @@ namespace FHN_nonlocal_coupling
 
         // properties
         public int N
-        {
+        {   // quantity of u,v x's
             get { return this.n; }
             set { this.n = value; }
         }
 
         public int M
-        {
+        {   // quantity of u,v t's
             get { return this.m; }
             set { this.m = value; }
         }
 
-        public float L
-        {
+        public float L 
+        {   // x's segment
             get { return this.l; }
             set { this.l = value; }
         }
 
         public float T
-        {
+        {   // t's segment
             get { return this.TB; }
             set { this.TB = value; }
         }
@@ -55,7 +55,7 @@ namespace FHN_nonlocal_coupling
         }
         
         public bool Eq
-        {
+        {   // Is the equation a diffusuion equation?
             get { return this.eq_diff; }
             set { this.eq_diff = value; }
         }
@@ -77,18 +77,20 @@ namespace FHN_nonlocal_coupling
         // methods
         public void Load(int m = 49, int n = 99, bool eq_diff = false)
         {   // initialize/declare arrays and steps
+            // If we want to change one of the parameters: n, m, eq_diff, l, TB or initials, 
+            // then it needs to call this function again.
             this.n = n;
             this.m = m;
             this.eq_diff = eq_diff;
 
-            this.h = 2 * this.l / n;
-            this.hx = 2 * this.l / n;
-            this.ht = this.TB / m;
+            this.h = 2 * this.l / n; // for integrating from -l to l
+            this.hx = 2 * this.l / n; // step for x
+            this.ht = this.TB / m;  // step for t
 
-            this.x = new float[n + 1];
-            for (int i = 0; i < n + 1; i++) this.x[i] = -this.l + i * this.hx;
+            this.x = new float[n + 1]; // arrange x's
+            for (int i = 0; i < n + 1; i++) this.x[i] = - this.l + i * this.hx;
 
-            this.t = new float[m + 1];
+            this.t = new float[m + 1]; // arrange t's
             for (int j = 0; j < m + 1; j++) this.t[j] = j * this.ht;
 
             this.u = new double[m + 1, n + 1];
@@ -113,23 +115,25 @@ namespace FHN_nonlocal_coupling
         }
 
         public void Solve() 
-	    {
+	    {   // If we changed ONLY eps, gamma or Kernel,
+            // then just recall this function.
             if (this.eq_diff)
             {   // reaction-diffusion equation
-                for (int j = 0; j < m; j++)
+                float step = this.ht / (this.hx * this.hx);
+                for (int j = 0; j < this.m; j++)
                 {
-                    for (int i = 1; i < n; i++)
+                    for (int i = 1; i < this.n; i++)
                     {
-                        this.u[j + 1, i] = this.u[j, i] + this.ht / (this.hx * this.hx) * (this.u[j, i - 1] - 2 * this.u[j, i] + this.u[j, i + 1]) + this.ht * f(this.u[j, i]) - this.ht * this.v[j, i];
+                        this.u[j + 1, i] = (1 - 2 * step) * this.u[j, i] + step * (this.u[j, i - 1] + this.u[j, i + 1]) + this.ht * f(this.u[j, i]) - this.ht * this.v[j, i];
                         this.v[j + 1, i] = this.v[j, i] + this.ht * this.eps * (this.u[j, i] - this.gamma * this.v[j, i]);
                     }
                 }
             }
             else
             {   // with nonlocal coupling
-                for (int j = 0; j < m; j++)
+                for (int j = 0; j < this.m; j++)
                 {
-                    for (int i = 0; i < n + 1; i++)
+                    for (int i = 0; i < this.n + 1; i++)
                     {
                         this.u[j + 1, i] = this.u[j, i] * (1 - this.ht) + this.ht * (Integral(j, i) + f(this.u[j, i]) - this.v[j, i]);
                         this.v[j + 1, i] = this.v[j, i] + this.ht * this.eps * (this.u[j, i] - this.gamma * this.v[j, i]);
@@ -165,8 +169,8 @@ namespace FHN_nonlocal_coupling
             double sum = 0;
             int k; // k is iteration variable for integrating (n+1 in number)
             sum += Kernel(this.x[i] - this.x[0]) * this.u[j, 0];
-            for (k = 1; k < n; k++) sum += 2 * Kernel(this.x[i] - this.x[k]) * this.u[j, k];
-            sum += Kernel(this.x[i] - this.x[n]) * this.u[j, n];
+            for (k = 1; k < this.n; k++) sum += 2 * Kernel(this.x[i] - this.x[k]) * this.u[j, k];
+            sum += Kernel(this.x[i] - this.x[this.n]) * this.u[j, this.n];
 
             return this.h * sum / 2;
         }
