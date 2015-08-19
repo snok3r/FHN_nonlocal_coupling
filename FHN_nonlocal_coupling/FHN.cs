@@ -22,8 +22,8 @@ namespace FHN_nonlocal_coupling
         private double a; // f constant
 
         // strings and parsers with initials expression formulas
-        //public String SF;
-        //public Parser PF;
+        //public String SUx0;
+        //public Parser PUx0;
         
         // properties
         public int N
@@ -215,7 +215,7 @@ namespace FHN_nonlocal_coupling
                     di[i] = this.u[j, i] + ht * (f(this.u[j, i]) - this.v[j, i]);
                     Q[i] = (ai[1] * Q[i - 1] - di[i]) / (bi[1] - ai[1] * P[i - 1]);
                 }
-                //di[n] = this.ht * u_l_t(this.t[j]); // if Neumann condition is not a zero
+                //di[this.n] = this.ht * u_l_t(this.t[j]); // if Neumann condition is not a zero
                 Q[this.n] = (ai[2] * Q[this.n - 1] - di[this.n]) / (bi[2] - ai[2] * P[this.n - 1]);
 
                 this.u[j + 1, n] = Q[this.n];
@@ -266,7 +266,7 @@ namespace FHN_nonlocal_coupling
                     di[i] = this.u[j, i] + ht * (f(this.u[j, i]) - this.v[j + 1, i]);
                     Q[i] = (ai[1] * Q[i - 1] - di[i]) / (bi[1] - ai[1] * P[i - 1]);
                 }
-                //di[n] = this.ht * u_l_t(this.t[j]); // if Neumann condition is not a zero
+                //di[this.n] = this.ht * u_l_t(this.t[j]); // if Neumann condition is not a zero
                 Q[this.n] = (ai[2] * Q[this.n - 1] - di[this.n]) / (bi[2] - ai[2] * P[this.n - 1]);
 
                 this.u[j + 1, n] = Q[this.n];
