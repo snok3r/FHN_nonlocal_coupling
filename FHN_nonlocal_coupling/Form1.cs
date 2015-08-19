@@ -18,7 +18,7 @@ namespace FHN_nonlocal_coupling
         {
             InitializeComponent();
 
-            float eps = 0.08F, gamma = 0.8F, l = 3.0F, TB = 20.0F;
+            double eps = 0.08, gamma = 0.8, a = 0.1, l = 3.0, TB = 30.0;
             int n, m;
             bool eq_diff = true;
 
@@ -31,15 +31,25 @@ namespace FHN_nonlocal_coupling
             {
                 n = 499;
                 m = 999;
-
-                TB /= 2;
             }
 
-            pde = new FHN(eps, gamma, l, TB, m, n, eq_diff);
+            pde = new FHN(eps, gamma, a, l, TB, m, n, eq_diff, this);
 
             SetPlot();
 
-            timerT.Interval = Convert.ToInt32(20.0/(m+1)*1000); // plot trace for 25 sec
+            txtBoxN.Text = Convert.ToString(pde.N);
+            txtBoxM.Text = Convert.ToString(pde.M);
+            txtBoxL.Text = Convert.ToString(pde.L);
+            txtBoxT.Text = Convert.ToString(pde.T);
+            txtBoxEps.Text = Convert.ToString(pde.Eps);
+            txtBoxGamma.Text = Convert.ToString(pde.Gamma);
+            txtBoxA.Text = Convert.ToString(pde.A);
+
+            if ((eq_diff) || (m > 30000))
+                timerT.Interval = 1;
+            else
+                timerT.Interval = Convert.ToInt32(30.0 / (m + 1) * 1000); // plot trace for 30 sec
+
             timerT.Tick += timerT_Tick;
             timerT.Enabled = false;
         }
@@ -52,37 +62,52 @@ namespace FHN_nonlocal_coupling
                 chart1.Series[1].Points.AddXY(pde.GetX(i), pde.GetV(j, i));
             }
         }
+
         private void SetPlot()
         {
             chart1.ChartAreas[0].AxisX.Minimum = - pde.L - 0.1;
             chart1.ChartAreas[0].AxisX.Maximum = pde.L + 0.1;
 
-            chart1.ChartAreas[0].AxisY.Maximum = 2;
-            chart1.ChartAreas[0].AxisY.Minimum = - chart1.ChartAreas[0].AxisY.Maximum;
+            chart1.ChartAreas[0].AxisY.Maximum = Convert.ToDouble(txtBoxMaxUV.Text);
+            chart1.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(txtBoxMinUV.Text);
 
-            chart1.ChartAreas[0].AxisX.Interval = 2;
-            chart1.ChartAreas[0].AxisY.Interval = 2;
+            txtBoxMaxUV.Text = Convert.ToString(chart1.ChartAreas[0].AxisY.Maximum);
+            txtBoxMinUV.Text = Convert.ToString(chart1.ChartAreas[0].AxisY.Minimum);
+
+            chart1.ChartAreas[0].AxisX.Interval = Convert.ToInt32((chart1.ChartAreas[0].AxisX.Maximum + chart1.ChartAreas[0].AxisX.Minimum) / 6.0);
+            chart1.ChartAreas[0].AxisY.Interval = Convert.ToInt32((chart1.ChartAreas[0].AxisY.Maximum + chart1.ChartAreas[0].AxisY.Minimum) / 6.0);
         }
 
-        private void btnSolve_Click(object sender, EventArgs e)
+        private void BtnLoadBeh()
         {
-            prBarSolve.Value = 0;
-            pde.Solve();
-            prBarSolve.Value = 1;
+            // Load button behaviour
+            // if we change n, m, eq_diff, l, or TB
+            if (btnPlot.Enabled || btnSolve.Enabled)
+            {
+                btnPlot.Enabled = false;
+                btnSolve.Enabled = false;
+                btnLoad.Enabled = true;
+            }
         }
 
-        private void btnPlot_Click(object sender, EventArgs e)
+        private void BtnSolveBeh()
         {
-            chart1.Series[0].Points.Clear();
-            chart1.Series[1].Points.Clear();
+            // Solve button behaviour
+            // if we change eps, gamma, Kernel, f or conditions,
+            // then disable Plot and call Solve again.
+            if (btnPlot.Enabled)
+            {
+                btnLoad.Enabled = false;
+                btnPlot.Enabled = false;
+                btnSolve.Enabled = true;
+            }
+        }
 
-            trBarT.Maximum = pde.M;
-            Plot(trBarT.Value);
-
-            if (rdBtnTmr.Checked)
-                timerT.Enabled = true;
-            else
-                timerT.Enabled = false;
+        private void BtnPlotBeh()
+        {
+            // Plot button behaviour
+            btnSolve.Enabled = false;
+            btnPlot.Enabled = true;
         }
 
         private void trBarT_Scroll(object sender, EventArgs e)
@@ -115,8 +140,126 @@ namespace FHN_nonlocal_coupling
 
         private void btnStopTimer_Click(object sender, EventArgs e)
         {
-            rdBtnTmr.Checked = false;
-            timerT.Enabled = false;
+            if (timerT.Enabled)
+            {
+                rdBtnTmr.Checked = false;
+                timerT.Enabled = false;
+            }
+        }
+
+        private void btnTune_Click(object sender, EventArgs e)
+        {
+            chart1.ChartAreas[0].AxisY.Maximum = Convert.ToDouble(txtBoxMaxUV.Text);
+            chart1.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(txtBoxMinUV.Text);
+        }
+
+        private void txtBoxN_TextChanged(object sender, EventArgs e)
+        {
+            BtnLoadBeh();
+        }
+
+        private void txtBoxM_TextChanged(object sender, EventArgs e)
+        {
+            BtnLoadBeh();
+        }
+
+        private void txtBoxL_TextChanged(object sender, EventArgs e)
+        {
+            BtnLoadBeh();
+        }
+
+        private void txtBoxT_TextChanged(object sender, EventArgs e)
+        {
+            BtnLoadBeh();
+        }
+
+        private void rdBtnDiffsn_CheckedChanged(object sender, EventArgs e)
+        {
+            BtnLoadBeh();
+            //txtBoxM.Enabled = true; // comment it if SolveBeta() is used
+        }
+
+        private void rdBtnCplng_CheckedChanged(object sender, EventArgs e)
+        {
+            BtnLoadBeh();
+            txtBoxM.Enabled = true;
+        }
+
+        private void txtBoxUx0_TextChanged(object sender, EventArgs e)
+        {
+            BtnLoadBeh();
+        }
+
+        //
+
+        private void txtBoxEps_TextChanged(object sender, EventArgs e)
+        {
+            BtnSolveBeh();
+        }
+
+        private void txtBoxGamma_TextChanged(object sender, EventArgs e)
+        {
+            BtnSolveBeh();
+        }
+
+        private void txtBoxA_TextChanged(object sender, EventArgs e)
+        {
+            BtnSolveBeh();
+        }
+        //
+
+        private void btnLoad_Click(object sender, EventArgs e)
+        {
+            pde.N = Convert.ToInt32(txtBoxN.Text);
+            pde.Eq = rdBtnDiffsn.Checked;
+
+            if (pde.Eq)
+            {   // uncomment below if SolveBeta() is used
+
+                pde.M = 2 * pde.N * pde.N + 1;
+                txtBoxM.Text = Convert.ToString(pde.M);
+            }
+
+            pde.M = Convert.ToInt32(txtBoxM.Text);
+            pde.L = Convert.ToDouble(txtBoxL.Text);
+            pde.T = Convert.ToDouble(txtBoxT.Text);
+
+            pde.Load(pde.M, pde.N, pde.Eq, pde.L, pde.T);
+            pde.Initials(pde.M, pde.N);
+
+            btnLoad.Enabled = false;
+            btnSolve.Enabled = true;
+        }
+
+        private void btnSolve_Click(object sender, EventArgs e)
+        {
+            prBarSolve.Value = 0;
+
+            pde.Eps = Convert.ToDouble(txtBoxEps.Text);
+            pde.Gamma = Convert.ToDouble(txtBoxGamma.Text);
+            pde.A = Convert.ToDouble(txtBoxA.Text);
+
+            pde.Solve();
+            
+            BtnPlotBeh();
+        }
+
+        private void btnPlot_Click(object sender, EventArgs e)
+        {
+            BtnPlotBeh();
+
+            chart1.Series[0].Points.Clear();
+            chart1.Series[1].Points.Clear();
+
+            SetPlot();
+
+            trBarT.Maximum = pde.M;
+            Plot(trBarT.Value);
+
+            if (rdBtnTmr.Checked)
+                timerT.Enabled = true;
+            else
+                timerT.Enabled = false;
         }
     }
 }

@@ -3,11 +3,5 @@ FitzHugh-Nagumo spatial model with nonlocal coupling [http://arxiv.org/abs/1311.
 
 ToDo: 
 -
-[2 Aug 2015]:
-add different Kernels (presumably case-switch scenario), also add various initial waves
-(case-switch either). Display all of these on the form in textboxes, 
-more likely giving some area around each one with a variety of alterable parameters 
-(e.g. "a sin(b x) + c cos(d x): a = ..., b =..., c =..., d =..."). 
-
-[11 Aug 2015]:
-consider math parser functionality for initials.
+[19th Aug 2015]:
+Test out new Tridiagonal matrix algorithm.
