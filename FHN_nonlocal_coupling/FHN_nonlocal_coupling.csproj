@@ -48,7 +48,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FHN.cs" />
+    <Compile Include="FHN_w_diffusion.cs" />
+    <Compile Include="FHN_wo_diffussion.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

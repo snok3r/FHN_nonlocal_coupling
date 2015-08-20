@@ -7,11 +7,11 @@ using MathParser;
 
 namespace FHN_nonlocal_coupling
 {
-    class FHN
+    class FHN_w_diffusion
     {
         public Form1 form; // to access Form's controls
         // variables and arrays
-        private bool eq_diff; // bool for deciding which equation solves
+        private bool w_coupl; // bool for deciding which equation solves
         private int n, m;
         private double h, hx, ht; // steps (h is for integrating)
         private double l, TB; // bounds; l is for x and TB/TBound is for t
@@ -22,8 +22,8 @@ namespace FHN_nonlocal_coupling
         private double a; // f constant
 
         // strings and parsers with initials expression formulas
-        //public String SF;
-        //public Parser PF;
+        //public String SUx0;
+        //public Parser PUx0;
         
         // properties
         public int N
@@ -70,12 +70,15 @@ namespace FHN_nonlocal_coupling
         
         public bool Eq
         {   // Is the equation a diffusuion equation?
-            get { return this.eq_diff; }
-            set { this.eq_diff = value; }
+            get { return this.w_coupl; }
+            set { this.w_coupl = value; }
         }
 
-        // constructor
-        public FHN(double eps, double gamma, double a, double l, double TB, int m, int n, bool eq_diff, Form1 form)
+        // constructors
+
+        public FHN_w_diffusion() { } // kind of destructor
+
+        public FHN_w_diffusion(double eps, double gamma, double a, double l, double TB, int m, int n, bool w_coupl, Form1 form)
         {
             this.eps = eps;
             this.gamma = gamma;
@@ -84,20 +87,20 @@ namespace FHN_nonlocal_coupling
             this.TB = TB;
             this.n = n;
             this.m = m;
-            this.eq_diff = eq_diff;
+            this.w_coupl = w_coupl;
             this.form = form;
 
             //this.PF = new Parser(); this.PF.Mode = Mode.RAD;
         }
 
         // methods
-        public void Load(int m, int n, bool eq_diff, double l, double TB)
+        public void Load(int m, int n, bool w_coupl, double l, double TB)
         {   // initialize/declare arrays and steps
-            // If we want to change one of the parameters: n, m, eq_diff, l, TB,
+            // If we want to change one of the parameters: n, m, w_coupl, l, TB,
             // then it needs to call this (plus Intiials) functions again.
             this.n = n;
             this.m = m;
-            this.eq_diff = eq_diff;
+            this.w_coupl = w_coupl;
 
             this.h = 2 * l / n; // for integrating from -l to l
             this.hx = 2 * l / n; // step for x
@@ -113,7 +116,7 @@ namespace FHN_nonlocal_coupling
             this.v = new double[m + 1, n + 1];
         }
 
-        public void Initials(int m, int n)
+        public void Initials(int n)
         {   // Initialize initials
 
             for (int i = 0; i < n + 1; i++)
@@ -136,7 +139,7 @@ namespace FHN_nonlocal_coupling
 
             //this.SF = form.txtBoxF.Text; // parses f expression to string once Solve() is called
 
-            if (this.eq_diff)
+            if (this.w_coupl)
             {   // reaction-diffusion equation
                 double step = this.ht / (this.hx * this.hx);
                 for (int j = 0; j < this.m; j++)
@@ -179,7 +182,7 @@ namespace FHN_nonlocal_coupling
 
 	    }
 
-        /*
+        
         public void SolveBeta1()
         {
             // If we changed ONLY eps, gamma or f,
@@ -215,7 +218,7 @@ namespace FHN_nonlocal_coupling
                     di[i] = this.u[j, i] + ht * (f(this.u[j, i]) - this.v[j, i]);
                     Q[i] = (ai[1] * Q[i - 1] - di[i]) / (bi[1] - ai[1] * P[i - 1]);
                 }
-                //di[n] = this.ht * u_l_t(this.t[j]); // if Neumann condition is not a zero
+                //di[this.n] = this.ht * u_l_t(this.t[j]); // if Neumann condition is not a zero
                 Q[this.n] = (ai[2] * Q[this.n - 1] - di[this.n]) / (bi[2] - ai[2] * P[this.n - 1]);
 
                 this.u[j + 1, n] = Q[this.n];
@@ -226,9 +229,9 @@ namespace FHN_nonlocal_coupling
             }
             if (form.prBarSolve.Value < 4) form.prBarSolve.Value = 4;
         }
-        */
+        
 
-        /*
+        
         public void SolveBeta2()
         {
             // If we changed ONLY eps, gamma or f,
@@ -266,7 +269,7 @@ namespace FHN_nonlocal_coupling
                     di[i] = this.u[j, i] + ht * (f(this.u[j, i]) - this.v[j + 1, i]);
                     Q[i] = (ai[1] * Q[i - 1] - di[i]) / (bi[1] - ai[1] * P[i - 1]);
                 }
-                //di[n] = this.ht * u_l_t(this.t[j]); // if Neumann condition is not a zero
+                //di[this.n] = this.ht * u_l_t(this.t[j]); // if Neumann condition is not a zero
                 Q[this.n] = (ai[2] * Q[this.n - 1] - di[this.n]) / (bi[2] - ai[2] * P[this.n - 1]);
 
                 this.u[j + 1, n] = Q[this.n];
@@ -277,27 +280,15 @@ namespace FHN_nonlocal_coupling
             }
             if (form.prBarSolve.Value < 4) form.prBarSolve.Value = 4;
         }
-        */
+        
 
-        public double GetX(int i)
-        {
-            return this.x[i];
-        }
+        public double GetX(int i) { return this.x[i]; }
 
-        public double GetT(int j)
-        {
-            return this.t[j];
-        }
-
-        public double GetU(int j, int i)
-        {
-            return this.u[j, i];
-        }
-
-        public double GetV(int j, int i)
-        {
-            return this.v[j, i];
-        }
+        public double GetT(int j) { return this.t[j]; }
+        
+        public double GetU(int j, int i) { return this.u[j, i]; }
+        
+        public double GetV(int j, int i) { return this.v[j, i]; }
 
         // various functions
         private double Integral(int j, int i)
@@ -317,33 +308,21 @@ namespace FHN_nonlocal_coupling
             return z;
         }
 
-        private double f(double u)
-        {	// f(0) = f(1) = 0; f'(0) < 0 and f'(1) < 0 ???
-            return - u * (u - 1) * (u - this.a);
-        }
+        private double f(double u) { return - u * (u - 1) * (u - this.a); }
 
         private double u_x_0(double x)
         {	// initial u wave at t = 0
-            //if (x < 0.0F) return -1.0;
-            //else return 0.0;
+            if (x < 0.0F) return -1.0;
+            else return 0.0;
             //PUx0.Evaluate(SUx0.Replace("x", x.ToString()));
             //return PUx0.Result;
-            return Math.Exp(-x * x) / 0.1;
+            //return Math.Exp(-x * x) / 0.1;
         }
 
-        private double v_x_0(double x)
-        {	// initial v wave at t = 0
-            return 0.0;
-        }
+        private double v_x_0(double x) { return 0.0; } // initial v wave at t = 0
 
-        private double u_0_t(double t)
-        {   // Neumann boundary condition at x = -l
-            return 0;
-        }
+        private double u_0_t(double t) { return 0.0; } // Neumann boundary condition at x = -l
 
-        private double u_l_t(double t)
-        {   // Neumann boundary condition at x = l
-            return 0;
-        }
+        private double u_l_t(double t) { return 0.0; } // Neumann boundary condition at x = l
     }
 }

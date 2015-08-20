@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.btnSolve = new System.Windows.Forms.Button();
             this.btnPlot = new System.Windows.Forms.Button();
@@ -49,8 +49,8 @@
             this.txtBoxA = new System.Windows.Forms.TextBox();
             this.txtBoxMinUV = new System.Windows.Forms.TextBox();
             this.txtBoxMaxUV = new System.Windows.Forms.TextBox();
-            this.rdBtnDiffsn = new System.Windows.Forms.RadioButton();
-            this.rdBtnCplng = new System.Windows.Forms.RadioButton();
+            this.rdBtnWOCplng = new System.Windows.Forms.RadioButton();
+            this.rdBtnWCplng = new System.Windows.Forms.RadioButton();
             this.lblN = new System.Windows.Forms.Label();
             this.lblM = new System.Windows.Forms.Label();
             this.lblL = new System.Windows.Forms.Label();
@@ -71,28 +71,28 @@
             // 
             // chart1
             // 
-            chartArea3.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea3);
-            legend3.Name = "Legend1";
-            this.chart1.Legends.Add(legend3);
+            chartArea2.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chart1.Legends.Add(legend2);
             this.chart1.Location = new System.Drawing.Point(277, 12);
             this.chart1.Name = "chart1";
-            series5.ChartArea = "ChartArea1";
-            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series5.Legend = "Legend1";
-            series5.MarkerSize = 7;
-            series5.Name = "U";
-            series5.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            series5.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            series6.ChartArea = "ChartArea1";
-            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
-            series6.Legend = "Legend1";
-            series6.MarkerSize = 7;
-            series6.Name = "V";
-            series6.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            series6.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            this.chart1.Series.Add(series5);
-            this.chart1.Series.Add(series6);
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series3.Legend = "Legend1";
+            series3.MarkerSize = 7;
+            series3.Name = "U";
+            series3.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            series3.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            series4.ChartArea = "ChartArea1";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series4.Legend = "Legend1";
+            series4.MarkerSize = 7;
+            series4.Name = "V";
+            series4.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            series4.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            this.chart1.Series.Add(series3);
+            this.chart1.Series.Add(series4);
             this.chart1.Size = new System.Drawing.Size(765, 400);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
@@ -189,7 +189,7 @@
             this.txtBoxM.Name = "txtBoxM";
             this.txtBoxM.Size = new System.Drawing.Size(50, 20);
             this.txtBoxM.TabIndex = 9;
-            this.txtBoxM.Text = "20001";
+            this.txtBoxM.Text = "5000";
             this.txtBoxM.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtBoxM.TextChanged += new System.EventHandler(this.txtBoxM_TextChanged);
             // 
@@ -229,7 +229,7 @@
             this.txtBoxMinUV.Name = "txtBoxMinUV";
             this.txtBoxMinUV.Size = new System.Drawing.Size(34, 20);
             this.txtBoxMinUV.TabIndex = 15;
-            this.txtBoxMinUV.Text = "-12,0";
+            this.txtBoxMinUV.Text = "-1,0";
             this.txtBoxMinUV.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // txtBoxMaxUV
@@ -238,32 +238,32 @@
             this.txtBoxMaxUV.Name = "txtBoxMaxUV";
             this.txtBoxMaxUV.Size = new System.Drawing.Size(34, 20);
             this.txtBoxMaxUV.TabIndex = 16;
-            this.txtBoxMaxUV.Text = "12,0";
+            this.txtBoxMaxUV.Text = "1,0";
             this.txtBoxMaxUV.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // rdBtnDiffsn
+            // rdBtnWOCplng
             // 
-            this.rdBtnDiffsn.AutoSize = true;
-            this.rdBtnDiffsn.Checked = true;
-            this.rdBtnDiffsn.Location = new System.Drawing.Point(3, 3);
-            this.rdBtnDiffsn.Name = "rdBtnDiffsn";
-            this.rdBtnDiffsn.Size = new System.Drawing.Size(66, 17);
-            this.rdBtnDiffsn.TabIndex = 17;
-            this.rdBtnDiffsn.TabStop = true;
-            this.rdBtnDiffsn.Text = "Diffusion";
-            this.rdBtnDiffsn.UseVisualStyleBackColor = true;
-            this.rdBtnDiffsn.CheckedChanged += new System.EventHandler(this.rdBtnDiffsn_CheckedChanged);
+            this.rdBtnWOCplng.AutoSize = true;
+            this.rdBtnWOCplng.Checked = true;
+            this.rdBtnWOCplng.Location = new System.Drawing.Point(3, 3);
+            this.rdBtnWOCplng.Name = "rdBtnWOCplng";
+            this.rdBtnWOCplng.Size = new System.Drawing.Size(87, 17);
+            this.rdBtnWOCplng.TabIndex = 17;
+            this.rdBtnWOCplng.TabStop = true;
+            this.rdBtnWOCplng.Text = "w/o coupling";
+            this.rdBtnWOCplng.UseVisualStyleBackColor = true;
+            this.rdBtnWOCplng.CheckedChanged += new System.EventHandler(this.rdBtnDiffsn_CheckedChanged);
             // 
-            // rdBtnCplng
+            // rdBtnWCplng
             // 
-            this.rdBtnCplng.AutoSize = true;
-            this.rdBtnCplng.Location = new System.Drawing.Point(3, 26);
-            this.rdBtnCplng.Name = "rdBtnCplng";
-            this.rdBtnCplng.Size = new System.Drawing.Size(66, 17);
-            this.rdBtnCplng.TabIndex = 18;
-            this.rdBtnCplng.Text = "Coupling";
-            this.rdBtnCplng.UseVisualStyleBackColor = true;
-            this.rdBtnCplng.CheckedChanged += new System.EventHandler(this.rdBtnCplng_CheckedChanged);
+            this.rdBtnWCplng.AutoSize = true;
+            this.rdBtnWCplng.Location = new System.Drawing.Point(3, 26);
+            this.rdBtnWCplng.Name = "rdBtnWCplng";
+            this.rdBtnWCplng.Size = new System.Drawing.Size(76, 17);
+            this.rdBtnWCplng.TabIndex = 18;
+            this.rdBtnWCplng.Text = "w coupling";
+            this.rdBtnWCplng.UseVisualStyleBackColor = true;
+            this.rdBtnWCplng.CheckedChanged += new System.EventHandler(this.rdBtnCplng_CheckedChanged);
             // 
             // lblN
             // 
@@ -321,11 +321,11 @@
             // 
             // panelEqType
             // 
-            this.panelEqType.Controls.Add(this.rdBtnDiffsn);
-            this.panelEqType.Controls.Add(this.rdBtnCplng);
+            this.panelEqType.Controls.Add(this.rdBtnWOCplng);
+            this.panelEqType.Controls.Add(this.rdBtnWCplng);
             this.panelEqType.Location = new System.Drawing.Point(106, 326);
             this.panelEqType.Name = "panelEqType";
-            this.panelEqType.Size = new System.Drawing.Size(78, 47);
+            this.panelEqType.Size = new System.Drawing.Size(91, 47);
             this.panelEqType.TabIndex = 28;
             // 
             // lblEps
@@ -447,8 +447,8 @@
         private System.Windows.Forms.TextBox txtBoxT;
         private System.Windows.Forms.TextBox txtBoxMinUV;
         private System.Windows.Forms.TextBox txtBoxMaxUV;
-        private System.Windows.Forms.RadioButton rdBtnDiffsn;
-        private System.Windows.Forms.RadioButton rdBtnCplng;
+        private System.Windows.Forms.RadioButton rdBtnWOCplng;
+        private System.Windows.Forms.RadioButton rdBtnWCplng;
         private System.Windows.Forms.Label lblN;
         private System.Windows.Forms.Label lblM;
         private System.Windows.Forms.Label lblL;

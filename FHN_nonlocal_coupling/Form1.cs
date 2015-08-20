@@ -12,7 +12,7 @@ namespace FHN_nonlocal_coupling
 {
     public partial class Form1 : Form
     {
-        FHN pde;
+        FHN_w_diffusion pde;
 
         public Form1()
         {
@@ -20,12 +20,14 @@ namespace FHN_nonlocal_coupling
 
             double eps = 0.08, gamma = 0.8, a = 0.1, l = 3.0, TB = 30.0;
             int n, m;
-            bool eq_diff = true;
+            bool w_coupl = true;
 
-            if (eq_diff)
+            if (w_coupl)
             {
-                n = 100;
-                m = 2 * n * n + 1;
+                //n = 100;
+                m = 5000; // comment if SolveBeta() is used
+                n = 500; // comment if SolveBeta() is used
+                //m = 2 * n * n + 1;
             }
             else
             {
@@ -33,7 +35,7 @@ namespace FHN_nonlocal_coupling
                 m = 999;
             }
 
-            pde = new FHN(eps, gamma, a, l, TB, m, n, eq_diff, this);
+            pde = new FHN_w_diffusion(eps, gamma, a, l, TB, m, n, w_coupl, this);
 
             SetPlot();
 
@@ -45,10 +47,10 @@ namespace FHN_nonlocal_coupling
             txtBoxGamma.Text = Convert.ToString(pde.Gamma);
             txtBoxA.Text = Convert.ToString(pde.A);
 
-            if ((eq_diff) || (m > 30000))
+            if ((w_coupl) || (m > 30000))
                 timerT.Interval = 1;
             else
-                timerT.Interval = Convert.ToInt32(30.0 / (m + 1) * 1000); // plot trace for 30 sec
+                timerT.Interval = Convert.ToInt32(pde.T / (m + 1) * 1000); // plot trace for T sec
 
             timerT.Tick += timerT_Tick;
             timerT.Enabled = false;
@@ -81,7 +83,7 @@ namespace FHN_nonlocal_coupling
         private void BtnLoadBeh()
         {
             // Load button behaviour
-            // if we change n, m, eq_diff, l, or TB
+            // if we change n, m, w_coupl, l, or TB
             if (btnPlot.Enabled || btnSolve.Enabled)
             {
                 btnPlot.Enabled = false;
@@ -176,7 +178,7 @@ namespace FHN_nonlocal_coupling
         private void rdBtnDiffsn_CheckedChanged(object sender, EventArgs e)
         {
             BtnLoadBeh();
-            //txtBoxM.Enabled = true; // comment it if SolveBeta() is used
+            txtBoxM.Enabled = true; // comment it if SolveBeta() is used
         }
 
         private void rdBtnCplng_CheckedChanged(object sender, EventArgs e)
@@ -211,13 +213,13 @@ namespace FHN_nonlocal_coupling
         private void btnLoad_Click(object sender, EventArgs e)
         {
             pde.N = Convert.ToInt32(txtBoxN.Text);
-            pde.Eq = rdBtnDiffsn.Checked;
+            pde.Eq = rdBtnWOCplng.Checked;
 
             if (pde.Eq)
-            {   // uncomment below if SolveBeta() is used
+            {   // comment below if SolveBeta() is used
 
-                pde.M = 2 * pde.N * pde.N + 1;
-                txtBoxM.Text = Convert.ToString(pde.M);
+                //pde.M = 2 * pde.N * pde.N + 1;
+                //txtBoxM.Text = Convert.ToString(pde.M);
             }
 
             pde.M = Convert.ToInt32(txtBoxM.Text);
@@ -225,7 +227,7 @@ namespace FHN_nonlocal_coupling
             pde.T = Convert.ToDouble(txtBoxT.Text);
 
             pde.Load(pde.M, pde.N, pde.Eq, pde.L, pde.T);
-            pde.Initials(pde.M, pde.N);
+            pde.Initials(pde.N);
 
             btnLoad.Enabled = false;
             btnSolve.Enabled = true;
@@ -239,7 +241,7 @@ namespace FHN_nonlocal_coupling
             pde.Gamma = Convert.ToDouble(txtBoxGamma.Text);
             pde.A = Convert.ToDouble(txtBoxA.Text);
 
-            pde.Solve();
+            pde.SolveBeta1();
             
             BtnPlotBeh();
         }
