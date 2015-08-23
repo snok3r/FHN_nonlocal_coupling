@@ -16,13 +16,13 @@ namespace FHN_nonlocal_coupling
         private double l, TB; // bounds; l is for Kernel, TB/TBound is for t
         private double[] t; // time
 
-        private double[] v, w, v_null, w1, w2; // w1, w2 are nullclines
-        private double v0, w0; // initials
+        private double[] u, v, u_null, v1, v2; // v1, v2 are nullclines
+        private double u0, v0; // initials
         private double Iext, tau, a, b; // equation's constants
 
         // properties
         public int N
-        {   // quantity of u,v x's
+        {   // quantity of u,v t's
             get { return this.n; }
             set { this.n = value; }
         }
@@ -39,20 +39,20 @@ namespace FHN_nonlocal_coupling
             set { this.TB = value; }
         }
 
+        public double U0
+        {   // intiial u
+            get { return this.u0; }
+            set { this.u0 = value; }
+        }
+
         public double V0
-        {
+        {   // intiial v
             get { return this.v0; }
             set { this.v0 = value; }
         }
 
-        public double W0
-        {
-            get { return this.w0; }
-            set { this.w0 = value; }
-        }
-
         public double I
-        {
+        {   // current
             get { return this.Iext; }
             set { this.Iext = value; }
         }
@@ -84,12 +84,12 @@ namespace FHN_nonlocal_coupling
         // constructors
         public FHN_wo_diffussion() { } // kind of destructor
 
-        public FHN_wo_diffussion(int n, double l, double TB, double v0, double w0, double Iext, double tau, double a, double b, bool w_coupl, Form1 form)
+        public FHN_wo_diffussion(int n, double l, double TB, double u0, double v0, double Iext, double tau, double a, double b, bool w_coupl, Form1 form)
         {
             this.n = n;
             this.l = l;
+            this.u0 = u0;
             this.v0 = v0;
-            this.w0 = w0;
             this.TB = TB;
             this.Iext = Iext;
             this.tau = tau;
@@ -101,15 +101,13 @@ namespace FHN_nonlocal_coupling
         }
 
         // methods
-        public void Load(int n, double l, double TB, double v0, double w0, bool w_coupl)
+        public void Load(int n, double l, double TB, bool w_coupl)
         {   // initialize/declare arrays and steps
             // If we want to change one of the parameters: n, TB or w_coupl,
             // then it needs to call this (plus Intiials) functions again.
             this.n = n;
             this.l = l;
             this.TB = TB;
-            this.v0 = v0;
-            this.w0 = w0;
             this.w_coupl = w_coupl;
 
             this.h = 2 * l / n; // for integrating from -l to l
@@ -118,19 +116,19 @@ namespace FHN_nonlocal_coupling
             this.t = new double[n + 1]; // arrange t's
             for (int j = 0; j < n + 1; j++) this.t[j] = j * this.ht;
 
+            this.u = new double[n + 1];
             this.v = new double[n + 1];
-            this.w = new double[n + 1];
 
-            this.w1 = new double[n + 1];
-            this.w2 = new double[n + 1];
-            this.v_null = new double[n + 1];
-            for (int j = 0; j < n + 1; j++) this.v_null[j] = - this.l + j * this.h;
+            this.v1 = new double[n + 1];
+            this.v2 = new double[n + 1];
+            this.u_null = new double[n + 1];
+            for (int j = 0; j < n + 1; j++) this.u_null[j] = - this.l + j * this.h;
         }
 
-        public void Initials(double v0, double w0)
+        public void Initials(double u0, double v0)
         {   // Initialize initials
+            this.u[0] = u0;
             this.v[0] = v0;
-            this.w[0] = w0;
         }
 
         public void Solve()
@@ -141,19 +139,30 @@ namespace FHN_nonlocal_coupling
             {
                 for (int j = 0; j < this.n; j++)
                 {
-                    this.v[j + 1] = this.v[j] + this.ht * (f(this.v[j]) - this.w[j] + this.Iext);
-                    this.w[j + 1] = this.w[j] + this.ht / this.tau * (this.v[j] + this.a - this.b * this.w[j]);
+                    this.u[j + 1] = this.u[j] + this.ht * (f(this.u[j]) - this.v[j] + this.Iext);
+                    this.v[j + 1] = this.v[j] + this.ht / this.tau * (this.u[j] + this.a - this.b * this.v[j]);
+
+                    if ((j % ((this.n) / 4)) == 0)
+                    {   // updating progress bar
+                        form.prBarSolveWOD.Value++;
+                    }
                 }
             }
             else
             {   // with nonlocal coupling
                 for (int j = 0; j < this.n; j++)
                 {
+                    this.u[j + 1] = 0;
                     this.v[j + 1] = 0;
-                    this.w[j + 1] = 0;
+
+                    if ((j % ((this.n) / 4)) == 0)
+                    {   // updating progress bar
+                        form.prBarSolveWOD.Value++;
+                    }
                 }
             }
 
+            Nullclines();
         }
 
         public void Nullclines()
@@ -162,22 +171,30 @@ namespace FHN_nonlocal_coupling
             {
                 for (int j = 0; j < this.n + 1; j++)
                 {
-                    this.w1[j] = this.v_null[j] - Math.Pow(this.v_null[j], 3.0) / 3 + this.Iext;
-                    this.w2[j] = (this.v_null[j] + this.a) / this.b; ;
+                    this.v1[j] = f(this.u_null[j]) + this.Iext;
+                    this.v2[j] = (this.u_null[j] + this.a) / this.b;
                 }
             }
         }
 
-        public double GetT(int j) { return (this.t[j]); }
+        public double GetT(int j) { return this.t[j]; }
+
+        public double GetU(int j) { return this.u[j]; }
 
         public double GetV(int j) { return this.v[j]; }
 
-        public double GetW(int j) { return this.w[j]; }
+        public double GetUN(int j) { return this.u_null[j]; } // for nullclines
 
-        public double GetVN(int j) { return this.v_null[j]; } // for nullclines
+        public double GetV1(int j) { return this.v1[j]; } // for nullclines
+
+        public double GetV2(int j) { return this.v2[j]; } // for nullclines
 
         // various functions
-        private double f(double v) { return v - v * v * v / 3; }
+        private double f(double u) 
+        { 
+            return u - u * u * u / 3; 
+            //return u * (u - 1) * (u - ??);
+        }
 
         /*private double Integral(int j, int i)
         {   // Trapezoidal rule, uniform grid

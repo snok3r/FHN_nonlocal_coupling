@@ -139,12 +139,12 @@ namespace FHN_nonlocal_coupling
 
             //this.SF = form.txtBoxF.Text; // parses f expression to string once Solve() is called
 
-            if (this.w_coupl)
+            if (!(this.w_coupl))
             {   // reaction-diffusion equation
                 double step = this.ht / (this.hx * this.hx);
                 for (int j = 0; j < this.m; j++)
                 {
-                    if ((j % ((this.m) / 3)) == 0)
+                    if ((j % ((this.m) / 4)) == 0)
                     {   // updating progress bar
                         form.prBarSolve.Value++;
                     }
@@ -166,7 +166,7 @@ namespace FHN_nonlocal_coupling
             {   // with nonlocal coupling
                 for (int j = 0; j < this.m; j++)
                 {
-                    if ((j % ((this.m) / 3)) == 0)
+                    if ((j % ((this.m) / 4)) == 0)
                     {   // updating progress bar
                         form.prBarSolve.Value++;
                     }
