@@ -70,9 +70,11 @@ namespace FHN_nonlocal_coupling
                 btnPlot.Enabled = false;
                 btnSolve.Enabled = false;
                 btnLoad.Enabled = true;
-
-                trBarT.Enabled = false;
             }
+
+            trBarT.Value = 0;
+            trBarT.Enabled = false;
+            timerT.Enabled = false;
         }
 
         private void BtnSolveBeh()
@@ -85,9 +87,11 @@ namespace FHN_nonlocal_coupling
                 btnLoad.Enabled = false;
                 btnPlot.Enabled = false;
                 btnSolve.Enabled = true;
-
-                trBarT.Enabled = false;
             }
+
+            trBarT.Value = 0;
+            trBarT.Enabled = false;
+            timerT.Enabled = false;
         }
 
         private void BtnPlotBeh()
@@ -95,6 +99,9 @@ namespace FHN_nonlocal_coupling
             // Plot button behaviour
             btnSolve.Enabled = false;
             btnPlot.Enabled = true;
+
+            trBarT.Value = 0;
+            trBarT.Enabled = true;
         }
 
         private void trBarT_Scroll(object sender, EventArgs e)
@@ -189,7 +196,7 @@ namespace FHN_nonlocal_coupling
         private void btnLoad_Click(object sender, EventArgs e)
         {
             pde.N = Convert.ToInt32(txtBoxN.Text);
-            pde.Eq = rdBtnWOCplng.Checked;
+            pde.Eq = rdBtnWCplng.Checked;
 
             if (pde.Eq)
             {   // comment below if SolveBeta() is used
@@ -301,6 +308,10 @@ namespace FHN_nonlocal_coupling
                 btnSolveWOD.Enabled = false;
                 btnLoadWOD.Enabled = true;
             }
+
+            trBarTWOD.Value = 0;
+            trBarTWOD.Enabled = false;
+            timerTWOD.Enabled = false;
         }
 
         private void BtnSolveBehWOD()
@@ -314,6 +325,10 @@ namespace FHN_nonlocal_coupling
                 btnPlotWOD.Enabled = false;
                 btnSolveWOD.Enabled = true;
             }
+
+            trBarTWOD.Value = 0;
+            trBarTWOD.Enabled = false;
+            timerTWOD.Enabled = false;
         }
 
         private void BtnPlotBehWOD()
@@ -321,6 +336,9 @@ namespace FHN_nonlocal_coupling
             // Plot button behaviour
             btnSolveWOD.Enabled = false;
             btnPlotWOD.Enabled = true;
+
+            trBarTWOD.Value = 0;
+            trBarTWOD.Enabled = true;
         }
 
         private void btnLoadWOD_Click(object sender, EventArgs e)
@@ -518,10 +536,10 @@ namespace FHN_nonlocal_coupling
         private void tabPageWDiff_Enter(object sender, EventArgs e)
         {
             BtnReset();
+            BtnLoadBeh();
             timerTWOD.Enabled = false;
             timerT.Enabled = false;
             PlotClearWOD();
-            trBarT.Value = 0;
             ode = new FHN_wo_diffussion(); // destruct that
 
             double eps = Convert.ToDouble(txtBoxEps.Text), gamma = Convert.ToDouble(txtBoxGamma.Text);
@@ -544,10 +562,10 @@ namespace FHN_nonlocal_coupling
         private void tabPageWODiff_Enter(object sender, EventArgs e)
         {
             BtnResetWOD();
+            BtnLoadBehWOD();
             timerT.Enabled = false;
             timerTWOD.Enabled = false;
             PlotClear();
-            trBarTWOD.Value = 0;
             pde = new FHN_w_diffusion(); // destruct that
 
             int n = Convert.ToInt32(txtBoxNWOD.Text);

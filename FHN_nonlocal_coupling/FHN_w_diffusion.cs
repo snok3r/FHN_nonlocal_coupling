@@ -13,7 +13,7 @@ namespace FHN_nonlocal_coupling
         // variables and arrays
         private bool w_coupl; // bool for deciding which equation solves
         private int n, m;
-        private double h, hx, ht; // steps (h is for integrating)
+        private double hx, ht; // steps
         private double l, TB; // bounds; l is for x and TB/TBound is for t
         private double[] x, t;
 
@@ -102,7 +102,6 @@ namespace FHN_nonlocal_coupling
             this.m = m;
             this.w_coupl = w_coupl;
 
-            this.h = 2 * l / n; // for integrating from -l to l
             this.hx = 2 * l / n; // step for x
             this.ht = TB / m;  // step for t
 
@@ -188,7 +187,9 @@ namespace FHN_nonlocal_coupling
             // If we changed ONLY eps, gamma or f,
             // then just recall this function.
 
-            // reaction-diffusion equation
+            int prBarMax = 10;
+            form.prBarSolve.Maximum = prBarMax;
+
             double step = this.ht / (this.hx * this.hx);
 
             double[] P = new double[this.n + 1];
@@ -206,32 +207,35 @@ namespace FHN_nonlocal_coupling
 
             for (int j = 0; j < this.m; j++)
             {
-                if ((j % ((this.m) / 3)) == 0)
+                if ((j % ((this.m) / prBarMax)) == 0)
                 {   // updating progress bar
                     form.prBarSolve.Value++;
                 }
 
-                Q[0] = - di[0] / bi[0];
                 //di[0] = this.ht * u_0_t(this.t[j]); // if Neumann condition is not a zero
+                Q[0] = -di[0] / bi[0];
                 for (int i = 1; i < this.n; i++)
                 {
-                    di[i] = this.u[j, i] + ht * (f(this.u[j, i]) - this.v[j, i]);
+                    if (!(this.w_coupl))
+                        di[i] = this.u[j, i] + ht * (f(this.u[j, i]) - this.v[j, i]);
+                    else 
+                        di[i] = this.u[j, i] + ht * (Integral(j,i) + f(this.u[j, i]) - this.v[j, i]);
                     Q[i] = (ai[1] * Q[i - 1] - di[i]) / (bi[1] - ai[1] * P[i - 1]);
                 }
                 //di[this.n] = this.ht * u_l_t(this.t[j]); // if Neumann condition is not a zero
                 Q[this.n] = (ai[2] * Q[this.n - 1] - di[this.n]) / (bi[2] - ai[2] * P[this.n - 1]);
 
-                this.u[j + 1, n] = Q[this.n];
-                this.u[j + 1, n - 1] = Q[this.n];
-                for (int i = this.n - 2; i > -1; i--) u[j + 1, i] = P[i] * this.u[j + 1, i + 1] + Q[i];
+                this.u[j + 1, this.n] = Q[this.n];
+                for (int i = this.n - 1; i > -1; i--) u[j + 1, i] = P[i] * this.u[j + 1, i + 1] + Q[i];
 
                 for (int i = 0; i < this.n + 1; i++) v[j + 1, i] = (this.v[j, i] + this.ht * this.eps * this.u[j + 1, i]) / (1 + this.eps * this.gamma * this.ht);
             }
-            if (form.prBarSolve.Value < 4) form.prBarSolve.Value = 4;
+
+            if (form.prBarSolve.Value < prBarMax) form.prBarSolve.Value = prBarMax;
         }
         
 
-        
+        /*        
         public void SolveBeta2()
         {
             // If we changed ONLY eps, gamma or f,
@@ -279,7 +283,7 @@ namespace FHN_nonlocal_coupling
 
             }
             if (form.prBarSolve.Value < 4) form.prBarSolve.Value = 4;
-        }
+        }*/
         
 
         public double GetX(int i) { return this.x[i]; }
@@ -300,12 +304,12 @@ namespace FHN_nonlocal_coupling
             for (k = 1; k < this.n; k++) sum += 2 * Kernel(this.x[i] - this.x[k]) * this.u[j, k];
             sum += Kernel(this.x[i] - this.x[this.n]) * this.u[j, this.n];
 
-            return this.h * sum / 2;
+            return this.hx * sum / 2;
         }
 
         private double Kernel(double z)
         {
-            return z;
+            return Math.Exp(-z * z) / 0.1;
         }
 
         private double f(double u) { return - u * (u - 1) * (u - this.a); }

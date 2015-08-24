@@ -12,7 +12,7 @@ namespace FHN_nonlocal_coupling
         // variables and arrays
         private bool w_coupl; // with coupling?
         private int n;
-        private double h, ht; // steps (h is for integrating)
+        private double h, ht; // step
         private double l, TB; // bounds; l is for Kernel, TB/TBound is for t
         private double[] t; // time
 
@@ -135,27 +135,40 @@ namespace FHN_nonlocal_coupling
         {   // If we changed ONLY a, b, Iext, Kernel or f,
             // then just recall this function.
 
+            int prBarMax = 10;
+            form.prBarSolveWOD.Maximum = prBarMax;
+
+            double utemp, vtemp;
+
             if (!(this.w_coupl))
             {
                 for (int j = 0; j < this.n; j++)
                 {
-                    this.u[j + 1] = this.u[j] + this.ht * (f(this.u[j]) - this.v[j] + this.Iext);
-                    this.v[j + 1] = this.v[j] + this.ht / this.tau * (this.u[j] + this.a - this.b * this.v[j]);
+                    utemp = this.u[j] + this.ht * f1(this.u[j], this.v[j]);
+                    vtemp = this.v[j] + this.ht * f2(this.u[j], this.v[j]);
 
-                    if ((j % ((this.n) / 4)) == 0)
+                    //// Euler's 1st order
+                    //this.u[j + 1] = utemp;
+                    //this.v[j + 1] = vtemp;
+
+                    // Euler's 2nd order
+                    this.u[j + 1] = this.u[j] + this.ht / 2 * (f1(this.u[j], this.v[j]) + f1(utemp, vtemp));
+                    this.v[j + 1] = this.v[j] + this.ht / 2 * (f2(this.u[j], this.v[j]) + f2(utemp, vtemp));
+
+                    if ((j % ((this.n) / prBarMax)) == 0)
                     {   // updating progress bar
                         form.prBarSolveWOD.Value++;
                     }
                 }
             }
             else
-            {   // with nonlocal coupling
+            {   // with nonlinearity
                 for (int j = 0; j < this.n; j++)
                 {
                     this.u[j + 1] = 0;
                     this.v[j + 1] = 0;
 
-                    if ((j % ((this.n) / 4)) == 0)
+                    if ((j % ((this.n) / prBarMax)) == 0)
                     {   // updating progress bar
                         form.prBarSolveWOD.Value++;
                     }
@@ -163,6 +176,8 @@ namespace FHN_nonlocal_coupling
             }
 
             Nullclines();
+
+            if (form.prBarSolveWOD.Value < prBarMax) form.prBarSolveWOD.Value = prBarMax;
         }
 
         public void Nullclines()
@@ -190,6 +205,16 @@ namespace FHN_nonlocal_coupling
         public double GetV2(int j) { return this.v2[j]; } // for nullclines
 
         // various functions
+        private double f1(double u, double v)
+        {
+            return f(u) - v + this.Iext;
+        }
+
+        private double f2(double u, double v)
+        {
+            return (u + this.a - this.b * v) / this.tau;
+        }
+
         private double f(double u) 
         { 
             return u - u * u * u / 3; 
