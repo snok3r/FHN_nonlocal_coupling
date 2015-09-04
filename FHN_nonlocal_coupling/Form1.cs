@@ -64,7 +64,7 @@ namespace FHN_nonlocal_coupling
         private void BtnLoadBeh()
         {
             // Load button behaviour
-            // if we change n, m, w_coupl, l, or TB
+            // if we change n, m, l, or TB
             if (btnPlot.Enabled || btnSolve.Enabled)
             {
                 btnPlot.Enabled = false;
@@ -164,16 +164,6 @@ namespace FHN_nonlocal_coupling
             BtnLoadBeh();
         }
 
-        private void rdBtnDiffsn_CheckedChanged(object sender, EventArgs e)
-        {
-            BtnLoadBeh();
-        }
-
-        private void rdBtnCplng_CheckedChanged(object sender, EventArgs e)
-        {
-            BtnLoadBeh();
-        }
-
         //
 
         private void txtBoxEps_TextChanged(object sender, EventArgs e)
@@ -191,25 +181,41 @@ namespace FHN_nonlocal_coupling
             BtnSolveBeh();
         }
 
+        private void txtBoxB_TextChanged(object sender, EventArgs e)
+        {
+            BtnSolveBeh();
+        }
+
+        private void txtBoxD_TextChanged(object sender, EventArgs e)
+        {
+            BtnSolveBeh();
+        }
+
+        private void rdBtnDeltaCoupl_CheckedChanged(object sender, EventArgs e)
+        {
+            BtnSolveBeh();
+
+            lblD.Visible = true;
+            txtBoxD.Visible = true;
+        }
+
+        private void rdBtnCoupl_CheckedChanged(object sender, EventArgs e)
+        {
+            BtnSolveBeh();
+
+            lblD.Visible = false;
+            txtBoxD.Visible = false;
+        }
         //
 
         private void btnLoad_Click(object sender, EventArgs e)
         {
             pde.N = Convert.ToInt32(txtBoxN.Text);
-            pde.Eq = rdBtnWCplng.Checked;
-
-            if (pde.Eq)
-            {   // comment below if SolveBeta() is used
-
-                //pde.M = 2 * pde.N * pde.N + 1;
-                //txtBoxM.Text = Convert.ToString(pde.M);
-            }
-
             pde.M = Convert.ToInt32(txtBoxM.Text);
             pde.L = Convert.ToDouble(txtBoxL.Text);
             pde.T = Convert.ToDouble(txtBoxT.Text);
 
-            pde.Load(pde.M, pde.N, pde.Eq, pde.L, pde.T);
+            pde.Load(pde.M, pde.N, pde.L, pde.T);
             pde.Initials(pde.N);
 
             btnLoad.Enabled = false;
@@ -225,6 +231,9 @@ namespace FHN_nonlocal_coupling
             pde.Eps = Convert.ToDouble(txtBoxEps.Text);
             pde.Gamma = Convert.ToDouble(txtBoxGamma.Text);
             pde.A = Convert.ToDouble(txtBoxA.Text);
+            pde.B = Convert.ToDouble(txtBoxB.Text);
+            pde.D = Convert.ToDouble(txtBoxD.Text);
+            pde.Eq = rdBtnDeltaCoupl.Checked;
 
             pde.SolveBeta1();
             
@@ -544,10 +553,11 @@ namespace FHN_nonlocal_coupling
 
             double eps = Convert.ToDouble(txtBoxEps.Text), gamma = Convert.ToDouble(txtBoxGamma.Text);
             double a = Convert.ToDouble(txtBoxA.Text), l = Convert.ToDouble(txtBoxL.Text), TB = Convert.ToDouble(txtBoxT.Text);
+            double b = Convert.ToDouble(txtBoxB.Text), d = Convert.ToDouble(txtBoxD.Text);
             int m = Convert.ToInt32(txtBoxM.Text), n = Convert.ToInt32(txtBoxN.Text);
-            bool w_coupl = rdBtnWCplng.Checked;
+            bool deltaKer = rdBtnDeltaCoupl.Checked;
 
-            pde = new FHN_w_diffusion(eps, gamma, a, l, TB, m, n, w_coupl, this);
+            pde = new FHN_w_diffusion(eps, gamma, a, b, d, l, TB, m, n, deltaKer, this);
 
             SetPlot();
 

@@ -29,19 +29,19 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea16 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend16 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series36 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series37 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea17 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend17 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series38 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series39 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea18 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend18 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series40 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series41 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series42 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.chartWDiff = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.btnSolve = new System.Windows.Forms.Button();
             this.btnPlot = new System.Windows.Forms.Button();
@@ -58,8 +58,8 @@
             this.txtBoxA = new System.Windows.Forms.TextBox();
             this.txtBoxMinUV = new System.Windows.Forms.TextBox();
             this.txtBoxMaxUV = new System.Windows.Forms.TextBox();
-            this.rdBtnWOCplng = new System.Windows.Forms.RadioButton();
-            this.rdBtnWCplng = new System.Windows.Forms.RadioButton();
+            this.rdBtnDeltaCoupl = new System.Windows.Forms.RadioButton();
+            this.rdBtnCoupl = new System.Windows.Forms.RadioButton();
             this.lblN = new System.Windows.Forms.Label();
             this.lblM = new System.Windows.Forms.Label();
             this.lblL = new System.Windows.Forms.Label();
@@ -75,18 +75,30 @@
             this.lblFA = new System.Windows.Forms.Label();
             this.tabEq = new System.Windows.Forms.TabControl();
             this.tabPageWDiff = new System.Windows.Forms.TabPage();
+            this.lblD = new System.Windows.Forms.Label();
+            this.txtBoxD = new System.Windows.Forms.TextBox();
+            this.lblB = new System.Windows.Forms.Label();
+            this.txtBoxB = new System.Windows.Forms.TextBox();
             this.tabPageWODiff = new System.Windows.Forms.TabPage();
             this.trBarTWOD = new System.Windows.Forms.TrackBar();
             this.tabChartsWOD = new System.Windows.Forms.TabControl();
             this.tabPageUVTWOD = new System.Windows.Forms.TabPage();
+            this.txtBoxMaxUVTWOD = new System.Windows.Forms.TextBox();
+            this.txtBoxMinUVTWOD = new System.Windows.Forms.TextBox();
+            this.btnTuneTWOD = new System.Windows.Forms.Button();
             this.chartTWOD = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tabPagePhaseWOD = new System.Windows.Forms.TabPage();
+            this.txtBoxMinUVPhaseWOD = new System.Windows.Forms.TextBox();
+            this.txtBoxMaxUVPhaseWOD = new System.Windows.Forms.TextBox();
+            this.btnTunePhaseWOD = new System.Windows.Forms.Button();
             this.chartPhaseWOD = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.prBarSolveWOD = new System.Windows.Forms.ProgressBar();
+            this.lblMinUVWOD = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rdBtnPlotAllWOD = new System.Windows.Forms.RadioButton();
             this.rdBtnTmrWOD = new System.Windows.Forms.RadioButton();
             this.btnStopTimerWOD = new System.Windows.Forms.Button();
+            this.lblMaxUVWOD = new System.Windows.Forms.Label();
             this.btnPlotWOD = new System.Windows.Forms.Button();
             this.btnSolveWOD = new System.Windows.Forms.Button();
             this.btnLoadWOD = new System.Windows.Forms.Button();
@@ -108,18 +120,10 @@
             this.lblIWOD = new System.Windows.Forms.Label();
             this.lblV0WOD = new System.Windows.Forms.Label();
             this.lblU0WOD = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.lblTWOD = new System.Windows.Forms.Label();
             this.lblLWOD = new System.Windows.Forms.Label();
             this.lblNWOD = new System.Windows.Forms.Label();
             this.timerTWOD = new System.Windows.Forms.Timer(this.components);
-            this.btnTuneTWOD = new System.Windows.Forms.Button();
-            this.lblMaxUVWOD = new System.Windows.Forms.Label();
-            this.lblMinUVWOD = new System.Windows.Forms.Label();
-            this.txtBoxMaxUVTWOD = new System.Windows.Forms.TextBox();
-            this.txtBoxMinUVTWOD = new System.Windows.Forms.TextBox();
-            this.btnTunePhaseWOD = new System.Windows.Forms.Button();
-            this.txtBoxMaxUVPhaseWOD = new System.Windows.Forms.TextBox();
-            this.txtBoxMinUVPhaseWOD = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.chartWDiff)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trBarT)).BeginInit();
             this.panelEqType.SuspendLayout();
@@ -138,30 +142,30 @@
             // 
             // chartWDiff
             // 
-            chartArea16.Name = "ChartArea1";
-            this.chartWDiff.ChartAreas.Add(chartArea16);
-            legend16.Name = "Legend1";
-            this.chartWDiff.Legends.Add(legend16);
+            chartArea1.Name = "ChartArea1";
+            this.chartWDiff.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chartWDiff.Legends.Add(legend1);
             this.chartWDiff.Location = new System.Drawing.Point(240, 8);
             this.chartWDiff.Name = "chartWDiff";
-            series36.BorderWidth = 3;
-            series36.ChartArea = "ChartArea1";
-            series36.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series36.Legend = "Legend1";
-            series36.MarkerSize = 7;
-            series36.Name = "U";
-            series36.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            series36.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            series37.BorderWidth = 3;
-            series37.ChartArea = "ChartArea1";
-            series37.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series37.Legend = "Legend1";
-            series37.MarkerSize = 7;
-            series37.Name = "V";
-            series37.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            series37.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            this.chartWDiff.Series.Add(series36);
-            this.chartWDiff.Series.Add(series37);
+            series1.BorderWidth = 3;
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series1.Legend = "Legend1";
+            series1.MarkerSize = 7;
+            series1.Name = "U";
+            series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            series1.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            series2.BorderWidth = 3;
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series2.Legend = "Legend1";
+            series2.MarkerSize = 7;
+            series2.Name = "V";
+            series2.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            series2.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            this.chartWDiff.Series.Add(series1);
+            this.chartWDiff.Series.Add(series2);
             this.chartWDiff.Size = new System.Drawing.Size(805, 400);
             this.chartWDiff.TabIndex = 0;
             this.chartWDiff.Text = "chart1";
@@ -247,7 +251,7 @@
             this.txtBoxN.Name = "txtBoxN";
             this.txtBoxN.Size = new System.Drawing.Size(50, 20);
             this.txtBoxN.TabIndex = 8;
-            this.txtBoxN.Text = "100";
+            this.txtBoxN.Text = "5000";
             this.txtBoxN.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtBoxN.TextChanged += new System.EventHandler(this.txtBoxN_TextChanged);
             // 
@@ -267,7 +271,7 @@
             this.txtBoxL.Name = "txtBoxL";
             this.txtBoxL.Size = new System.Drawing.Size(50, 20);
             this.txtBoxL.TabIndex = 10;
-            this.txtBoxL.Text = "3,0";
+            this.txtBoxL.Text = "10,0";
             this.txtBoxL.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtBoxL.TextChanged += new System.EventHandler(this.txtBoxL_TextChanged);
             // 
@@ -309,29 +313,29 @@
             this.txtBoxMaxUV.Text = "1,0";
             this.txtBoxMaxUV.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // rdBtnWOCplng
+            // rdBtnDeltaCoupl
             // 
-            this.rdBtnWOCplng.AutoSize = true;
-            this.rdBtnWOCplng.Checked = true;
-            this.rdBtnWOCplng.Location = new System.Drawing.Point(3, 3);
-            this.rdBtnWOCplng.Name = "rdBtnWOCplng";
-            this.rdBtnWOCplng.Size = new System.Drawing.Size(87, 17);
-            this.rdBtnWOCplng.TabIndex = 17;
-            this.rdBtnWOCplng.TabStop = true;
-            this.rdBtnWOCplng.Text = "w/o coupling";
-            this.rdBtnWOCplng.UseVisualStyleBackColor = true;
-            this.rdBtnWOCplng.CheckedChanged += new System.EventHandler(this.rdBtnDiffsn_CheckedChanged);
+            this.rdBtnDeltaCoupl.AutoSize = true;
+            this.rdBtnDeltaCoupl.Checked = true;
+            this.rdBtnDeltaCoupl.Location = new System.Drawing.Point(3, 3);
+            this.rdBtnDeltaCoupl.Name = "rdBtnDeltaCoupl";
+            this.rdBtnDeltaCoupl.Size = new System.Drawing.Size(63, 17);
+            this.rdBtnDeltaCoupl.TabIndex = 17;
+            this.rdBtnDeltaCoupl.TabStop = true;
+            this.rdBtnDeltaCoupl.Text = "δ-kernel";
+            this.rdBtnDeltaCoupl.UseVisualStyleBackColor = true;
+            this.rdBtnDeltaCoupl.CheckedChanged += new System.EventHandler(this.rdBtnDeltaCoupl_CheckedChanged);
             // 
-            // rdBtnWCplng
+            // rdBtnCoupl
             // 
-            this.rdBtnWCplng.AutoSize = true;
-            this.rdBtnWCplng.Location = new System.Drawing.Point(3, 26);
-            this.rdBtnWCplng.Name = "rdBtnWCplng";
-            this.rdBtnWCplng.Size = new System.Drawing.Size(76, 17);
-            this.rdBtnWCplng.TabIndex = 18;
-            this.rdBtnWCplng.Text = "w coupling";
-            this.rdBtnWCplng.UseVisualStyleBackColor = true;
-            this.rdBtnWCplng.CheckedChanged += new System.EventHandler(this.rdBtnCplng_CheckedChanged);
+            this.rdBtnCoupl.AutoSize = true;
+            this.rdBtnCoupl.Location = new System.Drawing.Point(3, 26);
+            this.rdBtnCoupl.Name = "rdBtnCoupl";
+            this.rdBtnCoupl.Size = new System.Drawing.Size(54, 17);
+            this.rdBtnCoupl.TabIndex = 18;
+            this.rdBtnCoupl.Text = "kernel";
+            this.rdBtnCoupl.UseVisualStyleBackColor = true;
+            this.rdBtnCoupl.CheckedChanged += new System.EventHandler(this.rdBtnCoupl_CheckedChanged);
             // 
             // lblN
             // 
@@ -389,11 +393,11 @@
             // 
             // panelEqType
             // 
-            this.panelEqType.Controls.Add(this.rdBtnWOCplng);
-            this.panelEqType.Controls.Add(this.rdBtnWCplng);
+            this.panelEqType.Controls.Add(this.rdBtnDeltaCoupl);
+            this.panelEqType.Controls.Add(this.rdBtnCoupl);
             this.panelEqType.Location = new System.Drawing.Point(12, 121);
             this.panelEqType.Name = "panelEqType";
-            this.panelEqType.Size = new System.Drawing.Size(91, 47);
+            this.panelEqType.Size = new System.Drawing.Size(72, 47);
             this.panelEqType.TabIndex = 28;
             // 
             // lblEps
@@ -466,6 +470,10 @@
             // tabPageWDiff
             // 
             this.tabPageWDiff.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPageWDiff.Controls.Add(this.lblD);
+            this.tabPageWDiff.Controls.Add(this.txtBoxD);
+            this.tabPageWDiff.Controls.Add(this.lblB);
+            this.tabPageWDiff.Controls.Add(this.txtBoxB);
             this.tabPageWDiff.Controls.Add(this.lblMinUV);
             this.tabPageWDiff.Controls.Add(this.lblMaxUV);
             this.tabPageWDiff.Controls.Add(this.btnTune);
@@ -502,6 +510,44 @@
             this.tabPageWDiff.Text = "With diffusion";
             this.tabPageWDiff.Enter += new System.EventHandler(this.tabPageWDiff_Enter);
             // 
+            // lblD
+            // 
+            this.lblD.AutoSize = true;
+            this.lblD.Location = new System.Drawing.Point(90, 124);
+            this.lblD.Name = "lblD";
+            this.lblD.Size = new System.Drawing.Size(13, 13);
+            this.lblD.TabIndex = 35;
+            this.lblD.Text = "d";
+            // 
+            // txtBoxD
+            // 
+            this.txtBoxD.Location = new System.Drawing.Point(106, 121);
+            this.txtBoxD.Name = "txtBoxD";
+            this.txtBoxD.Size = new System.Drawing.Size(50, 20);
+            this.txtBoxD.TabIndex = 34;
+            this.txtBoxD.Text = "0,1";
+            this.txtBoxD.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtBoxD.TextChanged += new System.EventHandler(this.txtBoxD_TextChanged);
+            // 
+            // lblB
+            // 
+            this.lblB.AutoSize = true;
+            this.lblB.Location = new System.Drawing.Point(90, 98);
+            this.lblB.Name = "lblB";
+            this.lblB.Size = new System.Drawing.Size(13, 13);
+            this.lblB.TabIndex = 19;
+            this.lblB.Text = "b";
+            // 
+            // txtBoxB
+            // 
+            this.txtBoxB.Location = new System.Drawing.Point(106, 95);
+            this.txtBoxB.Name = "txtBoxB";
+            this.txtBoxB.Size = new System.Drawing.Size(50, 20);
+            this.txtBoxB.TabIndex = 20;
+            this.txtBoxB.Text = "1,0";
+            this.txtBoxB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtBoxB.TextChanged += new System.EventHandler(this.txtBoxB_TextChanged);
+            // 
             // tabPageWODiff
             // 
             this.tabPageWODiff.BackColor = System.Drawing.SystemColors.Control;
@@ -531,7 +577,7 @@
             this.tabPageWODiff.Controls.Add(this.lblIWOD);
             this.tabPageWODiff.Controls.Add(this.lblV0WOD);
             this.tabPageWODiff.Controls.Add(this.lblU0WOD);
-            this.tabPageWODiff.Controls.Add(this.label3);
+            this.tabPageWODiff.Controls.Add(this.lblTWOD);
             this.tabPageWODiff.Controls.Add(this.lblLWOD);
             this.tabPageWODiff.Controls.Add(this.lblNWOD);
             this.tabPageWODiff.Location = new System.Drawing.Point(4, 22);
@@ -574,26 +620,54 @@
             this.tabPageUVTWOD.Text = "Against time";
             this.tabPageUVTWOD.UseVisualStyleBackColor = true;
             // 
+            // txtBoxMaxUVTWOD
+            // 
+            this.txtBoxMaxUVTWOD.Location = new System.Drawing.Point(0, 8);
+            this.txtBoxMaxUVTWOD.Name = "txtBoxMaxUVTWOD";
+            this.txtBoxMaxUVTWOD.Size = new System.Drawing.Size(34, 20);
+            this.txtBoxMaxUVTWOD.TabIndex = 40;
+            this.txtBoxMaxUVTWOD.Text = "2,0";
+            this.txtBoxMaxUVTWOD.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // txtBoxMinUVTWOD
+            // 
+            this.txtBoxMinUVTWOD.Location = new System.Drawing.Point(0, 316);
+            this.txtBoxMinUVTWOD.Name = "txtBoxMinUVTWOD";
+            this.txtBoxMinUVTWOD.Size = new System.Drawing.Size(34, 20);
+            this.txtBoxMinUVTWOD.TabIndex = 41;
+            this.txtBoxMinUVTWOD.Text = "-2,1";
+            this.txtBoxMinUVTWOD.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // btnTuneTWOD
+            // 
+            this.btnTuneTWOD.Location = new System.Drawing.Point(0, 176);
+            this.btnTuneTWOD.Name = "btnTuneTWOD";
+            this.btnTuneTWOD.Size = new System.Drawing.Size(42, 23);
+            this.btnTuneTWOD.TabIndex = 37;
+            this.btnTuneTWOD.Text = "Zoom";
+            this.btnTuneTWOD.UseVisualStyleBackColor = true;
+            this.btnTuneTWOD.Click += new System.EventHandler(this.btnTuneTWOD_Click);
+            // 
             // chartTWOD
             // 
-            chartArea17.Name = "ChartArea1";
-            this.chartTWOD.ChartAreas.Add(chartArea17);
-            legend17.Name = "Legend1";
-            this.chartTWOD.Legends.Add(legend17);
+            chartArea2.Name = "ChartArea1";
+            this.chartTWOD.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chartTWOD.Legends.Add(legend2);
             this.chartTWOD.Location = new System.Drawing.Point(33, 3);
             this.chartTWOD.Name = "chartTWOD";
-            series38.BorderWidth = 3;
-            series38.ChartArea = "ChartArea1";
-            series38.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series38.Legend = "Legend1";
-            series38.Name = "U";
-            series39.BorderWidth = 3;
-            series39.ChartArea = "ChartArea1";
-            series39.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series39.Legend = "Legend1";
-            series39.Name = "V";
-            this.chartTWOD.Series.Add(series38);
-            this.chartTWOD.Series.Add(series39);
+            series3.BorderWidth = 3;
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series3.Legend = "Legend1";
+            series3.Name = "U";
+            series4.BorderWidth = 3;
+            series4.ChartArea = "ChartArea1";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series4.Legend = "Legend1";
+            series4.Name = "V";
+            this.chartTWOD.Series.Add(series3);
+            this.chartTWOD.Series.Add(series4);
             this.chartTWOD.Size = new System.Drawing.Size(805, 377);
             this.chartTWOD.TabIndex = 37;
             this.chartTWOD.Text = "chart1";
@@ -612,32 +686,60 @@
             this.tabPagePhaseWOD.Text = "Phase portrait";
             this.tabPagePhaseWOD.UseVisualStyleBackColor = true;
             // 
+            // txtBoxMinUVPhaseWOD
+            // 
+            this.txtBoxMinUVPhaseWOD.Location = new System.Drawing.Point(0, 316);
+            this.txtBoxMinUVPhaseWOD.Name = "txtBoxMinUVPhaseWOD";
+            this.txtBoxMinUVPhaseWOD.Size = new System.Drawing.Size(34, 20);
+            this.txtBoxMinUVPhaseWOD.TabIndex = 41;
+            this.txtBoxMinUVPhaseWOD.Text = "-1,0";
+            this.txtBoxMinUVPhaseWOD.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // txtBoxMaxUVPhaseWOD
+            // 
+            this.txtBoxMaxUVPhaseWOD.Location = new System.Drawing.Point(0, 8);
+            this.txtBoxMaxUVPhaseWOD.Name = "txtBoxMaxUVPhaseWOD";
+            this.txtBoxMaxUVPhaseWOD.Size = new System.Drawing.Size(34, 20);
+            this.txtBoxMaxUVPhaseWOD.TabIndex = 40;
+            this.txtBoxMaxUVPhaseWOD.Text = "2,0";
+            this.txtBoxMaxUVPhaseWOD.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // btnTunePhaseWOD
+            // 
+            this.btnTunePhaseWOD.Location = new System.Drawing.Point(0, 176);
+            this.btnTunePhaseWOD.Name = "btnTunePhaseWOD";
+            this.btnTunePhaseWOD.Size = new System.Drawing.Size(42, 23);
+            this.btnTunePhaseWOD.TabIndex = 39;
+            this.btnTunePhaseWOD.Text = "Zoom";
+            this.btnTunePhaseWOD.UseVisualStyleBackColor = true;
+            this.btnTunePhaseWOD.Click += new System.EventHandler(this.btnTunePhaseWOD_Click);
+            // 
             // chartPhaseWOD
             // 
-            chartArea18.Name = "ChartArea1";
-            this.chartPhaseWOD.ChartAreas.Add(chartArea18);
-            legend18.Name = "Legend1";
-            this.chartPhaseWOD.Legends.Add(legend18);
+            chartArea3.Name = "ChartArea1";
+            this.chartPhaseWOD.ChartAreas.Add(chartArea3);
+            legend3.Name = "Legend1";
+            this.chartPhaseWOD.Legends.Add(legend3);
             this.chartPhaseWOD.Location = new System.Drawing.Point(33, 3);
             this.chartPhaseWOD.Name = "chartPhaseWOD";
-            series40.BorderWidth = 5;
-            series40.ChartArea = "ChartArea1";
-            series40.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series40.Legend = "Legend1";
-            series40.Name = "V(U)";
-            series41.BorderWidth = 3;
-            series41.ChartArea = "ChartArea1";
-            series41.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series41.Legend = "Legend1";
-            series41.Name = "1st nullcline V(U)";
-            series42.BorderWidth = 3;
-            series42.ChartArea = "ChartArea1";
-            series42.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series42.Legend = "Legend1";
-            series42.Name = "2nd nullcline V(U)";
-            this.chartPhaseWOD.Series.Add(series40);
-            this.chartPhaseWOD.Series.Add(series41);
-            this.chartPhaseWOD.Series.Add(series42);
+            series5.BorderWidth = 5;
+            series5.ChartArea = "ChartArea1";
+            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series5.Legend = "Legend1";
+            series5.Name = "V(U)";
+            series6.BorderWidth = 3;
+            series6.ChartArea = "ChartArea1";
+            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series6.Legend = "Legend1";
+            series6.Name = "1st nullcline V(U)";
+            series7.BorderWidth = 3;
+            series7.ChartArea = "ChartArea1";
+            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series7.Legend = "Legend1";
+            series7.Name = "2nd nullcline V(U)";
+            this.chartPhaseWOD.Series.Add(series5);
+            this.chartPhaseWOD.Series.Add(series6);
+            this.chartPhaseWOD.Series.Add(series7);
             this.chartPhaseWOD.Size = new System.Drawing.Size(805, 377);
             this.chartPhaseWOD.TabIndex = 38;
             this.chartPhaseWOD.Text = "chart2";
@@ -649,6 +751,15 @@
             this.prBarSolveWOD.Name = "prBarSolveWOD";
             this.prBarSolveWOD.Size = new System.Drawing.Size(75, 23);
             this.prBarSolveWOD.TabIndex = 2;
+            // 
+            // lblMinUVWOD
+            // 
+            this.lblMinUVWOD.AutoSize = true;
+            this.lblMinUVWOD.Location = new System.Drawing.Point(200, 340);
+            this.lblMinUVWOD.Name = "lblMinUVWOD";
+            this.lblMinUVWOD.Size = new System.Drawing.Size(41, 13);
+            this.lblMinUVWOD.TabIndex = 39;
+            this.lblMinUVWOD.Text = "min u,v";
             // 
             // panel1
             // 
@@ -690,6 +801,15 @@
             this.btnStopTimerWOD.Text = "Stop Timer";
             this.btnStopTimerWOD.UseVisualStyleBackColor = true;
             this.btnStopTimerWOD.Click += new System.EventHandler(this.btnStopTimerWOD_Click);
+            // 
+            // lblMaxUVWOD
+            // 
+            this.lblMaxUVWOD.AutoSize = true;
+            this.lblMaxUVWOD.Location = new System.Drawing.Point(197, 32);
+            this.lblMaxUVWOD.Name = "lblMaxUVWOD";
+            this.lblMaxUVWOD.Size = new System.Drawing.Size(44, 13);
+            this.lblMaxUVWOD.TabIndex = 38;
+            this.lblMaxUVWOD.Text = "max u,v";
             // 
             // btnPlotWOD
             // 
@@ -900,14 +1020,14 @@
             this.lblU0WOD.TabIndex = 3;
             this.lblU0WOD.Text = "u0";
             // 
-            // label3
+            // lblTWOD
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(89, 46);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(14, 13);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "T";
+            this.lblTWOD.AutoSize = true;
+            this.lblTWOD.Location = new System.Drawing.Point(89, 46);
+            this.lblTWOD.Name = "lblTWOD";
+            this.lblTWOD.Size = new System.Drawing.Size(14, 13);
+            this.lblTWOD.TabIndex = 2;
+            this.lblTWOD.Text = "T";
             // 
             // lblLWOD
             // 
@@ -930,80 +1050,6 @@
             // timerTWOD
             // 
             this.timerTWOD.Tick += new System.EventHandler(this.timerTWOD_Tick);
-            // 
-            // btnTuneTWOD
-            // 
-            this.btnTuneTWOD.Location = new System.Drawing.Point(0, 176);
-            this.btnTuneTWOD.Name = "btnTuneTWOD";
-            this.btnTuneTWOD.Size = new System.Drawing.Size(42, 23);
-            this.btnTuneTWOD.TabIndex = 37;
-            this.btnTuneTWOD.Text = "Zoom";
-            this.btnTuneTWOD.UseVisualStyleBackColor = true;
-            this.btnTuneTWOD.Click += new System.EventHandler(this.btnTuneTWOD_Click);
-            // 
-            // lblMaxUVWOD
-            // 
-            this.lblMaxUVWOD.AutoSize = true;
-            this.lblMaxUVWOD.Location = new System.Drawing.Point(197, 32);
-            this.lblMaxUVWOD.Name = "lblMaxUVWOD";
-            this.lblMaxUVWOD.Size = new System.Drawing.Size(44, 13);
-            this.lblMaxUVWOD.TabIndex = 38;
-            this.lblMaxUVWOD.Text = "max u,v";
-            // 
-            // lblMinUVWOD
-            // 
-            this.lblMinUVWOD.AutoSize = true;
-            this.lblMinUVWOD.Location = new System.Drawing.Point(200, 340);
-            this.lblMinUVWOD.Name = "lblMinUVWOD";
-            this.lblMinUVWOD.Size = new System.Drawing.Size(41, 13);
-            this.lblMinUVWOD.TabIndex = 39;
-            this.lblMinUVWOD.Text = "min u,v";
-            // 
-            // txtBoxMaxUVTWOD
-            // 
-            this.txtBoxMaxUVTWOD.Location = new System.Drawing.Point(0, 8);
-            this.txtBoxMaxUVTWOD.Name = "txtBoxMaxUVTWOD";
-            this.txtBoxMaxUVTWOD.Size = new System.Drawing.Size(34, 20);
-            this.txtBoxMaxUVTWOD.TabIndex = 40;
-            this.txtBoxMaxUVTWOD.Text = "2,0";
-            this.txtBoxMaxUVTWOD.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // txtBoxMinUVTWOD
-            // 
-            this.txtBoxMinUVTWOD.Location = new System.Drawing.Point(0, 316);
-            this.txtBoxMinUVTWOD.Name = "txtBoxMinUVTWOD";
-            this.txtBoxMinUVTWOD.Size = new System.Drawing.Size(34, 20);
-            this.txtBoxMinUVTWOD.TabIndex = 41;
-            this.txtBoxMinUVTWOD.Text = "-2,1";
-            this.txtBoxMinUVTWOD.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // btnTunePhaseWOD
-            // 
-            this.btnTunePhaseWOD.Location = new System.Drawing.Point(0, 176);
-            this.btnTunePhaseWOD.Name = "btnTunePhaseWOD";
-            this.btnTunePhaseWOD.Size = new System.Drawing.Size(42, 23);
-            this.btnTunePhaseWOD.TabIndex = 39;
-            this.btnTunePhaseWOD.Text = "Zoom";
-            this.btnTunePhaseWOD.UseVisualStyleBackColor = true;
-            this.btnTunePhaseWOD.Click += new System.EventHandler(this.btnTunePhaseWOD_Click);
-            // 
-            // txtBoxMaxUVPhaseWOD
-            // 
-            this.txtBoxMaxUVPhaseWOD.Location = new System.Drawing.Point(0, 8);
-            this.txtBoxMaxUVPhaseWOD.Name = "txtBoxMaxUVPhaseWOD";
-            this.txtBoxMaxUVPhaseWOD.Size = new System.Drawing.Size(34, 20);
-            this.txtBoxMaxUVPhaseWOD.TabIndex = 40;
-            this.txtBoxMaxUVPhaseWOD.Text = "2,0";
-            this.txtBoxMaxUVPhaseWOD.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // txtBoxMinUVPhaseWOD
-            // 
-            this.txtBoxMinUVPhaseWOD.Location = new System.Drawing.Point(0, 316);
-            this.txtBoxMinUVPhaseWOD.Name = "txtBoxMinUVPhaseWOD";
-            this.txtBoxMinUVPhaseWOD.Size = new System.Drawing.Size(34, 20);
-            this.txtBoxMinUVPhaseWOD.TabIndex = 41;
-            this.txtBoxMinUVPhaseWOD.Text = "-1,0";
-            this.txtBoxMinUVPhaseWOD.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // Form1
             // 
@@ -1056,8 +1102,8 @@
         private System.Windows.Forms.TextBox txtBoxT;
         private System.Windows.Forms.TextBox txtBoxMinUV;
         private System.Windows.Forms.TextBox txtBoxMaxUV;
-        private System.Windows.Forms.RadioButton rdBtnWOCplng;
-        private System.Windows.Forms.RadioButton rdBtnWCplng;
+        private System.Windows.Forms.RadioButton rdBtnDeltaCoupl;
+        private System.Windows.Forms.RadioButton rdBtnCoupl;
         private System.Windows.Forms.Label lblN;
         private System.Windows.Forms.Label lblM;
         private System.Windows.Forms.Label lblL;
@@ -1086,7 +1132,7 @@
         private System.Windows.Forms.Label lblIWOD;
         private System.Windows.Forms.Label lblV0WOD;
         private System.Windows.Forms.Label lblU0WOD;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lblTWOD;
         private System.Windows.Forms.Label lblLWOD;
         private System.Windows.Forms.Label lblNWOD;
         public System.Windows.Forms.TextBox txtBoxU0WOD;
@@ -1121,6 +1167,10 @@
         private System.Windows.Forms.TextBox txtBoxMinUVPhaseWOD;
         private System.Windows.Forms.TextBox txtBoxMaxUVPhaseWOD;
         private System.Windows.Forms.Button btnTunePhaseWOD;
+        private System.Windows.Forms.Label lblD;
+        private System.Windows.Forms.Label lblB;
+        private System.Windows.Forms.TextBox txtBoxB;
+        public System.Windows.Forms.TextBox txtBoxD;
     }
 }
 

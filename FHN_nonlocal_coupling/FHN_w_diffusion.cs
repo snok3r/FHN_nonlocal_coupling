@@ -11,7 +11,7 @@ namespace FHN_nonlocal_coupling
     {
         public Form1 form; // to access Form's controls
         // variables and arrays
-        private bool w_coupl; // bool for deciding which equation solves
+        private bool deltaCoupl; // bool for deciding which equation solves
         private int n, m;
         private double hx, ht; // steps
         private double l, TB; // bounds; l is for x and TB/TBound is for t
@@ -20,6 +20,7 @@ namespace FHN_nonlocal_coupling
         private double[,] u, v;
         private double eps, gamma; // v's equation constants
         private double a; // f constant
+        private double b, d; // b is before coupling, d is a delay in delta Kernel
 
         // strings and parsers with initials expression formulas
         //public String SUx0;
@@ -67,40 +68,53 @@ namespace FHN_nonlocal_coupling
             get { return this.a; }
             set { this.a = value; }
         }
+
+        public double B
+        {
+            get { return this.b; }
+            set { this.b = value; }
+        }
+
+        public double D
+        {
+            get { return this.d; }
+            set { this.d = value; }
+        }
         
         public bool Eq
-        {   // Is the equation a diffusuion equation?
-            get { return this.w_coupl; }
-            set { this.w_coupl = value; }
+        { 
+            get { return this.deltaCoupl; }
+            set { this.deltaCoupl = value; }
         }
 
         // constructors
 
         public FHN_w_diffusion() { } // kind of destructor
 
-        public FHN_w_diffusion(double eps, double gamma, double a, double l, double TB, int m, int n, bool w_coupl, Form1 form)
+        public FHN_w_diffusion(double eps, double gamma, double a,double b, double d, double l, double TB, int m, int n, bool deltaCoupl, Form1 form)
         {
             this.eps = eps;
             this.gamma = gamma;
             this.a = a;
+            this.b = b;
+            this.d = d;
             this.l = l;
             this.TB = TB;
             this.n = n;
             this.m = m;
-            this.w_coupl = w_coupl;
+            this.deltaCoupl = deltaCoupl;
             this.form = form;
 
             //this.PF = new Parser(); this.PF.Mode = Mode.RAD;
         }
 
         // methods
-        public void Load(int m, int n, bool w_coupl, double l, double TB)
+        public void Load(int m, int n, double l, double TB)
         {   // initialize/declare arrays and steps
-            // If we want to change one of the parameters: n, m, w_coupl, l, TB,
+            // If we want to change one of the parameters: n, m, l, TB,
             // then it needs to call this (plus Intiials) functions again.
             this.n = n;
             this.m = m;
-            this.w_coupl = w_coupl;
 
             this.hx = 2 * l / n; // step for x
             this.ht = TB / m;  // step for t
@@ -131,15 +145,15 @@ namespace FHN_nonlocal_coupling
             this.u[j, 0] = this.hx * u_0_t(t[j]) + this.u[j, 1]; // at x = -l
             this.u[j, this.n] = this.hx * u_l_t(t[j]) + this.u[j, this.n - 1]; // at x = l
         }
-
+        /*
         public void Solve() 
-	    {   // If we changed ONLY eps, gamma, Kernel or f,
+	    {   // If we changed ONLY eps, gamma, b, d, Kernel (delta or usual), f,
             // then just recall this function.
 
             //this.SF = form.txtBoxF.Text; // parses f expression to string once Solve() is called
 
-            if (!(this.w_coupl))
-            {   // reaction-diffusion equation
+            if (this.deltaCoupl)
+            {
                 double step = this.ht / (this.hx * this.hx);
                 for (int j = 0; j < this.m; j++)
                 {
@@ -179,16 +193,22 @@ namespace FHN_nonlocal_coupling
                 if (form.prBarSolve.Value < 4) form.prBarSolve.Value = 4;
             }
 
-	    }
+	    }*/
 
         
         public void SolveBeta1()
         {
-            // If we changed ONLY eps, gamma or f,
+            // If we changed ONLY eps, gamma, b, d, Kernel or f,
             // then just recall this function.
 
             int prBarMax = 10;
             form.prBarSolve.Maximum = prBarMax;
+
+            int i, j, k;
+
+            k = Convert.ToInt32(this.d / this.hx);
+            this.d = this.hx * k;
+            form.txtBoxD.Text = Convert.ToString(this.d);
 
             double step = this.ht / (this.hx * this.hx);
 
@@ -202,10 +222,10 @@ namespace FHN_nonlocal_coupling
             di[0] = 0; di[this.n] = 0; // if Neumann condition changes (smth except du/dn = zero), it needs to be commented
 
             P[0] = ci[0] / bi[0];
-            for (int i = 1; i < this.n; i++) P[i] = ci[1] / (bi[1] - ai[1] * P[i - 1]);
+            for (i = 1; i < this.n; i++) P[i] = ci[1] / (bi[1] - ai[1] * P[i - 1]);
             P[this.n] = ci[2] / (bi[2] - ai[2] * P[this.n - 1]);
 
-            for (int j = 0; j < this.m; j++)
+            for (j = 0; j < this.m; j++)
             {
                 if ((j % ((this.m) / prBarMax)) == 0)
                 {   // updating progress bar
@@ -214,21 +234,44 @@ namespace FHN_nonlocal_coupling
 
                 //di[0] = this.ht * u_0_t(this.t[j]); // if Neumann condition is not a zero
                 Q[0] = -di[0] / bi[0];
-                for (int i = 1; i < this.n; i++)
+                for (i = 1; i < this.n; i++)
                 {
-                    if (!(this.w_coupl))
+                    if (this.deltaCoupl)
+                    {
+                        if (this.b != 0)
+                        {
+                            if (i - k <= 1) // if x - d <= -l
+                            {
+                                if (i + k <= n - 1) // if x - d <= -l and x + d <= l
+                                    di[i] = this.u[j, i] + ht * (this.b * (this.u[j, 1] + this.u[j, i + k] - 2 * this.u[j, i]) + f(this.u[j, i]) - this.v[j, i]);
+                                else if (i + k > n - 1) // if x - d <= -l and x + d > l
+                                    di[i] = this.u[j, i] + ht * (this.b * (this.u[j, 1] + this.u[j, n - 1] - 2 * this.u[j, i]) + f(this.u[j, i]) - this.v[j, i]);
+                            }
+                            else if (i - k > 1) // if x - d > -l
+                            {
+                                if (i + k <= n - 1) // if x - d > -l and x + d <= l
+                                    di[i] = this.u[j, i] + ht * (this.b * (this.u[j, i - k] + this.u[j, i + k] - 2 * this.u[j, i]) + f(this.u[j, i]) - this.v[j, i]);
+                                else if (i + k > n - 1)  // if x - d > -l and x + d > l
+                                    di[i] = this.u[j, i] + ht * (this.b * (this.u[j, i - k] + this.u[j, n - 1] - 2 * this.u[j, i]) + f(this.u[j, i]) - this.v[j, i]);
+                            }
+                        }
+                        else if (this.b == 0)
+                            di[i] = this.u[j, i] + ht * (f(this.u[j, i]) - this.v[j, i]);
+                    }
+                    else if (this.b != 0)
+                        di[i] = this.u[j, i] + ht * (this.b * Integral(j, i) + f(this.u[j, i]) - this.v[j, i]);
+                    else if (this.b == 0)
                         di[i] = this.u[j, i] + ht * (f(this.u[j, i]) - this.v[j, i]);
-                    else 
-                        di[i] = this.u[j, i] + ht * (Integral(j,i) + f(this.u[j, i]) - this.v[j, i]);
+
                     Q[i] = (ai[1] * Q[i - 1] - di[i]) / (bi[1] - ai[1] * P[i - 1]);
                 }
                 //di[this.n] = this.ht * u_l_t(this.t[j]); // if Neumann condition is not a zero
                 Q[this.n] = (ai[2] * Q[this.n - 1] - di[this.n]) / (bi[2] - ai[2] * P[this.n - 1]);
 
                 this.u[j + 1, this.n] = Q[this.n];
-                for (int i = this.n - 1; i > -1; i--) u[j + 1, i] = P[i] * this.u[j + 1, i + 1] + Q[i];
+                for (i = this.n - 1; i > -1; i--) u[j + 1, i] = P[i] * this.u[j + 1, i + 1] + Q[i];
 
-                for (int i = 0; i < this.n + 1; i++) v[j + 1, i] = (this.v[j, i] + this.ht * this.eps * this.u[j + 1, i]) / (1 + this.eps * this.gamma * this.ht);
+                for (i = 0; i < this.n + 1; i++) v[j + 1, i] = (this.v[j, i] + this.ht * this.eps * this.u[j + 1, i]) / (1 + this.eps * this.gamma * this.ht);
             }
 
             if (form.prBarSolve.Value < prBarMax) form.prBarSolve.Value = prBarMax;
