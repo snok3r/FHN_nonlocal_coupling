@@ -356,9 +356,7 @@ namespace FHN_nonlocal_coupling
             ode.L = Convert.ToDouble(txtBoxLWOD.Text);
             ode.T = Convert.ToDouble(txtBoxTWOD.Text);
 
-            ode.Eq = rdBtnWCplngWOD.Checked;
-
-            ode.Load(ode.N, ode.L, ode.T, ode.Eq);
+            ode.Load(ode.N, ode.L, ode.T);
 
             btnLoadWOD.Enabled = false;
             btnSolveWOD.Enabled = true;
@@ -375,8 +373,11 @@ namespace FHN_nonlocal_coupling
 
             ode.I = Convert.ToDouble(txtBoxIWOD.Text);
             ode.Tau = Convert.ToDouble(txtBoxTauWOD.Text);
-            ode.A = Convert.ToDouble(txtBoxAWOD.Text);
-            ode.B = Convert.ToDouble(txtBoxBWOD.Text);
+            ode.Alpha = Convert.ToDouble(txtBoxAlphaWOD.Text);
+            ode.Beta = Convert.ToDouble(txtBoxBetaWOD.Text);
+            ode.A = Convert.ToDouble(txtBoxFAWOD.Text);
+
+            ode.Eq = rdBtnClassicalNLWOD.Checked;
 
             ode.Initials(ode.U0, ode.V0);
 
@@ -488,16 +489,6 @@ namespace FHN_nonlocal_coupling
             BtnLoadBehWOD();
         }
 
-        private void rdBtnWOCplngWOD_CheckedChanged(object sender, EventArgs e)
-        {
-            BtnLoadBehWOD();
-        }
-
-        private void rdBtnWCplngWOD_CheckedChanged(object sender, EventArgs e)
-        {
-            BtnLoadBehWOD();
-        }
-
         private void txtBoxU0WOD_TextChanged(object sender, EventArgs e)
         {
             BtnSolveBehWOD();
@@ -518,14 +509,35 @@ namespace FHN_nonlocal_coupling
             BtnSolveBehWOD();
         }
 
-        private void txtBoxAWOD_TextChanged(object sender, EventArgs e)
+        private void txtBoxAlphaWOD_TextChanged(object sender, EventArgs e)
         {
             BtnSolveBehWOD();
         }
 
-        private void txtBoxBWOD_TextChanged(object sender, EventArgs e)
+        private void txtBoxBetaWOD_TextChanged(object sender, EventArgs e)
         {
             BtnSolveBehWOD();
+        }
+
+        private void txtBoxFAWOD_TextChanged(object sender, EventArgs e)
+        {
+            BtnSolveBehWOD();
+        }
+
+        private void rdBtnClassicalNLWOD_CheckedChanged(object sender, EventArgs e)
+        {
+            BtnSolveBehWOD();
+
+            lblFAWOD.Visible = false;
+            txtBoxFAWOD.Visible = false;
+        }
+
+        private void rdBtnNLWOD_CheckedChanged(object sender, EventArgs e)
+        {
+            BtnSolveBehWOD();
+
+            lblFAWOD.Visible = true;
+            txtBoxFAWOD.Visible = true;
         }
 
         private void btnTuneTWOD_Click(object sender, EventArgs e)
@@ -561,10 +573,10 @@ namespace FHN_nonlocal_coupling
 
             SetPlot();
 
-            if (pde.T / m < 1)
+            if (pde.T / m * 250 < 1)
                 timerT.Interval = 1;
             else
-                timerT.Interval = Convert.ToInt32(pde.T / m * 750); // plot trace for T sec
+                timerT.Interval = Convert.ToInt32(pde.T / m * 250);
 
             timerT.Tick += timerT_Tick;
         }
@@ -582,17 +594,17 @@ namespace FHN_nonlocal_coupling
             double l = Convert.ToDouble(txtBoxLWOD.Text), TB = Convert.ToDouble(txtBoxTWOD.Text);
             double u0 = Convert.ToDouble(txtBoxU0WOD.Text), v0 = Convert.ToDouble(txtBoxV0WOD.Text);
             double Iext = Convert.ToDouble(txtBoxIWOD.Text), tau = Convert.ToDouble(txtBoxTauWOD.Text);
-            double a = Convert.ToDouble(txtBoxAWOD.Text), b = Convert.ToDouble(txtBoxBWOD.Text);
-            bool w_coupl = rdBtnWCplngWOD.Checked;
+            double alpha = Convert.ToDouble(txtBoxAlphaWOD.Text), beta = Convert.ToDouble(txtBoxBetaWOD.Text), a = Convert.ToDouble(txtBoxFAWOD.Text);
+            bool classical = rdBtnClassicalNLWOD.Checked;
 
-            ode = new FHN_wo_diffussion(n, l, TB, u0, v0, Iext, tau, a, b, w_coupl, this);
+            ode = new FHN_wo_diffussion(n, l, TB, u0, v0, Iext, tau, alpha, beta, a, classical, this);
 
             SetPlotWOD();
 
-            if (ode.T / n < 1)
+            if (ode.T / n * 250 < 1)
                 timerTWOD.Interval = 1;
             else
-                timerTWOD.Interval = Convert.ToInt32(ode.T / n * 750); // plot trace for T sec
+                timerTWOD.Interval = Convert.ToInt32(ode.T / n * 250);
 
             timerTWOD.Tick += timerTWOD_Tick;
         }

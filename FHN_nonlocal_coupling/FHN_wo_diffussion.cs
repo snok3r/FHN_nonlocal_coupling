@@ -10,7 +10,7 @@ namespace FHN_nonlocal_coupling
     {
         public Form1 form; // to access Form's controls
         // variables and arrays
-        private bool w_coupl; // with coupling?
+        private bool classical; // classical non-linearity?
         private int n;
         private double h, ht; // step
         private double l, TB; // bounds; l is for Kernel, TB/TBound is for t
@@ -18,7 +18,7 @@ namespace FHN_nonlocal_coupling
 
         private double[] u, v, u_null, v1, v2; // v1, v2 are nullclines
         private double u0, v0; // initials
-        private double Iext, tau, a, b; // equation's constants
+        private double Iext, tau, alpha, beta, a; // equation's constants
 
         // properties
         public int N
@@ -63,28 +63,34 @@ namespace FHN_nonlocal_coupling
             set { this.tau = value; }
         }
 
-        public double A
+        public double Alpha
         {
+            get { return this.alpha; }
+            set { this.alpha = value; }
+        }
+
+        public double Beta
+        {
+            get { return this.beta; }
+            set { this.beta = value; }
+        }
+
+        public double A
+        {   // f's constant if non-classical
             get { return this.a; }
             set { this.a = value; }
         }
 
-        public double B
-        {
-            get { return this.b; }
-            set { this.b = value; }
-        }
-
         public bool Eq
-        {   // Is the equation with coupling?
-            get { return this.w_coupl; }
-            set { this.w_coupl = value; }
+        {   // Is the equation with classical non-linearity?
+            get { return this.classical; }
+            set { this.classical = value; }
         }
 
         // constructors
         public FHN_wo_diffussion() { } // kind of destructor
 
-        public FHN_wo_diffussion(int n, double l, double TB, double u0, double v0, double Iext, double tau, double a, double b, bool w_coupl, Form1 form)
+        public FHN_wo_diffussion(int n, double l, double TB, double u0, double v0, double Iext, double tau, double alpha, double beta, double a, bool classical, Form1 form)
         {
             this.n = n;
             this.l = l;
@@ -93,28 +99,30 @@ namespace FHN_nonlocal_coupling
             this.TB = TB;
             this.Iext = Iext;
             this.tau = tau;
+            this.alpha = alpha;
+            this.beta = beta;
             this.a = a;
-            this.b = b;
-            this.w_coupl = w_coupl;
+            this.classical = classical;
 
             this.form = form;
         }
 
         // methods
-        public void Load(int n, double l, double TB, bool w_coupl)
+        public void Load(int n, double l, double TB)
         {   // initialize/declare arrays and steps
-            // If we want to change one of the parameters: n, TB or w_coupl,
+            // If we want to change one of the parameters: n or TB,
             // then it needs to call this (plus Intiials) functions again.
+            int j;
+
             this.n = n;
             this.l = l;
             this.TB = TB;
-            this.w_coupl = w_coupl;
 
-            this.h = 2 * l / n; // for integrating from -l to l
+            this.h = 2 * l / n; //
             this.ht = TB / n;  // step for t
 
             this.t = new double[n + 1]; // arrange t's
-            for (int j = 0; j < n + 1; j++) this.t[j] = j * this.ht;
+            for (j = 0; j < n + 1; j++) this.t[j] = j * this.ht;
 
             this.u = new double[n + 1];
             this.v = new double[n + 1];
@@ -122,7 +130,7 @@ namespace FHN_nonlocal_coupling
             this.v1 = new double[n + 1];
             this.v2 = new double[n + 1];
             this.u_null = new double[n + 1];
-            for (int j = 0; j < n + 1; j++) this.u_null[j] = - this.l + j * this.h;
+            for (j = 0; j < n + 1; j++) this.u_null[j] = - this.l + j * this.h;
         }
 
         public void Initials(double u0, double v0)
@@ -132,7 +140,7 @@ namespace FHN_nonlocal_coupling
         }
 
         public void Solve()
-        {   // If we changed ONLY a, b, Iext, Kernel or f,
+        {   // If we changed ONLY alpha, beta, Iext, Kernel or f (either a),
             // then just recall this function.
 
             int prBarMax = 10;
@@ -140,41 +148,25 @@ namespace FHN_nonlocal_coupling
 
             double utemp, vtemp;
 
-            if (!(this.w_coupl))
+            for (int j = 0; j < this.n; j++)
             {
-                for (int j = 0; j < this.n; j++)
-                {
-                    utemp = this.u[j] + this.ht * f1(this.u[j], this.v[j]);
-                    vtemp = this.v[j] + this.ht * f2(this.u[j], this.v[j]);
+                utemp = this.u[j] + this.ht * f1(this.u[j], this.v[j]);
+                vtemp = this.v[j] + this.ht * f2(this.u[j], this.v[j]);
 
-                    //// Euler's 1st order
-                    //this.u[j + 1] = utemp;
-                    //this.v[j + 1] = vtemp;
+                //// Euler's 1st order
+                //this.u[j + 1] = utemp;
+                //this.v[j + 1] = vtemp;
 
-                    // Euler's 2nd order
-                    this.u[j + 1] = this.u[j] + this.ht / 2 * (f1(this.u[j], this.v[j]) + f1(utemp, vtemp));
-                    this.v[j + 1] = this.v[j] + this.ht / 2 * (f2(this.u[j], this.v[j]) + f2(utemp, vtemp));
+                // Euler's 2nd order
+                this.u[j + 1] = this.u[j] + this.ht / 2 * (f1(this.u[j], this.v[j]) + f1(utemp, vtemp));
+                this.v[j + 1] = this.v[j] + this.ht / 2 * (f2(this.u[j], this.v[j]) + f2(utemp, vtemp));
 
-                    if ((j % ((this.n) / prBarMax)) == 0)
-                    {   // updating progress bar
-                        form.prBarSolveWOD.Value++;
-                    }
+                if ((j % ((this.n) / prBarMax)) == 0)
+                {   // updating progress bar
+                    form.prBarSolveWOD.Value++;
                 }
             }
-            else
-            {   // with nonlinearity
-                for (int j = 0; j < this.n; j++)
-                {
-                    this.u[j + 1] = 0;
-                    this.v[j + 1] = 0;
-
-                    if ((j % ((this.n) / prBarMax)) == 0)
-                    {   // updating progress bar
-                        form.prBarSolveWOD.Value++;
-                    }
-                }
-            }
-
+            
             Nullclines();
 
             if (form.prBarSolveWOD.Value < prBarMax) form.prBarSolveWOD.Value = prBarMax;
@@ -182,12 +174,12 @@ namespace FHN_nonlocal_coupling
 
         public void Nullclines()
         {
-            if (this.b != 0.0)
+            if (this.beta != 0.0)
             {
                 for (int j = 0; j < this.n + 1; j++)
                 {
                     this.v1[j] = f(this.u_null[j]) + this.Iext;
-                    this.v2[j] = (this.u_null[j] + this.a) / this.b;
+                    this.v2[j] = (this.u_null[j] + this.alpha) / this.beta;
                 }
             }
         }
@@ -212,31 +204,15 @@ namespace FHN_nonlocal_coupling
 
         private double f2(double u, double v)
         {
-            return (u + this.a - this.b * v) / this.tau;
+            return (u + this.alpha - this.beta * v) / this.tau;
         }
 
         private double f(double u) 
-        { 
-            return u - u * u * u / 3; 
-            //return u * (u - 1) * (u - ??);
-        }
-
-        /*private double Integral(int j, int i)
-        {   // Trapezoidal rule, uniform grid
-            // integrating at point (t[j], x[i]) from -l to l
-            double sum = 0;
-            int k; // k is iteration variable for integrating (n+1 in number)
-            sum += Kernel(this.t[i] - this.t[0]) * this.t[j, 0];
-            for (k = 1; k < this.n; k++) sum += 2 * Kernel(this.t[i] - this.x[k]) * this.u[j, k];
-            sum += Kernel(this.x[i] - this.x[this.n]) * this.u[j, this.n];
-
-            return this.h * sum / 2;
-        } 
-
-        private double Kernel(double z)
         {
-            return z;
+            if (this.classical)
+                return u - u * u * u / 3;
+            else
+                return - u * (u - 1) * (u - this.a);
         }
-        */
     }
 }

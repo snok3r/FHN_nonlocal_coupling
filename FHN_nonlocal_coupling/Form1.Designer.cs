@@ -102,11 +102,11 @@
             this.btnPlotWOD = new System.Windows.Forms.Button();
             this.btnSolveWOD = new System.Windows.Forms.Button();
             this.btnLoadWOD = new System.Windows.Forms.Button();
-            this.panelEqTypeWOD = new System.Windows.Forms.Panel();
-            this.rdBtnWCplngWOD = new System.Windows.Forms.RadioButton();
-            this.rdBtnWOCplngWOD = new System.Windows.Forms.RadioButton();
-            this.txtBoxBWOD = new System.Windows.Forms.TextBox();
-            this.txtBoxAWOD = new System.Windows.Forms.TextBox();
+            this.panelNonLinTypeWOD = new System.Windows.Forms.Panel();
+            this.rdBtnNLWOD = new System.Windows.Forms.RadioButton();
+            this.rdBtnClassicalNLWOD = new System.Windows.Forms.RadioButton();
+            this.txtBoxBetaWOD = new System.Windows.Forms.TextBox();
+            this.txtBoxAlphaWOD = new System.Windows.Forms.TextBox();
             this.txtBoxTauWOD = new System.Windows.Forms.TextBox();
             this.txtBoxIWOD = new System.Windows.Forms.TextBox();
             this.txtBoxV0WOD = new System.Windows.Forms.TextBox();
@@ -114,8 +114,8 @@
             this.txtBoxTWOD = new System.Windows.Forms.TextBox();
             this.txtBoxLWOD = new System.Windows.Forms.TextBox();
             this.txtBoxNWOD = new System.Windows.Forms.TextBox();
-            this.lblBWOD = new System.Windows.Forms.Label();
-            this.lblAWOD = new System.Windows.Forms.Label();
+            this.lblBetaWOD = new System.Windows.Forms.Label();
+            this.lblAlphaWOD = new System.Windows.Forms.Label();
             this.lblTauWOD = new System.Windows.Forms.Label();
             this.lblIWOD = new System.Windows.Forms.Label();
             this.lblV0WOD = new System.Windows.Forms.Label();
@@ -124,6 +124,8 @@
             this.lblLWOD = new System.Windows.Forms.Label();
             this.lblNWOD = new System.Windows.Forms.Label();
             this.timerTWOD = new System.Windows.Forms.Timer(this.components);
+            this.lblFAWOD = new System.Windows.Forms.Label();
+            this.txtBoxFAWOD = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.chartWDiff)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trBarT)).BeginInit();
             this.panelEqType.SuspendLayout();
@@ -137,7 +139,7 @@
             this.tabPagePhaseWOD.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartPhaseWOD)).BeginInit();
             this.panel1.SuspendLayout();
-            this.panelEqTypeWOD.SuspendLayout();
+            this.panelNonLinTypeWOD.SuspendLayout();
             this.SuspendLayout();
             // 
             // chartWDiff
@@ -150,7 +152,7 @@
             this.chartWDiff.Name = "chartWDiff";
             series1.BorderWidth = 3;
             series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastPoint;
             series1.Legend = "Legend1";
             series1.MarkerSize = 7;
             series1.Name = "U";
@@ -158,7 +160,7 @@
             series1.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
             series2.BorderWidth = 3;
             series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastPoint;
             series2.Legend = "Legend1";
             series2.MarkerSize = 7;
             series2.Name = "V";
@@ -551,6 +553,8 @@
             // tabPageWODiff
             // 
             this.tabPageWODiff.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPageWODiff.Controls.Add(this.txtBoxFAWOD);
+            this.tabPageWODiff.Controls.Add(this.lblFAWOD);
             this.tabPageWODiff.Controls.Add(this.trBarTWOD);
             this.tabPageWODiff.Controls.Add(this.tabChartsWOD);
             this.tabPageWODiff.Controls.Add(this.prBarSolveWOD);
@@ -561,9 +565,9 @@
             this.tabPageWODiff.Controls.Add(this.btnPlotWOD);
             this.tabPageWODiff.Controls.Add(this.btnSolveWOD);
             this.tabPageWODiff.Controls.Add(this.btnLoadWOD);
-            this.tabPageWODiff.Controls.Add(this.panelEqTypeWOD);
-            this.tabPageWODiff.Controls.Add(this.txtBoxBWOD);
-            this.tabPageWODiff.Controls.Add(this.txtBoxAWOD);
+            this.tabPageWODiff.Controls.Add(this.panelNonLinTypeWOD);
+            this.tabPageWODiff.Controls.Add(this.txtBoxBetaWOD);
+            this.tabPageWODiff.Controls.Add(this.txtBoxAlphaWOD);
             this.tabPageWODiff.Controls.Add(this.txtBoxTauWOD);
             this.tabPageWODiff.Controls.Add(this.txtBoxIWOD);
             this.tabPageWODiff.Controls.Add(this.txtBoxV0WOD);
@@ -571,8 +575,8 @@
             this.tabPageWODiff.Controls.Add(this.txtBoxTWOD);
             this.tabPageWODiff.Controls.Add(this.txtBoxLWOD);
             this.tabPageWODiff.Controls.Add(this.txtBoxNWOD);
-            this.tabPageWODiff.Controls.Add(this.lblBWOD);
-            this.tabPageWODiff.Controls.Add(this.lblAWOD);
+            this.tabPageWODiff.Controls.Add(this.lblBetaWOD);
+            this.tabPageWODiff.Controls.Add(this.lblAlphaWOD);
             this.tabPageWODiff.Controls.Add(this.lblTauWOD);
             this.tabPageWODiff.Controls.Add(this.lblIWOD);
             this.tabPageWODiff.Controls.Add(this.lblV0WOD);
@@ -842,59 +846,58 @@
             this.btnLoadWOD.UseVisualStyleBackColor = true;
             this.btnLoadWOD.Click += new System.EventHandler(this.btnLoadWOD_Click);
             // 
-            // panelEqTypeWOD
+            // panelNonLinTypeWOD
             // 
-            this.panelEqTypeWOD.Controls.Add(this.rdBtnWCplngWOD);
-            this.panelEqTypeWOD.Controls.Add(this.rdBtnWOCplngWOD);
-            this.panelEqTypeWOD.Location = new System.Drawing.Point(12, 147);
-            this.panelEqTypeWOD.Name = "panelEqTypeWOD";
-            this.panelEqTypeWOD.Size = new System.Drawing.Size(91, 47);
-            this.panelEqTypeWOD.TabIndex = 18;
+            this.panelNonLinTypeWOD.Controls.Add(this.rdBtnNLWOD);
+            this.panelNonLinTypeWOD.Controls.Add(this.rdBtnClassicalNLWOD);
+            this.panelNonLinTypeWOD.Location = new System.Drawing.Point(12, 147);
+            this.panelNonLinTypeWOD.Name = "panelNonLinTypeWOD";
+            this.panelNonLinTypeWOD.Size = new System.Drawing.Size(80, 47);
+            this.panelNonLinTypeWOD.TabIndex = 18;
             // 
-            // rdBtnWCplngWOD
+            // rdBtnNLWOD
             // 
-            this.rdBtnWCplngWOD.AutoSize = true;
-            this.rdBtnWCplngWOD.Enabled = false;
-            this.rdBtnWCplngWOD.Location = new System.Drawing.Point(3, 26);
-            this.rdBtnWCplngWOD.Name = "rdBtnWCplngWOD";
-            this.rdBtnWCplngWOD.Size = new System.Drawing.Size(76, 17);
-            this.rdBtnWCplngWOD.TabIndex = 1;
-            this.rdBtnWCplngWOD.Text = "w coupling";
-            this.rdBtnWCplngWOD.UseVisualStyleBackColor = true;
-            this.rdBtnWCplngWOD.CheckedChanged += new System.EventHandler(this.rdBtnWCplngWOD_CheckedChanged);
+            this.rdBtnNLWOD.AutoSize = true;
+            this.rdBtnNLWOD.Location = new System.Drawing.Point(3, 26);
+            this.rdBtnNLWOD.Name = "rdBtnNLWOD";
+            this.rdBtnNLWOD.Size = new System.Drawing.Size(81, 17);
+            this.rdBtnNLWOD.TabIndex = 1;
+            this.rdBtnNLWOD.Text = "non-linearity";
+            this.rdBtnNLWOD.UseVisualStyleBackColor = true;
+            this.rdBtnNLWOD.CheckedChanged += new System.EventHandler(this.rdBtnNLWOD_CheckedChanged);
             // 
-            // rdBtnWOCplngWOD
+            // rdBtnClassicalNLWOD
             // 
-            this.rdBtnWOCplngWOD.AutoSize = true;
-            this.rdBtnWOCplngWOD.Checked = true;
-            this.rdBtnWOCplngWOD.Location = new System.Drawing.Point(3, 3);
-            this.rdBtnWOCplngWOD.Name = "rdBtnWOCplngWOD";
-            this.rdBtnWOCplngWOD.Size = new System.Drawing.Size(87, 17);
-            this.rdBtnWOCplngWOD.TabIndex = 0;
-            this.rdBtnWOCplngWOD.TabStop = true;
-            this.rdBtnWOCplngWOD.Text = "w/o coupling";
-            this.rdBtnWOCplngWOD.UseVisualStyleBackColor = true;
-            this.rdBtnWOCplngWOD.CheckedChanged += new System.EventHandler(this.rdBtnWOCplngWOD_CheckedChanged);
+            this.rdBtnClassicalNLWOD.AutoSize = true;
+            this.rdBtnClassicalNLWOD.Checked = true;
+            this.rdBtnClassicalNLWOD.Location = new System.Drawing.Point(3, 3);
+            this.rdBtnClassicalNLWOD.Name = "rdBtnClassicalNLWOD";
+            this.rdBtnClassicalNLWOD.Size = new System.Drawing.Size(65, 17);
+            this.rdBtnClassicalNLWOD.TabIndex = 0;
+            this.rdBtnClassicalNLWOD.TabStop = true;
+            this.rdBtnClassicalNLWOD.Text = "classical";
+            this.rdBtnClassicalNLWOD.UseVisualStyleBackColor = true;
+            this.rdBtnClassicalNLWOD.CheckedChanged += new System.EventHandler(this.rdBtnClassicalNLWOD_CheckedChanged);
             // 
-            // txtBoxBWOD
+            // txtBoxBetaWOD
             // 
-            this.txtBoxBWOD.Location = new System.Drawing.Point(106, 121);
-            this.txtBoxBWOD.Name = "txtBoxBWOD";
-            this.txtBoxBWOD.Size = new System.Drawing.Size(50, 20);
-            this.txtBoxBWOD.TabIndex = 17;
-            this.txtBoxBWOD.Text = "0,8";
-            this.txtBoxBWOD.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtBoxBWOD.TextChanged += new System.EventHandler(this.txtBoxBWOD_TextChanged);
+            this.txtBoxBetaWOD.Location = new System.Drawing.Point(106, 121);
+            this.txtBoxBetaWOD.Name = "txtBoxBetaWOD";
+            this.txtBoxBetaWOD.Size = new System.Drawing.Size(50, 20);
+            this.txtBoxBetaWOD.TabIndex = 17;
+            this.txtBoxBetaWOD.Text = "0,8";
+            this.txtBoxBetaWOD.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtBoxBetaWOD.TextChanged += new System.EventHandler(this.txtBoxBetaWOD_TextChanged);
             // 
-            // txtBoxAWOD
+            // txtBoxAlphaWOD
             // 
-            this.txtBoxAWOD.Location = new System.Drawing.Point(25, 121);
-            this.txtBoxAWOD.Name = "txtBoxAWOD";
-            this.txtBoxAWOD.Size = new System.Drawing.Size(50, 20);
-            this.txtBoxAWOD.TabIndex = 16;
-            this.txtBoxAWOD.Text = "0,7";
-            this.txtBoxAWOD.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtBoxAWOD.TextChanged += new System.EventHandler(this.txtBoxAWOD_TextChanged);
+            this.txtBoxAlphaWOD.Location = new System.Drawing.Point(25, 121);
+            this.txtBoxAlphaWOD.Name = "txtBoxAlphaWOD";
+            this.txtBoxAlphaWOD.Size = new System.Drawing.Size(50, 20);
+            this.txtBoxAlphaWOD.TabIndex = 16;
+            this.txtBoxAlphaWOD.Text = "0,7";
+            this.txtBoxAlphaWOD.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtBoxAlphaWOD.TextChanged += new System.EventHandler(this.txtBoxAlphaWOD_TextChanged);
             // 
             // txtBoxTauWOD
             // 
@@ -966,23 +969,23 @@
             this.txtBoxNWOD.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtBoxNWOD.TextChanged += new System.EventHandler(this.txtBoxNWOD_TextChanged);
             // 
-            // lblBWOD
+            // lblBetaWOD
             // 
-            this.lblBWOD.AutoSize = true;
-            this.lblBWOD.Location = new System.Drawing.Point(89, 124);
-            this.lblBWOD.Name = "lblBWOD";
-            this.lblBWOD.Size = new System.Drawing.Size(13, 13);
-            this.lblBWOD.TabIndex = 8;
-            this.lblBWOD.Text = "b";
+            this.lblBetaWOD.AutoSize = true;
+            this.lblBetaWOD.Location = new System.Drawing.Point(89, 124);
+            this.lblBetaWOD.Name = "lblBetaWOD";
+            this.lblBetaWOD.Size = new System.Drawing.Size(13, 13);
+            this.lblBetaWOD.TabIndex = 8;
+            this.lblBetaWOD.Text = "β";
             // 
-            // lblAWOD
+            // lblAlphaWOD
             // 
-            this.lblAWOD.AutoSize = true;
-            this.lblAWOD.Location = new System.Drawing.Point(9, 124);
-            this.lblAWOD.Name = "lblAWOD";
-            this.lblAWOD.Size = new System.Drawing.Size(13, 13);
-            this.lblAWOD.TabIndex = 7;
-            this.lblAWOD.Text = "a";
+            this.lblAlphaWOD.AutoSize = true;
+            this.lblAlphaWOD.Location = new System.Drawing.Point(9, 124);
+            this.lblAlphaWOD.Name = "lblAlphaWOD";
+            this.lblAlphaWOD.Size = new System.Drawing.Size(14, 13);
+            this.lblAlphaWOD.TabIndex = 7;
+            this.lblAlphaWOD.Text = "α";
             // 
             // lblTauWOD
             // 
@@ -1051,6 +1054,27 @@
             // 
             this.timerTWOD.Tick += new System.EventHandler(this.timerTWOD_Tick);
             // 
+            // lblFAWOD
+            // 
+            this.lblFAWOD.AutoSize = true;
+            this.lblFAWOD.Location = new System.Drawing.Point(90, 150);
+            this.lblFAWOD.Name = "lblFAWOD";
+            this.lblFAWOD.Size = new System.Drawing.Size(13, 13);
+            this.lblFAWOD.TabIndex = 40;
+            this.lblFAWOD.Text = "a";
+            this.lblFAWOD.Visible = false;
+            // 
+            // txtBoxFAWOD
+            // 
+            this.txtBoxFAWOD.Location = new System.Drawing.Point(106, 147);
+            this.txtBoxFAWOD.Name = "txtBoxFAWOD";
+            this.txtBoxFAWOD.Size = new System.Drawing.Size(50, 20);
+            this.txtBoxFAWOD.TabIndex = 41;
+            this.txtBoxFAWOD.Text = "0,1";
+            this.txtBoxFAWOD.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtBoxFAWOD.Visible = false;
+            this.txtBoxFAWOD.TextChanged += new System.EventHandler(this.txtBoxFAWOD_TextChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1081,8 +1105,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.chartPhaseWOD)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.panelEqTypeWOD.ResumeLayout(false);
-            this.panelEqTypeWOD.PerformLayout();
+            this.panelNonLinTypeWOD.ResumeLayout(false);
+            this.panelNonLinTypeWOD.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1123,11 +1147,8 @@
         private System.Windows.Forms.TabControl tabEq;
         private System.Windows.Forms.TabPage tabPageWDiff;
         private System.Windows.Forms.TabPage tabPageWODiff;
-        public System.Windows.Forms.TextBox txtBoxTWOD;
-        public System.Windows.Forms.TextBox txtBoxLWOD;
-        public System.Windows.Forms.TextBox txtBoxNWOD;
-        private System.Windows.Forms.Label lblBWOD;
-        private System.Windows.Forms.Label lblAWOD;
+        private System.Windows.Forms.Label lblBetaWOD;
+        private System.Windows.Forms.Label lblAlphaWOD;
         private System.Windows.Forms.Label lblTauWOD;
         private System.Windows.Forms.Label lblIWOD;
         private System.Windows.Forms.Label lblV0WOD;
@@ -1135,20 +1156,14 @@
         private System.Windows.Forms.Label lblTWOD;
         private System.Windows.Forms.Label lblLWOD;
         private System.Windows.Forms.Label lblNWOD;
-        public System.Windows.Forms.TextBox txtBoxU0WOD;
-        public System.Windows.Forms.TextBox txtBoxV0WOD;
-        public System.Windows.Forms.TextBox txtBoxIWOD;
-        public System.Windows.Forms.TextBox txtBoxBWOD;
-        public System.Windows.Forms.TextBox txtBoxAWOD;
-        public System.Windows.Forms.TextBox txtBoxTauWOD;
-        private System.Windows.Forms.Panel panelEqTypeWOD;
+        private System.Windows.Forms.Panel panelNonLinTypeWOD;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnStopTimerWOD;
         private System.Windows.Forms.Button btnPlotWOD;
         private System.Windows.Forms.Button btnSolveWOD;
         private System.Windows.Forms.Button btnLoadWOD;
-        public System.Windows.Forms.RadioButton rdBtnWCplngWOD;
-        public System.Windows.Forms.RadioButton rdBtnWOCplngWOD;
+        public System.Windows.Forms.RadioButton rdBtnNLWOD;
+        public System.Windows.Forms.RadioButton rdBtnClassicalNLWOD;
         public System.Windows.Forms.RadioButton rdBtnPlotAllWOD;
         public System.Windows.Forms.RadioButton rdBtnTmrWOD;
         private System.Windows.Forms.TabControl tabChartsWOD;
@@ -1171,6 +1186,17 @@
         private System.Windows.Forms.Label lblB;
         private System.Windows.Forms.TextBox txtBoxB;
         public System.Windows.Forms.TextBox txtBoxD;
+        private System.Windows.Forms.Label lblFAWOD;
+        private System.Windows.Forms.TextBox txtBoxTWOD;
+        private System.Windows.Forms.TextBox txtBoxLWOD;
+        private System.Windows.Forms.TextBox txtBoxNWOD;
+        private System.Windows.Forms.TextBox txtBoxU0WOD;
+        private System.Windows.Forms.TextBox txtBoxV0WOD;
+        private System.Windows.Forms.TextBox txtBoxIWOD;
+        private System.Windows.Forms.TextBox txtBoxBetaWOD;
+        private System.Windows.Forms.TextBox txtBoxAlphaWOD;
+        private System.Windows.Forms.TextBox txtBoxTauWOD;
+        private System.Windows.Forms.TextBox txtBoxFAWOD;
     }
 }
 

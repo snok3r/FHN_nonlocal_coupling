@@ -3,6 +3,6 @@ FitzHugh-Nagumo spatial model with nonlocal coupling [http://arxiv.org/abs/1311.
 
 ToDo: 
 -
-[4th Sep 2015]:
-— add choice of functions (classical or another nonlinearity) to non-diffusion equation;
-— write in/out arrays to have a possibility to plot them later.
+[8th Sep 2015]:
+— write in/out arrays to have a possibility to plot them later;
+— add a possibility to change speed of plotting (?)
