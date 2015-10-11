@@ -6,3 +6,7 @@ ToDo:
 [8th Sep 2015]:
 — write in/out arrays to have a possibility to plot them later;
 — add a possibility to change speed of plotting (?)
+
+[11th Oct 2015]:
+— write exact equations on the form;
+— make possible to plot ODE graphs at any given time.

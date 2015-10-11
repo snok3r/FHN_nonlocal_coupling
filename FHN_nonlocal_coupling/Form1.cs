@@ -80,7 +80,7 @@ namespace FHN_nonlocal_coupling
         private void BtnSolveBeh()
         {
             // Solve button behaviour
-            // if we change eps, gamma, Kernel or f,
+            // if we change alpha, beta, gamma, Kernel or f,
             // then disable Plot and call Solve again.
             if (btnPlot.Enabled)
             {
@@ -166,7 +166,12 @@ namespace FHN_nonlocal_coupling
 
         //
 
-        private void txtBoxEps_TextChanged(object sender, EventArgs e)
+        private void txtBoxAlpha_TextChanged(object sender, EventArgs e)
+        {
+            BtnSolveBeh();
+        }
+
+        private void txtBoxBeta_TextChanged(object sender, EventArgs e)
         {
             BtnSolveBeh();
         }
@@ -187,6 +192,11 @@ namespace FHN_nonlocal_coupling
         }
 
         private void txtBoxD_TextChanged(object sender, EventArgs e)
+        {
+            BtnSolveBeh();
+        }
+
+        private void txtBoxI_TextChanged(object sender, EventArgs e)
         {
             BtnSolveBeh();
         }
@@ -228,11 +238,13 @@ namespace FHN_nonlocal_coupling
         {
             prBarSolve.Value = 0;
 
-            pde.Eps = Convert.ToDouble(txtBoxEps.Text);
+            pde.Alpha = Convert.ToDouble(txtBoxAlpha.Text);
+            pde.Beta = Convert.ToDouble(txtBoxBeta.Text);
             pde.Gamma = Convert.ToDouble(txtBoxGamma.Text);
             pde.A = Convert.ToDouble(txtBoxA.Text);
             pde.B = Convert.ToDouble(txtBoxB.Text);
             pde.D = Convert.ToDouble(txtBoxD.Text);
+            pde.I = Convert.ToDouble(txtBoxI.Text);
             pde.Eq = rdBtnDeltaCoupl.Checked;
 
             pde.SolveBeta1();
@@ -561,22 +573,23 @@ namespace FHN_nonlocal_coupling
             timerTWOD.Enabled = false;
             timerT.Enabled = false;
             PlotClearWOD();
+            ode = null;
             ode = new FHN_wo_diffussion(); // destruct that
 
-            double eps = Convert.ToDouble(txtBoxEps.Text), gamma = Convert.ToDouble(txtBoxGamma.Text);
+            double alpha = Convert.ToDouble(txtBoxAlpha.Text), beta = Convert.ToDouble(txtBoxBeta.Text), gamma = Convert.ToDouble(txtBoxGamma.Text);
             double a = Convert.ToDouble(txtBoxA.Text), l = Convert.ToDouble(txtBoxL.Text), TB = Convert.ToDouble(txtBoxT.Text);
-            double b = Convert.ToDouble(txtBoxB.Text), d = Convert.ToDouble(txtBoxD.Text);
+            double b = Convert.ToDouble(txtBoxB.Text), d = Convert.ToDouble(txtBoxD.Text), Iext = Convert.ToDouble(txtBoxI.Text);
             int m = Convert.ToInt32(txtBoxM.Text), n = Convert.ToInt32(txtBoxN.Text);
             bool deltaKer = rdBtnDeltaCoupl.Checked;
 
-            pde = new FHN_w_diffusion(eps, gamma, a, b, d, l, TB, m, n, deltaKer, this);
+            pde = new FHN_w_diffusion(alpha, beta, gamma, a, b, d, l, TB, Iext, m, n, deltaKer, this);
 
             SetPlot();
 
-            if (pde.T / m * 250 < 1)
+            if (pde.T / m * 500 < 1)
                 timerT.Interval = 1;
             else
-                timerT.Interval = Convert.ToInt32(pde.T / m * 250);
+                timerT.Interval = Convert.ToInt32(pde.T / m * 500);
 
             timerT.Tick += timerT_Tick;
         }
@@ -588,6 +601,7 @@ namespace FHN_nonlocal_coupling
             timerT.Enabled = false;
             timerTWOD.Enabled = false;
             PlotClear();
+            pde = null;
             pde = new FHN_w_diffusion(); // destruct that
 
             int n = Convert.ToInt32(txtBoxNWOD.Text);
@@ -601,10 +615,10 @@ namespace FHN_nonlocal_coupling
 
             SetPlotWOD();
 
-            if (ode.T / n * 250 < 1)
+            if (ode.T / n * 500 < 1)
                 timerTWOD.Interval = 1;
             else
-                timerTWOD.Interval = Convert.ToInt32(ode.T / n * 250);
+                timerTWOD.Interval = Convert.ToInt32(ode.T / n * 500);
 
             timerTWOD.Tick += timerTWOD_Tick;
         }

@@ -18,9 +18,10 @@ namespace FHN_nonlocal_coupling
         private double[] x, t;
 
         private double[,] u, v;
-        private double eps, gamma; // v's equation constants
+        private double alpha, beta, gamma; // v's equation constants
         private double a; // f constant
         private double b, d; // b is before coupling, d is a delay in delta Kernel
+        private double Iext;
 
         // strings and parsers with initials expression formulas
         //public String SUx0;
@@ -51,12 +52,18 @@ namespace FHN_nonlocal_coupling
             set { this.TB = value; }
         }
 
-        public double Eps
+        public double Alpha
         {
-            get { return this.eps; }
-            set { this.eps = value; }
+            get { return this.alpha; }
+            set { this.alpha = value; }
         }
         
+        public double Beta
+        {
+            get { return this.beta; }
+            set { this.beta = value; }
+        }
+
         public double Gamma
         {
             get { return this.gamma; }
@@ -80,6 +87,12 @@ namespace FHN_nonlocal_coupling
             get { return this.d; }
             set { this.d = value; }
         }
+
+        public double I
+        {   // current
+            get { return this.Iext; }
+            set { this.Iext = value; }
+        }
         
         public bool Eq
         { 
@@ -91,15 +104,17 @@ namespace FHN_nonlocal_coupling
 
         public FHN_w_diffusion() { } // kind of destructor
 
-        public FHN_w_diffusion(double eps, double gamma, double a,double b, double d, double l, double TB, int m, int n, bool deltaCoupl, Form1 form)
+        public FHN_w_diffusion(double alpha, double beta, double gamma, double a,double b, double d, double l, double TB, double Iext, int m, int n, bool deltaCoupl, Form1 form)
         {
-            this.eps = eps;
+            this.alpha = alpha;
+            this.beta = beta;
             this.gamma = gamma;
             this.a = a;
             this.b = b;
             this.d = d;
             this.l = l;
             this.TB = TB;
+            this.Iext = Iext;
             this.n = n;
             this.m = m;
             this.deltaCoupl = deltaCoupl;
@@ -198,7 +213,7 @@ namespace FHN_nonlocal_coupling
         
         public void SolveBeta1()
         {
-            // If we changed ONLY eps, gamma, b, d, Kernel or f,
+            // If we changed ONLY alpha, beta, gamma, b, d, Kernel, f or Iext,
             // then just recall this function.
 
             int prBarMax = 10;
@@ -243,25 +258,25 @@ namespace FHN_nonlocal_coupling
                             if (i - k <= 1) // if x - d <= -l
                             {
                                 if (i + k <= n - 1) // if x - d <= -l and x + d <= l
-                                    di[i] = this.u[j, i] + ht * (this.b * (this.u[j, 1] + this.u[j, i + k] - 2 * this.u[j, i]) + f(this.u[j, i]) - this.v[j, i]);
+                                    di[i] = this.u[j, i] + this.ht * (this.b * (this.u[j, 1] + this.u[j, i + k] - 2 * this.u[j, i]) + f(this.u[j, i]) - this.v[j, i] + this.Iext);
                                 else if (i + k > n - 1) // if x - d <= -l and x + d > l
-                                    di[i] = this.u[j, i] + ht * (this.b * (this.u[j, 1] + this.u[j, n - 1] - 2 * this.u[j, i]) + f(this.u[j, i]) - this.v[j, i]);
+                                    di[i] = this.u[j, i] + this.ht * (this.b * (this.u[j, 1] + this.u[j, n - 1] - 2 * this.u[j, i]) + f(this.u[j, i]) - this.v[j, i] + this.Iext);
                             }
                             else if (i - k > 1) // if x - d > -l
                             {
                                 if (i + k <= n - 1) // if x - d > -l and x + d <= l
-                                    di[i] = this.u[j, i] + ht * (this.b * (this.u[j, i - k] + this.u[j, i + k] - 2 * this.u[j, i]) + f(this.u[j, i]) - this.v[j, i]);
+                                    di[i] = this.u[j, i] + this.ht * (this.b * (this.u[j, i - k] + this.u[j, i + k] - 2 * this.u[j, i]) + f(this.u[j, i]) - this.v[j, i] + this.Iext);
                                 else if (i + k > n - 1)  // if x - d > -l and x + d > l
-                                    di[i] = this.u[j, i] + ht * (this.b * (this.u[j, i - k] + this.u[j, n - 1] - 2 * this.u[j, i]) + f(this.u[j, i]) - this.v[j, i]);
+                                    di[i] = this.u[j, i] + this.ht * (this.b * (this.u[j, i - k] + this.u[j, n - 1] - 2 * this.u[j, i]) + f(this.u[j, i]) - this.v[j, i] + this.Iext);
                             }
                         }
                         else if (this.b == 0)
-                            di[i] = this.u[j, i] + ht * (f(this.u[j, i]) - this.v[j, i]);
+                            di[i] = this.u[j, i] + this.ht * (f(this.u[j, i]) - this.v[j, i] + this.Iext);
                     }
                     else if (this.b != 0)
-                        di[i] = this.u[j, i] + ht * (this.b * Integral(j, i) + f(this.u[j, i]) - this.v[j, i]);
+                        di[i] = this.u[j, i] + this.ht * (this.b * (Integral(j, i) - this.u[j, i]) + f(this.u[j, i]) - this.v[j, i] + this.Iext);
                     else if (this.b == 0)
-                        di[i] = this.u[j, i] + ht * (f(this.u[j, i]) - this.v[j, i]);
+                        di[i] = this.u[j, i] + this.ht * (f(this.u[j, i]) - this.v[j, i] + this.Iext);
 
                     Q[i] = (ai[1] * Q[i - 1] - di[i]) / (bi[1] - ai[1] * P[i - 1]);
                 }
@@ -271,7 +286,7 @@ namespace FHN_nonlocal_coupling
                 this.u[j + 1, this.n] = Q[this.n];
                 for (i = this.n - 1; i > -1; i--) u[j + 1, i] = P[i] * this.u[j + 1, i + 1] + Q[i];
 
-                for (i = 0; i < this.n + 1; i++) v[j + 1, i] = (this.v[j, i] + this.ht * this.eps * this.u[j + 1, i]) / (1 + this.eps * this.gamma * this.ht);
+                for (i = 0; i < this.n + 1; i++) v[j + 1, i] = (this.v[j, i] + this.ht * (this.alpha * this.u[j + 1, i] + this.gamma)) / (1 + this.beta * this.ht);
             }
 
             if (form.prBarSolve.Value < prBarMax) form.prBarSolve.Value = prBarMax;
@@ -352,21 +367,34 @@ namespace FHN_nonlocal_coupling
 
         private double Kernel(double z)
         {
-            return Math.Exp(-z * z) / 0.1;
+            //return Math.Exp(-z * z / 2) / Math.Sqrt(2 * Math.PI);
+            return 1.0 / 2 * Math.Exp(-Math.Abs(z + 2));
         }
 
-        private double f(double u) { return - u * (u - 1) * (u - this.a); }
+        private double f(double u){
+            //return - u * (u - 1) * (u - this.a); 
+            return u - u * u * u / 3;
+        }
+            
 
         private double u_x_0(double x)
         {	// initial u wave at t = 0
-            if (x < 0.0F) return -1.0;
-            else return 0.0;
+            double u0 = -1.199;
+            if (x < -40) return 1.0;
+            else if ((x >= -40) && (x <= -30))
+                return (u0 - 1) * (x + 30) / 10 + u0;
+            else
+                return u0;
+            
             //PUx0.Evaluate(SUx0.Replace("x", x.ToString()));
             //return PUx0.Result;
-            //return Math.Exp(-x * x) / 0.1;
+            
+            //return Math.Exp(-x * x / 2) / (2 * Math.PI);
+            
+            //return 1.0 / 2 * Math.Exp(-Math.Abs(x + 2));
         }
 
-        private double v_x_0(double x) { return 0.0; } // initial v wave at t = 0
+        private double v_x_0(double x) { return -0.624; } // initial v wave at t = 0
 
         private double u_0_t(double t) { return 0.0; } // Neumann boundary condition at x = -l
 

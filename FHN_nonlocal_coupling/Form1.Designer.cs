@@ -29,19 +29,19 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea10 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend10 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series22 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series23 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea11 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend11 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series24 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series25 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea12 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend12 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series26 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series27 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series28 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.chartWDiff = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.btnSolve = new System.Windows.Forms.Button();
             this.btnPlot = new System.Windows.Forms.Button();
@@ -67,27 +67,30 @@
             this.lblMaxUV = new System.Windows.Forms.Label();
             this.lblMinUV = new System.Windows.Forms.Label();
             this.panelEqType = new System.Windows.Forms.Panel();
-            this.lblEps = new System.Windows.Forms.Label();
+            this.lblAlpha = new System.Windows.Forms.Label();
             this.lblGamma = new System.Windows.Forms.Label();
-            this.txtBoxEps = new System.Windows.Forms.TextBox();
+            this.txtBoxAlpha = new System.Windows.Forms.TextBox();
             this.txtBoxGamma = new System.Windows.Forms.TextBox();
             this.btnTune = new System.Windows.Forms.Button();
             this.lblFA = new System.Windows.Forms.Label();
             this.tabEq = new System.Windows.Forms.TabControl();
             this.tabPageWDiff = new System.Windows.Forms.TabPage();
+            this.txtBoxBeta = new System.Windows.Forms.TextBox();
+            this.lblBeta = new System.Windows.Forms.Label();
+            this.txtBoxI = new System.Windows.Forms.TextBox();
+            this.lblI = new System.Windows.Forms.Label();
             this.lblD = new System.Windows.Forms.Label();
             this.txtBoxD = new System.Windows.Forms.TextBox();
             this.lblB = new System.Windows.Forms.Label();
             this.txtBoxB = new System.Windows.Forms.TextBox();
             this.tabPageWODiff = new System.Windows.Forms.TabPage();
+            this.txtBoxFAWOD = new System.Windows.Forms.TextBox();
+            this.lblFAWOD = new System.Windows.Forms.Label();
             this.trBarTWOD = new System.Windows.Forms.TrackBar();
-            this.tabChartsWOD = new System.Windows.Forms.TabControl();
-            this.tabPageUVTWOD = new System.Windows.Forms.TabPage();
             this.txtBoxMaxUVTWOD = new System.Windows.Forms.TextBox();
             this.txtBoxMinUVTWOD = new System.Windows.Forms.TextBox();
             this.btnTuneTWOD = new System.Windows.Forms.Button();
             this.chartTWOD = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.tabPagePhaseWOD = new System.Windows.Forms.TabPage();
             this.txtBoxMinUVPhaseWOD = new System.Windows.Forms.TextBox();
             this.txtBoxMaxUVPhaseWOD = new System.Windows.Forms.TextBox();
             this.btnTunePhaseWOD = new System.Windows.Forms.Button();
@@ -124,8 +127,8 @@
             this.lblLWOD = new System.Windows.Forms.Label();
             this.lblNWOD = new System.Windows.Forms.Label();
             this.timerTWOD = new System.Windows.Forms.Timer(this.components);
-            this.lblFAWOD = new System.Windows.Forms.Label();
-            this.txtBoxFAWOD = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.chartWDiff)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trBarT)).BeginInit();
             this.panelEqType.SuspendLayout();
@@ -133,10 +136,7 @@
             this.tabPageWDiff.SuspendLayout();
             this.tabPageWODiff.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trBarTWOD)).BeginInit();
-            this.tabChartsWOD.SuspendLayout();
-            this.tabPageUVTWOD.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartTWOD)).BeginInit();
-            this.tabPagePhaseWOD.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartPhaseWOD)).BeginInit();
             this.panel1.SuspendLayout();
             this.panelNonLinTypeWOD.SuspendLayout();
@@ -144,38 +144,38 @@
             // 
             // chartWDiff
             // 
-            chartArea1.Name = "ChartArea1";
-            this.chartWDiff.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chartWDiff.Legends.Add(legend1);
-            this.chartWDiff.Location = new System.Drawing.Point(240, 8);
+            chartArea10.Name = "ChartArea1";
+            this.chartWDiff.ChartAreas.Add(chartArea10);
+            legend10.Name = "Legend1";
+            this.chartWDiff.Legends.Add(legend10);
+            this.chartWDiff.Location = new System.Drawing.Point(240, 0);
             this.chartWDiff.Name = "chartWDiff";
-            series1.BorderWidth = 3;
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastPoint;
-            series1.Legend = "Legend1";
-            series1.MarkerSize = 7;
-            series1.Name = "U";
-            series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            series1.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            series2.BorderWidth = 3;
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastPoint;
-            series2.Legend = "Legend1";
-            series2.MarkerSize = 7;
-            series2.Name = "V";
-            series2.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            series2.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            this.chartWDiff.Series.Add(series1);
-            this.chartWDiff.Series.Add(series2);
-            this.chartWDiff.Size = new System.Drawing.Size(805, 400);
+            series22.BorderWidth = 3;
+            series22.ChartArea = "ChartArea1";
+            series22.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastPoint;
+            series22.Legend = "Legend1";
+            series22.MarkerSize = 7;
+            series22.Name = "U";
+            series22.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            series22.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            series23.BorderWidth = 3;
+            series23.ChartArea = "ChartArea1";
+            series23.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastPoint;
+            series23.Legend = "Legend1";
+            series23.MarkerSize = 7;
+            series23.Name = "V";
+            series23.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            series23.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            this.chartWDiff.Series.Add(series22);
+            this.chartWDiff.Series.Add(series23);
+            this.chartWDiff.Size = new System.Drawing.Size(1031, 717);
             this.chartWDiff.TabIndex = 0;
             this.chartWDiff.Text = "chart1";
             // 
             // btnSolve
             // 
             this.btnSolve.Enabled = false;
-            this.btnSolve.Location = new System.Drawing.Point(25, 351);
+            this.btnSolve.Location = new System.Drawing.Point(25, 662);
             this.btnSolve.Name = "btnSolve";
             this.btnSolve.Size = new System.Drawing.Size(75, 23);
             this.btnSolve.TabIndex = 1;
@@ -186,7 +186,7 @@
             // btnPlot
             // 
             this.btnPlot.Enabled = false;
-            this.btnPlot.Location = new System.Drawing.Point(25, 380);
+            this.btnPlot.Location = new System.Drawing.Point(25, 691);
             this.btnPlot.Name = "btnPlot";
             this.btnPlot.Size = new System.Drawing.Size(75, 23);
             this.btnPlot.TabIndex = 2;
@@ -196,19 +196,19 @@
             // 
             // trBarT
             // 
-            this.trBarT.Location = new System.Drawing.Point(305, 414);
+            this.trBarT.Location = new System.Drawing.Point(314, 731);
             this.trBarT.Maximum = 49;
             this.trBarT.Name = "trBarT";
-            this.trBarT.Size = new System.Drawing.Size(675, 45);
+            this.trBarT.Size = new System.Drawing.Size(827, 45);
             this.trBarT.TabIndex = 3;
             this.trBarT.Scroll += new System.EventHandler(this.trBarT_Scroll);
             // 
             // prBarSolve
             // 
-            this.prBarSolve.Location = new System.Drawing.Point(25, 419);
+            this.prBarSolve.Location = new System.Drawing.Point(25, 744);
             this.prBarSolve.Maximum = 4;
             this.prBarSolve.Name = "prBarSolve";
-            this.prBarSolve.Size = new System.Drawing.Size(75, 23);
+            this.prBarSolve.Size = new System.Drawing.Size(156, 23);
             this.prBarSolve.Step = 1;
             this.prBarSolve.TabIndex = 4;
             // 
@@ -220,7 +220,7 @@
             // rdBtnTmr
             // 
             this.rdBtnTmr.AutoSize = true;
-            this.rdBtnTmr.Location = new System.Drawing.Point(109, 381);
+            this.rdBtnTmr.Location = new System.Drawing.Point(109, 692);
             this.rdBtnTmr.Name = "rdBtnTmr";
             this.rdBtnTmr.Size = new System.Drawing.Size(76, 17);
             this.rdBtnTmr.TabIndex = 5;
@@ -229,7 +229,7 @@
             // 
             // btnStopTimer
             // 
-            this.btnStopTimer.Location = new System.Drawing.Point(106, 404);
+            this.btnStopTimer.Location = new System.Drawing.Point(106, 715);
             this.btnStopTimer.Name = "btnStopTimer";
             this.btnStopTimer.Size = new System.Drawing.Size(75, 23);
             this.btnStopTimer.TabIndex = 6;
@@ -239,7 +239,7 @@
             // 
             // btnLoad
             // 
-            this.btnLoad.Location = new System.Drawing.Point(25, 322);
+            this.btnLoad.Location = new System.Drawing.Point(25, 633);
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(75, 23);
             this.btnLoad.TabIndex = 7;
@@ -249,47 +249,47 @@
             // 
             // txtBoxN
             // 
-            this.txtBoxN.Location = new System.Drawing.Point(25, 17);
+            this.txtBoxN.Location = new System.Drawing.Point(25, 246);
             this.txtBoxN.Name = "txtBoxN";
             this.txtBoxN.Size = new System.Drawing.Size(50, 20);
             this.txtBoxN.TabIndex = 8;
-            this.txtBoxN.Text = "5000";
+            this.txtBoxN.Text = "2000";
             this.txtBoxN.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtBoxN.TextChanged += new System.EventHandler(this.txtBoxN_TextChanged);
             // 
             // txtBoxM
             // 
-            this.txtBoxM.Location = new System.Drawing.Point(106, 17);
+            this.txtBoxM.Location = new System.Drawing.Point(106, 246);
             this.txtBoxM.Name = "txtBoxM";
             this.txtBoxM.Size = new System.Drawing.Size(50, 20);
             this.txtBoxM.TabIndex = 9;
-            this.txtBoxM.Text = "5000";
+            this.txtBoxM.Text = "2000";
             this.txtBoxM.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtBoxM.TextChanged += new System.EventHandler(this.txtBoxM_TextChanged);
             // 
             // txtBoxL
             // 
-            this.txtBoxL.Location = new System.Drawing.Point(25, 43);
+            this.txtBoxL.Location = new System.Drawing.Point(25, 272);
             this.txtBoxL.Name = "txtBoxL";
             this.txtBoxL.Size = new System.Drawing.Size(50, 20);
             this.txtBoxL.TabIndex = 10;
-            this.txtBoxL.Text = "10,0";
+            this.txtBoxL.Text = "50,0";
             this.txtBoxL.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtBoxL.TextChanged += new System.EventHandler(this.txtBoxL_TextChanged);
             // 
             // txtBoxT
             // 
-            this.txtBoxT.Location = new System.Drawing.Point(106, 43);
+            this.txtBoxT.Location = new System.Drawing.Point(106, 272);
             this.txtBoxT.Name = "txtBoxT";
             this.txtBoxT.Size = new System.Drawing.Size(50, 20);
             this.txtBoxT.TabIndex = 11;
-            this.txtBoxT.Text = "20,0";
+            this.txtBoxT.Text = "40,0";
             this.txtBoxT.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtBoxT.TextChanged += new System.EventHandler(this.txtBoxT_TextChanged);
             // 
             // txtBoxA
             // 
-            this.txtBoxA.Location = new System.Drawing.Point(25, 95);
+            this.txtBoxA.Location = new System.Drawing.Point(25, 324);
             this.txtBoxA.Name = "txtBoxA";
             this.txtBoxA.Size = new System.Drawing.Size(50, 20);
             this.txtBoxA.TabIndex = 14;
@@ -299,11 +299,11 @@
             // 
             // txtBoxMinUV
             // 
-            this.txtBoxMinUV.Location = new System.Drawing.Point(241, 337);
+            this.txtBoxMinUV.Location = new System.Drawing.Point(241, 627);
             this.txtBoxMinUV.Name = "txtBoxMinUV";
             this.txtBoxMinUV.Size = new System.Drawing.Size(34, 20);
             this.txtBoxMinUV.TabIndex = 15;
-            this.txtBoxMinUV.Text = "-1,0";
+            this.txtBoxMinUV.Text = "-2,1";
             this.txtBoxMinUV.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // txtBoxMaxUV
@@ -312,7 +312,7 @@
             this.txtBoxMaxUV.Name = "txtBoxMaxUV";
             this.txtBoxMaxUV.Size = new System.Drawing.Size(34, 20);
             this.txtBoxMaxUV.TabIndex = 16;
-            this.txtBoxMaxUV.Text = "1,0";
+            this.txtBoxMaxUV.Text = "2,0";
             this.txtBoxMaxUV.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // rdBtnDeltaCoupl
@@ -342,7 +342,7 @@
             // lblN
             // 
             this.lblN.AutoSize = true;
-            this.lblN.Location = new System.Drawing.Point(11, 20);
+            this.lblN.Location = new System.Drawing.Point(11, 249);
             this.lblN.Name = "lblN";
             this.lblN.Size = new System.Drawing.Size(13, 13);
             this.lblN.TabIndex = 19;
@@ -351,7 +351,7 @@
             // lblM
             // 
             this.lblM.AutoSize = true;
-            this.lblM.Location = new System.Drawing.Point(88, 20);
+            this.lblM.Location = new System.Drawing.Point(88, 249);
             this.lblM.Name = "lblM";
             this.lblM.Size = new System.Drawing.Size(15, 13);
             this.lblM.TabIndex = 20;
@@ -360,7 +360,7 @@
             // lblL
             // 
             this.lblL.AutoSize = true;
-            this.lblL.Location = new System.Drawing.Point(13, 46);
+            this.lblL.Location = new System.Drawing.Point(13, 275);
             this.lblL.Name = "lblL";
             this.lblL.Size = new System.Drawing.Size(9, 13);
             this.lblL.TabIndex = 21;
@@ -369,7 +369,7 @@
             // lblT
             // 
             this.lblT.AutoSize = true;
-            this.lblT.Location = new System.Drawing.Point(89, 46);
+            this.lblT.Location = new System.Drawing.Point(89, 275);
             this.lblT.Name = "lblT";
             this.lblT.Size = new System.Drawing.Size(14, 13);
             this.lblT.TabIndex = 22;
@@ -387,7 +387,7 @@
             // lblMinUV
             // 
             this.lblMinUV.AutoSize = true;
-            this.lblMinUV.Location = new System.Drawing.Point(200, 340);
+            this.lblMinUV.Location = new System.Drawing.Point(200, 630);
             this.lblMinUV.Name = "lblMinUV";
             this.lblMinUV.Size = new System.Drawing.Size(41, 13);
             this.lblMinUV.TabIndex = 27;
@@ -397,52 +397,52 @@
             // 
             this.panelEqType.Controls.Add(this.rdBtnDeltaCoupl);
             this.panelEqType.Controls.Add(this.rdBtnCoupl);
-            this.panelEqType.Location = new System.Drawing.Point(12, 121);
+            this.panelEqType.Location = new System.Drawing.Point(12, 350);
             this.panelEqType.Name = "panelEqType";
-            this.panelEqType.Size = new System.Drawing.Size(72, 47);
+            this.panelEqType.Size = new System.Drawing.Size(69, 47);
             this.panelEqType.TabIndex = 28;
             // 
-            // lblEps
+            // lblAlpha
             // 
-            this.lblEps.AutoSize = true;
-            this.lblEps.Location = new System.Drawing.Point(9, 72);
-            this.lblEps.Name = "lblEps";
-            this.lblEps.Size = new System.Drawing.Size(13, 13);
-            this.lblEps.TabIndex = 29;
-            this.lblEps.Text = "ε";
+            this.lblAlpha.AutoSize = true;
+            this.lblAlpha.Location = new System.Drawing.Point(9, 301);
+            this.lblAlpha.Name = "lblAlpha";
+            this.lblAlpha.Size = new System.Drawing.Size(14, 13);
+            this.lblAlpha.TabIndex = 29;
+            this.lblAlpha.Text = "α";
             // 
             // lblGamma
             // 
             this.lblGamma.AutoSize = true;
-            this.lblGamma.Location = new System.Drawing.Point(90, 72);
+            this.lblGamma.Location = new System.Drawing.Point(171, 301);
             this.lblGamma.Name = "lblGamma";
             this.lblGamma.Size = new System.Drawing.Size(13, 13);
             this.lblGamma.TabIndex = 30;
             this.lblGamma.Text = "γ";
             // 
-            // txtBoxEps
+            // txtBoxAlpha
             // 
-            this.txtBoxEps.Location = new System.Drawing.Point(25, 69);
-            this.txtBoxEps.Name = "txtBoxEps";
-            this.txtBoxEps.Size = new System.Drawing.Size(50, 20);
-            this.txtBoxEps.TabIndex = 31;
-            this.txtBoxEps.Text = "0,08";
-            this.txtBoxEps.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtBoxEps.TextChanged += new System.EventHandler(this.txtBoxEps_TextChanged);
+            this.txtBoxAlpha.Location = new System.Drawing.Point(25, 298);
+            this.txtBoxAlpha.Name = "txtBoxAlpha";
+            this.txtBoxAlpha.Size = new System.Drawing.Size(50, 20);
+            this.txtBoxAlpha.TabIndex = 31;
+            this.txtBoxAlpha.Text = "0,08";
+            this.txtBoxAlpha.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtBoxAlpha.TextChanged += new System.EventHandler(this.txtBoxAlpha_TextChanged);
             // 
             // txtBoxGamma
             // 
-            this.txtBoxGamma.Location = new System.Drawing.Point(106, 69);
+            this.txtBoxGamma.Location = new System.Drawing.Point(187, 298);
             this.txtBoxGamma.Name = "txtBoxGamma";
             this.txtBoxGamma.Size = new System.Drawing.Size(50, 20);
             this.txtBoxGamma.TabIndex = 32;
-            this.txtBoxGamma.Text = "0,8";
+            this.txtBoxGamma.Text = "0,056";
             this.txtBoxGamma.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtBoxGamma.TextChanged += new System.EventHandler(this.txtBoxGamma_TextChanged);
             // 
             // btnTune
             // 
-            this.btnTune.Location = new System.Drawing.Point(241, 197);
+            this.btnTune.Location = new System.Drawing.Point(241, 370);
             this.btnTune.Name = "btnTune";
             this.btnTune.Size = new System.Drawing.Size(42, 23);
             this.btnTune.TabIndex = 33;
@@ -453,7 +453,7 @@
             // lblFA
             // 
             this.lblFA.AutoSize = true;
-            this.lblFA.Location = new System.Drawing.Point(9, 98);
+            this.lblFA.Location = new System.Drawing.Point(9, 327);
             this.lblFA.Name = "lblFA";
             this.lblFA.Size = new System.Drawing.Size(13, 13);
             this.lblFA.TabIndex = 25;
@@ -466,12 +466,16 @@
             this.tabEq.Location = new System.Drawing.Point(-3, 1);
             this.tabEq.Name = "tabEq";
             this.tabEq.SelectedIndex = 0;
-            this.tabEq.Size = new System.Drawing.Size(1059, 508);
+            this.tabEq.Size = new System.Drawing.Size(1286, 821);
             this.tabEq.TabIndex = 34;
             // 
             // tabPageWDiff
             // 
             this.tabPageWDiff.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPageWDiff.Controls.Add(this.txtBoxBeta);
+            this.tabPageWDiff.Controls.Add(this.lblBeta);
+            this.tabPageWDiff.Controls.Add(this.txtBoxI);
+            this.tabPageWDiff.Controls.Add(this.lblI);
             this.tabPageWDiff.Controls.Add(this.lblD);
             this.tabPageWDiff.Controls.Add(this.txtBoxD);
             this.tabPageWDiff.Controls.Add(this.lblB);
@@ -485,11 +489,11 @@
             this.tabPageWDiff.Controls.Add(this.btnSolve);
             this.tabPageWDiff.Controls.Add(this.txtBoxGamma);
             this.tabPageWDiff.Controls.Add(this.btnPlot);
-            this.tabPageWDiff.Controls.Add(this.txtBoxEps);
+            this.tabPageWDiff.Controls.Add(this.txtBoxAlpha);
             this.tabPageWDiff.Controls.Add(this.trBarT);
             this.tabPageWDiff.Controls.Add(this.lblGamma);
             this.tabPageWDiff.Controls.Add(this.prBarSolve);
-            this.tabPageWDiff.Controls.Add(this.lblEps);
+            this.tabPageWDiff.Controls.Add(this.lblAlpha);
             this.tabPageWDiff.Controls.Add(this.rdBtnTmr);
             this.tabPageWDiff.Controls.Add(this.panelEqType);
             this.tabPageWDiff.Controls.Add(this.btnStopTimer);
@@ -507,15 +511,53 @@
             this.tabPageWDiff.Location = new System.Drawing.Point(4, 22);
             this.tabPageWDiff.Name = "tabPageWDiff";
             this.tabPageWDiff.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageWDiff.Size = new System.Drawing.Size(1051, 482);
+            this.tabPageWDiff.Size = new System.Drawing.Size(1278, 795);
             this.tabPageWDiff.TabIndex = 0;
             this.tabPageWDiff.Text = "With diffusion";
             this.tabPageWDiff.Enter += new System.EventHandler(this.tabPageWDiff_Enter);
             // 
+            // txtBoxBeta
+            // 
+            this.txtBoxBeta.Location = new System.Drawing.Point(106, 298);
+            this.txtBoxBeta.Name = "txtBoxBeta";
+            this.txtBoxBeta.Size = new System.Drawing.Size(50, 20);
+            this.txtBoxBeta.TabIndex = 39;
+            this.txtBoxBeta.Text = "0,064";
+            this.txtBoxBeta.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtBoxBeta.TextChanged += new System.EventHandler(this.txtBoxBeta_TextChanged);
+            // 
+            // lblBeta
+            // 
+            this.lblBeta.AutoSize = true;
+            this.lblBeta.Location = new System.Drawing.Point(91, 301);
+            this.lblBeta.Name = "lblBeta";
+            this.lblBeta.Size = new System.Drawing.Size(13, 13);
+            this.lblBeta.TabIndex = 38;
+            this.lblBeta.Text = "β";
+            // 
+            // txtBoxI
+            // 
+            this.txtBoxI.Location = new System.Drawing.Point(106, 377);
+            this.txtBoxI.Name = "txtBoxI";
+            this.txtBoxI.Size = new System.Drawing.Size(50, 20);
+            this.txtBoxI.TabIndex = 37;
+            this.txtBoxI.Text = "0,0";
+            this.txtBoxI.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtBoxI.TextChanged += new System.EventHandler(this.txtBoxI_TextChanged);
+            // 
+            // lblI
+            // 
+            this.lblI.AutoSize = true;
+            this.lblI.Location = new System.Drawing.Point(81, 380);
+            this.lblI.Name = "lblI";
+            this.lblI.Size = new System.Drawing.Size(24, 13);
+            this.lblI.TabIndex = 36;
+            this.lblI.Text = "Iext";
+            // 
             // lblD
             // 
             this.lblD.AutoSize = true;
-            this.lblD.Location = new System.Drawing.Point(90, 124);
+            this.lblD.Location = new System.Drawing.Point(90, 353);
             this.lblD.Name = "lblD";
             this.lblD.Size = new System.Drawing.Size(13, 13);
             this.lblD.TabIndex = 35;
@@ -523,7 +565,7 @@
             // 
             // txtBoxD
             // 
-            this.txtBoxD.Location = new System.Drawing.Point(106, 121);
+            this.txtBoxD.Location = new System.Drawing.Point(106, 350);
             this.txtBoxD.Name = "txtBoxD";
             this.txtBoxD.Size = new System.Drawing.Size(50, 20);
             this.txtBoxD.TabIndex = 34;
@@ -534,7 +576,7 @@
             // lblB
             // 
             this.lblB.AutoSize = true;
-            this.lblB.Location = new System.Drawing.Point(90, 98);
+            this.lblB.Location = new System.Drawing.Point(90, 327);
             this.lblB.Name = "lblB";
             this.lblB.Size = new System.Drawing.Size(13, 13);
             this.lblB.TabIndex = 19;
@@ -542,21 +584,30 @@
             // 
             // txtBoxB
             // 
-            this.txtBoxB.Location = new System.Drawing.Point(106, 95);
+            this.txtBoxB.Location = new System.Drawing.Point(106, 324);
             this.txtBoxB.Name = "txtBoxB";
             this.txtBoxB.Size = new System.Drawing.Size(50, 20);
             this.txtBoxB.TabIndex = 20;
-            this.txtBoxB.Text = "1,0";
+            this.txtBoxB.Text = "0,0";
             this.txtBoxB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtBoxB.TextChanged += new System.EventHandler(this.txtBoxB_TextChanged);
             // 
             // tabPageWODiff
             // 
             this.tabPageWODiff.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPageWODiff.Controls.Add(this.label1);
+            this.tabPageWODiff.Controls.Add(this.label2);
+            this.tabPageWODiff.Controls.Add(this.txtBoxMaxUVTWOD);
+            this.tabPageWODiff.Controls.Add(this.txtBoxMinUVPhaseWOD);
+            this.tabPageWODiff.Controls.Add(this.txtBoxMinUVTWOD);
             this.tabPageWODiff.Controls.Add(this.txtBoxFAWOD);
+            this.tabPageWODiff.Controls.Add(this.btnTuneTWOD);
+            this.tabPageWODiff.Controls.Add(this.txtBoxMaxUVPhaseWOD);
+            this.tabPageWODiff.Controls.Add(this.chartTWOD);
             this.tabPageWODiff.Controls.Add(this.lblFAWOD);
+            this.tabPageWODiff.Controls.Add(this.btnTunePhaseWOD);
             this.tabPageWODiff.Controls.Add(this.trBarTWOD);
-            this.tabPageWODiff.Controls.Add(this.tabChartsWOD);
+            this.tabPageWODiff.Controls.Add(this.chartPhaseWOD);
             this.tabPageWODiff.Controls.Add(this.prBarSolveWOD);
             this.tabPageWODiff.Controls.Add(this.lblMinUVWOD);
             this.tabPageWODiff.Controls.Add(this.panel1);
@@ -587,46 +638,43 @@
             this.tabPageWODiff.Location = new System.Drawing.Point(4, 22);
             this.tabPageWODiff.Name = "tabPageWODiff";
             this.tabPageWODiff.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageWODiff.Size = new System.Drawing.Size(1051, 482);
+            this.tabPageWODiff.Size = new System.Drawing.Size(1278, 795);
             this.tabPageWODiff.TabIndex = 1;
             this.tabPageWODiff.Text = "Without diffusion";
             this.tabPageWODiff.Enter += new System.EventHandler(this.tabPageWODiff_Enter);
             // 
+            // txtBoxFAWOD
+            // 
+            this.txtBoxFAWOD.Location = new System.Drawing.Point(106, 376);
+            this.txtBoxFAWOD.Name = "txtBoxFAWOD";
+            this.txtBoxFAWOD.Size = new System.Drawing.Size(50, 20);
+            this.txtBoxFAWOD.TabIndex = 41;
+            this.txtBoxFAWOD.Text = "0,1";
+            this.txtBoxFAWOD.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtBoxFAWOD.Visible = false;
+            this.txtBoxFAWOD.TextChanged += new System.EventHandler(this.txtBoxFAWOD_TextChanged);
+            // 
+            // lblFAWOD
+            // 
+            this.lblFAWOD.AutoSize = true;
+            this.lblFAWOD.Location = new System.Drawing.Point(90, 379);
+            this.lblFAWOD.Name = "lblFAWOD";
+            this.lblFAWOD.Size = new System.Drawing.Size(13, 13);
+            this.lblFAWOD.TabIndex = 40;
+            this.lblFAWOD.Text = "a";
+            this.lblFAWOD.Visible = false;
+            // 
             // trBarTWOD
             // 
-            this.trBarTWOD.Location = new System.Drawing.Point(305, 409);
+            this.trBarTWOD.Location = new System.Drawing.Point(318, 744);
             this.trBarTWOD.Name = "trBarTWOD";
-            this.trBarTWOD.Size = new System.Drawing.Size(675, 45);
+            this.trBarTWOD.Size = new System.Drawing.Size(747, 45);
             this.trBarTWOD.TabIndex = 36;
             this.trBarTWOD.Scroll += new System.EventHandler(this.trBarTWOD_Scroll);
             // 
-            // tabChartsWOD
-            // 
-            this.tabChartsWOD.Controls.Add(this.tabPageUVTWOD);
-            this.tabChartsWOD.Controls.Add(this.tabPagePhaseWOD);
-            this.tabChartsWOD.Location = new System.Drawing.Point(238, 0);
-            this.tabChartsWOD.Name = "tabChartsWOD";
-            this.tabChartsWOD.SelectedIndex = 0;
-            this.tabChartsWOD.Size = new System.Drawing.Size(817, 410);
-            this.tabChartsWOD.TabIndex = 35;
-            // 
-            // tabPageUVTWOD
-            // 
-            this.tabPageUVTWOD.Controls.Add(this.txtBoxMaxUVTWOD);
-            this.tabPageUVTWOD.Controls.Add(this.txtBoxMinUVTWOD);
-            this.tabPageUVTWOD.Controls.Add(this.btnTuneTWOD);
-            this.tabPageUVTWOD.Controls.Add(this.chartTWOD);
-            this.tabPageUVTWOD.Location = new System.Drawing.Point(4, 22);
-            this.tabPageUVTWOD.Name = "tabPageUVTWOD";
-            this.tabPageUVTWOD.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageUVTWOD.Size = new System.Drawing.Size(809, 384);
-            this.tabPageUVTWOD.TabIndex = 0;
-            this.tabPageUVTWOD.Text = "Against time";
-            this.tabPageUVTWOD.UseVisualStyleBackColor = true;
-            // 
             // txtBoxMaxUVTWOD
             // 
-            this.txtBoxMaxUVTWOD.Location = new System.Drawing.Point(0, 8);
+            this.txtBoxMaxUVTWOD.Location = new System.Drawing.Point(241, 29);
             this.txtBoxMaxUVTWOD.Name = "txtBoxMaxUVTWOD";
             this.txtBoxMaxUVTWOD.Size = new System.Drawing.Size(34, 20);
             this.txtBoxMaxUVTWOD.TabIndex = 40;
@@ -635,7 +683,7 @@
             // 
             // txtBoxMinUVTWOD
             // 
-            this.txtBoxMinUVTWOD.Location = new System.Drawing.Point(0, 316);
+            this.txtBoxMinUVTWOD.Location = new System.Drawing.Point(241, 319);
             this.txtBoxMinUVTWOD.Name = "txtBoxMinUVTWOD";
             this.txtBoxMinUVTWOD.Size = new System.Drawing.Size(34, 20);
             this.txtBoxMinUVTWOD.TabIndex = 41;
@@ -644,7 +692,7 @@
             // 
             // btnTuneTWOD
             // 
-            this.btnTuneTWOD.Location = new System.Drawing.Point(0, 176);
+            this.btnTuneTWOD.Location = new System.Drawing.Point(241, 179);
             this.btnTuneTWOD.Name = "btnTuneTWOD";
             this.btnTuneTWOD.Size = new System.Drawing.Size(42, 23);
             this.btnTuneTWOD.TabIndex = 37;
@@ -654,45 +702,31 @@
             // 
             // chartTWOD
             // 
-            chartArea2.Name = "ChartArea1";
-            this.chartTWOD.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.chartTWOD.Legends.Add(legend2);
-            this.chartTWOD.Location = new System.Drawing.Point(33, 3);
+            chartArea11.Name = "ChartArea1";
+            this.chartTWOD.ChartAreas.Add(chartArea11);
+            legend11.Name = "Legend1";
+            this.chartTWOD.Legends.Add(legend11);
+            this.chartTWOD.Location = new System.Drawing.Point(241, 0);
             this.chartTWOD.Name = "chartTWOD";
-            series3.BorderWidth = 3;
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series3.Legend = "Legend1";
-            series3.Name = "U";
-            series4.BorderWidth = 3;
-            series4.ChartArea = "ChartArea1";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series4.Legend = "Legend1";
-            series4.Name = "V";
-            this.chartTWOD.Series.Add(series3);
-            this.chartTWOD.Series.Add(series4);
-            this.chartTWOD.Size = new System.Drawing.Size(805, 377);
+            series24.BorderWidth = 3;
+            series24.ChartArea = "ChartArea1";
+            series24.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series24.Legend = "Legend1";
+            series24.Name = "U";
+            series25.BorderWidth = 3;
+            series25.ChartArea = "ChartArea1";
+            series25.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series25.Legend = "Legend1";
+            series25.Name = "V";
+            this.chartTWOD.Series.Add(series24);
+            this.chartTWOD.Series.Add(series25);
+            this.chartTWOD.Size = new System.Drawing.Size(1030, 370);
             this.chartTWOD.TabIndex = 37;
             this.chartTWOD.Text = "chart1";
             // 
-            // tabPagePhaseWOD
-            // 
-            this.tabPagePhaseWOD.Controls.Add(this.txtBoxMinUVPhaseWOD);
-            this.tabPagePhaseWOD.Controls.Add(this.txtBoxMaxUVPhaseWOD);
-            this.tabPagePhaseWOD.Controls.Add(this.btnTunePhaseWOD);
-            this.tabPagePhaseWOD.Controls.Add(this.chartPhaseWOD);
-            this.tabPagePhaseWOD.Location = new System.Drawing.Point(4, 22);
-            this.tabPagePhaseWOD.Name = "tabPagePhaseWOD";
-            this.tabPagePhaseWOD.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPagePhaseWOD.Size = new System.Drawing.Size(809, 384);
-            this.tabPagePhaseWOD.TabIndex = 1;
-            this.tabPagePhaseWOD.Text = "Phase portrait";
-            this.tabPagePhaseWOD.UseVisualStyleBackColor = true;
-            // 
             // txtBoxMinUVPhaseWOD
             // 
-            this.txtBoxMinUVPhaseWOD.Location = new System.Drawing.Point(0, 316);
+            this.txtBoxMinUVPhaseWOD.Location = new System.Drawing.Point(241, 689);
             this.txtBoxMinUVPhaseWOD.Name = "txtBoxMinUVPhaseWOD";
             this.txtBoxMinUVPhaseWOD.Size = new System.Drawing.Size(34, 20);
             this.txtBoxMinUVPhaseWOD.TabIndex = 41;
@@ -701,7 +735,7 @@
             // 
             // txtBoxMaxUVPhaseWOD
             // 
-            this.txtBoxMaxUVPhaseWOD.Location = new System.Drawing.Point(0, 8);
+            this.txtBoxMaxUVPhaseWOD.Location = new System.Drawing.Point(241, 399);
             this.txtBoxMaxUVPhaseWOD.Name = "txtBoxMaxUVPhaseWOD";
             this.txtBoxMaxUVPhaseWOD.Size = new System.Drawing.Size(34, 20);
             this.txtBoxMaxUVPhaseWOD.TabIndex = 40;
@@ -710,7 +744,7 @@
             // 
             // btnTunePhaseWOD
             // 
-            this.btnTunePhaseWOD.Location = new System.Drawing.Point(0, 176);
+            this.btnTunePhaseWOD.Location = new System.Drawing.Point(241, 549);
             this.btnTunePhaseWOD.Name = "btnTunePhaseWOD";
             this.btnTunePhaseWOD.Size = new System.Drawing.Size(42, 23);
             this.btnTunePhaseWOD.TabIndex = 39;
@@ -720,46 +754,46 @@
             // 
             // chartPhaseWOD
             // 
-            chartArea3.Name = "ChartArea1";
-            this.chartPhaseWOD.ChartAreas.Add(chartArea3);
-            legend3.Name = "Legend1";
-            this.chartPhaseWOD.Legends.Add(legend3);
-            this.chartPhaseWOD.Location = new System.Drawing.Point(33, 3);
+            chartArea12.Name = "ChartArea1";
+            this.chartPhaseWOD.ChartAreas.Add(chartArea12);
+            legend12.Name = "Legend1";
+            this.chartPhaseWOD.Legends.Add(legend12);
+            this.chartPhaseWOD.Location = new System.Drawing.Point(241, 370);
             this.chartPhaseWOD.Name = "chartPhaseWOD";
-            series5.BorderWidth = 5;
-            series5.ChartArea = "ChartArea1";
-            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series5.Legend = "Legend1";
-            series5.Name = "V(U)";
-            series6.BorderWidth = 3;
-            series6.ChartArea = "ChartArea1";
-            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series6.Legend = "Legend1";
-            series6.Name = "1st nullcline V(U)";
-            series7.BorderWidth = 3;
-            series7.ChartArea = "ChartArea1";
-            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series7.Legend = "Legend1";
-            series7.Name = "2nd nullcline V(U)";
-            this.chartPhaseWOD.Series.Add(series5);
-            this.chartPhaseWOD.Series.Add(series6);
-            this.chartPhaseWOD.Series.Add(series7);
-            this.chartPhaseWOD.Size = new System.Drawing.Size(805, 377);
+            series26.BorderWidth = 5;
+            series26.ChartArea = "ChartArea1";
+            series26.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series26.Legend = "Legend1";
+            series26.Name = "V(U)";
+            series27.BorderWidth = 3;
+            series27.ChartArea = "ChartArea1";
+            series27.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series27.Legend = "Legend1";
+            series27.Name = "1 nс V(U)";
+            series28.BorderWidth = 3;
+            series28.ChartArea = "ChartArea1";
+            series28.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series28.Legend = "Legend1";
+            series28.Name = "2 nc V(U)";
+            this.chartPhaseWOD.Series.Add(series26);
+            this.chartPhaseWOD.Series.Add(series27);
+            this.chartPhaseWOD.Series.Add(series28);
+            this.chartPhaseWOD.Size = new System.Drawing.Size(1030, 370);
             this.chartPhaseWOD.TabIndex = 38;
             this.chartPhaseWOD.Text = "chart2";
             // 
             // prBarSolveWOD
             // 
-            this.prBarSolveWOD.Location = new System.Drawing.Point(25, 419);
+            this.prBarSolveWOD.Location = new System.Drawing.Point(25, 744);
             this.prBarSolveWOD.Maximum = 4;
             this.prBarSolveWOD.Name = "prBarSolveWOD";
-            this.prBarSolveWOD.Size = new System.Drawing.Size(75, 23);
+            this.prBarSolveWOD.Size = new System.Drawing.Size(156, 23);
             this.prBarSolveWOD.TabIndex = 2;
             // 
             // lblMinUVWOD
             // 
             this.lblMinUVWOD.AutoSize = true;
-            this.lblMinUVWOD.Location = new System.Drawing.Point(200, 340);
+            this.lblMinUVWOD.Location = new System.Drawing.Point(200, 322);
             this.lblMinUVWOD.Name = "lblMinUVWOD";
             this.lblMinUVWOD.Size = new System.Drawing.Size(41, 13);
             this.lblMinUVWOD.TabIndex = 39;
@@ -769,7 +803,7 @@
             // 
             this.panel1.Controls.Add(this.rdBtnPlotAllWOD);
             this.panel1.Controls.Add(this.rdBtnTmrWOD);
-            this.panel1.Location = new System.Drawing.Point(109, 351);
+            this.panel1.Location = new System.Drawing.Point(109, 662);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(80, 47);
             this.panel1.TabIndex = 23;
@@ -798,7 +832,7 @@
             // 
             // btnStopTimerWOD
             // 
-            this.btnStopTimerWOD.Location = new System.Drawing.Point(106, 404);
+            this.btnStopTimerWOD.Location = new System.Drawing.Point(106, 715);
             this.btnStopTimerWOD.Name = "btnStopTimerWOD";
             this.btnStopTimerWOD.Size = new System.Drawing.Size(75, 23);
             this.btnStopTimerWOD.TabIndex = 22;
@@ -818,7 +852,7 @@
             // btnPlotWOD
             // 
             this.btnPlotWOD.Enabled = false;
-            this.btnPlotWOD.Location = new System.Drawing.Point(25, 380);
+            this.btnPlotWOD.Location = new System.Drawing.Point(25, 691);
             this.btnPlotWOD.Name = "btnPlotWOD";
             this.btnPlotWOD.Size = new System.Drawing.Size(75, 23);
             this.btnPlotWOD.TabIndex = 21;
@@ -828,7 +862,7 @@
             // 
             // btnSolveWOD
             // 
-            this.btnSolveWOD.Location = new System.Drawing.Point(25, 351);
+            this.btnSolveWOD.Location = new System.Drawing.Point(25, 662);
             this.btnSolveWOD.Name = "btnSolveWOD";
             this.btnSolveWOD.Size = new System.Drawing.Size(75, 23);
             this.btnSolveWOD.TabIndex = 20;
@@ -838,7 +872,7 @@
             // 
             // btnLoadWOD
             // 
-            this.btnLoadWOD.Location = new System.Drawing.Point(25, 322);
+            this.btnLoadWOD.Location = new System.Drawing.Point(25, 633);
             this.btnLoadWOD.Name = "btnLoadWOD";
             this.btnLoadWOD.Size = new System.Drawing.Size(75, 23);
             this.btnLoadWOD.TabIndex = 19;
@@ -850,7 +884,7 @@
             // 
             this.panelNonLinTypeWOD.Controls.Add(this.rdBtnNLWOD);
             this.panelNonLinTypeWOD.Controls.Add(this.rdBtnClassicalNLWOD);
-            this.panelNonLinTypeWOD.Location = new System.Drawing.Point(12, 147);
+            this.panelNonLinTypeWOD.Location = new System.Drawing.Point(12, 376);
             this.panelNonLinTypeWOD.Name = "panelNonLinTypeWOD";
             this.panelNonLinTypeWOD.Size = new System.Drawing.Size(80, 47);
             this.panelNonLinTypeWOD.TabIndex = 18;
@@ -881,7 +915,7 @@
             // 
             // txtBoxBetaWOD
             // 
-            this.txtBoxBetaWOD.Location = new System.Drawing.Point(106, 121);
+            this.txtBoxBetaWOD.Location = new System.Drawing.Point(106, 350);
             this.txtBoxBetaWOD.Name = "txtBoxBetaWOD";
             this.txtBoxBetaWOD.Size = new System.Drawing.Size(50, 20);
             this.txtBoxBetaWOD.TabIndex = 17;
@@ -891,7 +925,7 @@
             // 
             // txtBoxAlphaWOD
             // 
-            this.txtBoxAlphaWOD.Location = new System.Drawing.Point(25, 121);
+            this.txtBoxAlphaWOD.Location = new System.Drawing.Point(25, 350);
             this.txtBoxAlphaWOD.Name = "txtBoxAlphaWOD";
             this.txtBoxAlphaWOD.Size = new System.Drawing.Size(50, 20);
             this.txtBoxAlphaWOD.TabIndex = 16;
@@ -901,7 +935,7 @@
             // 
             // txtBoxTauWOD
             // 
-            this.txtBoxTauWOD.Location = new System.Drawing.Point(106, 95);
+            this.txtBoxTauWOD.Location = new System.Drawing.Point(106, 324);
             this.txtBoxTauWOD.Name = "txtBoxTauWOD";
             this.txtBoxTauWOD.Size = new System.Drawing.Size(50, 20);
             this.txtBoxTauWOD.TabIndex = 15;
@@ -911,7 +945,7 @@
             // 
             // txtBoxIWOD
             // 
-            this.txtBoxIWOD.Location = new System.Drawing.Point(25, 95);
+            this.txtBoxIWOD.Location = new System.Drawing.Point(25, 324);
             this.txtBoxIWOD.Name = "txtBoxIWOD";
             this.txtBoxIWOD.Size = new System.Drawing.Size(50, 20);
             this.txtBoxIWOD.TabIndex = 14;
@@ -921,7 +955,7 @@
             // 
             // txtBoxV0WOD
             // 
-            this.txtBoxV0WOD.Location = new System.Drawing.Point(106, 69);
+            this.txtBoxV0WOD.Location = new System.Drawing.Point(106, 298);
             this.txtBoxV0WOD.Name = "txtBoxV0WOD";
             this.txtBoxV0WOD.Size = new System.Drawing.Size(50, 20);
             this.txtBoxV0WOD.TabIndex = 13;
@@ -931,7 +965,7 @@
             // 
             // txtBoxU0WOD
             // 
-            this.txtBoxU0WOD.Location = new System.Drawing.Point(25, 69);
+            this.txtBoxU0WOD.Location = new System.Drawing.Point(25, 298);
             this.txtBoxU0WOD.Name = "txtBoxU0WOD";
             this.txtBoxU0WOD.Size = new System.Drawing.Size(50, 20);
             this.txtBoxU0WOD.TabIndex = 12;
@@ -941,7 +975,7 @@
             // 
             // txtBoxTWOD
             // 
-            this.txtBoxTWOD.Location = new System.Drawing.Point(106, 43);
+            this.txtBoxTWOD.Location = new System.Drawing.Point(106, 272);
             this.txtBoxTWOD.Name = "txtBoxTWOD";
             this.txtBoxTWOD.Size = new System.Drawing.Size(50, 20);
             this.txtBoxTWOD.TabIndex = 11;
@@ -951,17 +985,18 @@
             // 
             // txtBoxLWOD
             // 
-            this.txtBoxLWOD.Location = new System.Drawing.Point(25, 43);
+            this.txtBoxLWOD.Location = new System.Drawing.Point(25, 272);
             this.txtBoxLWOD.Name = "txtBoxLWOD";
             this.txtBoxLWOD.Size = new System.Drawing.Size(50, 20);
             this.txtBoxLWOD.TabIndex = 10;
             this.txtBoxLWOD.Text = "2,5";
             this.txtBoxLWOD.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtBoxLWOD.Visible = false;
             this.txtBoxLWOD.TextChanged += new System.EventHandler(this.txtBoxLWOD_TextChanged);
             // 
             // txtBoxNWOD
             // 
-            this.txtBoxNWOD.Location = new System.Drawing.Point(25, 17);
+            this.txtBoxNWOD.Location = new System.Drawing.Point(25, 246);
             this.txtBoxNWOD.Name = "txtBoxNWOD";
             this.txtBoxNWOD.Size = new System.Drawing.Size(50, 20);
             this.txtBoxNWOD.TabIndex = 9;
@@ -972,7 +1007,7 @@
             // lblBetaWOD
             // 
             this.lblBetaWOD.AutoSize = true;
-            this.lblBetaWOD.Location = new System.Drawing.Point(89, 124);
+            this.lblBetaWOD.Location = new System.Drawing.Point(89, 353);
             this.lblBetaWOD.Name = "lblBetaWOD";
             this.lblBetaWOD.Size = new System.Drawing.Size(13, 13);
             this.lblBetaWOD.TabIndex = 8;
@@ -981,7 +1016,7 @@
             // lblAlphaWOD
             // 
             this.lblAlphaWOD.AutoSize = true;
-            this.lblAlphaWOD.Location = new System.Drawing.Point(9, 124);
+            this.lblAlphaWOD.Location = new System.Drawing.Point(9, 353);
             this.lblAlphaWOD.Name = "lblAlphaWOD";
             this.lblAlphaWOD.Size = new System.Drawing.Size(14, 13);
             this.lblAlphaWOD.TabIndex = 7;
@@ -990,7 +1025,7 @@
             // lblTauWOD
             // 
             this.lblTauWOD.AutoSize = true;
-            this.lblTauWOD.Location = new System.Drawing.Point(89, 98);
+            this.lblTauWOD.Location = new System.Drawing.Point(89, 327);
             this.lblTauWOD.Name = "lblTauWOD";
             this.lblTauWOD.Size = new System.Drawing.Size(13, 13);
             this.lblTauWOD.TabIndex = 6;
@@ -999,7 +1034,7 @@
             // lblIWOD
             // 
             this.lblIWOD.AutoSize = true;
-            this.lblIWOD.Location = new System.Drawing.Point(2, 98);
+            this.lblIWOD.Location = new System.Drawing.Point(2, 327);
             this.lblIWOD.Name = "lblIWOD";
             this.lblIWOD.Size = new System.Drawing.Size(24, 13);
             this.lblIWOD.TabIndex = 5;
@@ -1008,7 +1043,7 @@
             // lblV0WOD
             // 
             this.lblV0WOD.AutoSize = true;
-            this.lblV0WOD.Location = new System.Drawing.Point(84, 72);
+            this.lblV0WOD.Location = new System.Drawing.Point(84, 301);
             this.lblV0WOD.Name = "lblV0WOD";
             this.lblV0WOD.Size = new System.Drawing.Size(19, 13);
             this.lblV0WOD.TabIndex = 4;
@@ -1017,7 +1052,7 @@
             // lblU0WOD
             // 
             this.lblU0WOD.AutoSize = true;
-            this.lblU0WOD.Location = new System.Drawing.Point(5, 72);
+            this.lblU0WOD.Location = new System.Drawing.Point(5, 301);
             this.lblU0WOD.Name = "lblU0WOD";
             this.lblU0WOD.Size = new System.Drawing.Size(19, 13);
             this.lblU0WOD.TabIndex = 3;
@@ -1026,7 +1061,7 @@
             // lblTWOD
             // 
             this.lblTWOD.AutoSize = true;
-            this.lblTWOD.Location = new System.Drawing.Point(89, 46);
+            this.lblTWOD.Location = new System.Drawing.Point(89, 275);
             this.lblTWOD.Name = "lblTWOD";
             this.lblTWOD.Size = new System.Drawing.Size(14, 13);
             this.lblTWOD.TabIndex = 2;
@@ -1035,16 +1070,17 @@
             // lblLWOD
             // 
             this.lblLWOD.AutoSize = true;
-            this.lblLWOD.Location = new System.Drawing.Point(13, 46);
+            this.lblLWOD.Location = new System.Drawing.Point(13, 275);
             this.lblLWOD.Name = "lblLWOD";
             this.lblLWOD.Size = new System.Drawing.Size(9, 13);
             this.lblLWOD.TabIndex = 1;
             this.lblLWOD.Text = "l";
+            this.lblLWOD.Visible = false;
             // 
             // lblNWOD
             // 
             this.lblNWOD.AutoSize = true;
-            this.lblNWOD.Location = new System.Drawing.Point(11, 20);
+            this.lblNWOD.Location = new System.Drawing.Point(11, 249);
             this.lblNWOD.Name = "lblNWOD";
             this.lblNWOD.Size = new System.Drawing.Size(13, 13);
             this.lblNWOD.TabIndex = 0;
@@ -1054,33 +1090,29 @@
             // 
             this.timerTWOD.Tick += new System.EventHandler(this.timerTWOD_Tick);
             // 
-            // lblFAWOD
+            // label1
             // 
-            this.lblFAWOD.AutoSize = true;
-            this.lblFAWOD.Location = new System.Drawing.Point(90, 150);
-            this.lblFAWOD.Name = "lblFAWOD";
-            this.lblFAWOD.Size = new System.Drawing.Size(13, 13);
-            this.lblFAWOD.TabIndex = 40;
-            this.lblFAWOD.Text = "a";
-            this.lblFAWOD.Visible = false;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(197, 692);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(41, 13);
+            this.label1.TabIndex = 43;
+            this.label1.Text = "min u,v";
             // 
-            // txtBoxFAWOD
+            // label2
             // 
-            this.txtBoxFAWOD.Location = new System.Drawing.Point(106, 147);
-            this.txtBoxFAWOD.Name = "txtBoxFAWOD";
-            this.txtBoxFAWOD.Size = new System.Drawing.Size(50, 20);
-            this.txtBoxFAWOD.TabIndex = 41;
-            this.txtBoxFAWOD.Text = "0,1";
-            this.txtBoxFAWOD.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtBoxFAWOD.Visible = false;
-            this.txtBoxFAWOD.TextChanged += new System.EventHandler(this.txtBoxFAWOD_TextChanged);
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(197, 402);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(44, 13);
+            this.label2.TabIndex = 42;
+            this.label2.Text = "max u,v";
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(1054, 477);
+            this.ClientSize = new System.Drawing.Size(1284, 811);
             this.Controls.Add(this.tabEq);
             this.MaximizeBox = false;
             this.Name = "Form1";
@@ -1096,12 +1128,7 @@
             this.tabPageWODiff.ResumeLayout(false);
             this.tabPageWODiff.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trBarTWOD)).EndInit();
-            this.tabChartsWOD.ResumeLayout(false);
-            this.tabPageUVTWOD.ResumeLayout(false);
-            this.tabPageUVTWOD.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartTWOD)).EndInit();
-            this.tabPagePhaseWOD.ResumeLayout(false);
-            this.tabPagePhaseWOD.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chartPhaseWOD)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -1135,9 +1162,9 @@
         private System.Windows.Forms.Label lblMaxUV;
         private System.Windows.Forms.Label lblMinUV;
         private System.Windows.Forms.Panel panelEqType;
-        private System.Windows.Forms.Label lblEps;
+        private System.Windows.Forms.Label lblAlpha;
         private System.Windows.Forms.Label lblGamma;
-        private System.Windows.Forms.TextBox txtBoxEps;
+        private System.Windows.Forms.TextBox txtBoxAlpha;
         private System.Windows.Forms.TextBox txtBoxGamma;
         private System.Windows.Forms.Button btnTune;
         private System.Windows.Forms.TrackBar trBarT;
@@ -1166,9 +1193,6 @@
         public System.Windows.Forms.RadioButton rdBtnClassicalNLWOD;
         public System.Windows.Forms.RadioButton rdBtnPlotAllWOD;
         public System.Windows.Forms.RadioButton rdBtnTmrWOD;
-        private System.Windows.Forms.TabControl tabChartsWOD;
-        private System.Windows.Forms.TabPage tabPageUVTWOD;
-        private System.Windows.Forms.TabPage tabPagePhaseWOD;
         private System.Windows.Forms.TrackBar trBarTWOD;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartTWOD;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartPhaseWOD;
@@ -1197,6 +1221,12 @@
         private System.Windows.Forms.TextBox txtBoxAlphaWOD;
         private System.Windows.Forms.TextBox txtBoxTauWOD;
         private System.Windows.Forms.TextBox txtBoxFAWOD;
+        private System.Windows.Forms.Label lblI;
+        public System.Windows.Forms.TextBox txtBoxI;
+        public System.Windows.Forms.TextBox txtBoxBeta;
+        private System.Windows.Forms.Label lblBeta;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
     }
 }
 
