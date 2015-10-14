@@ -58,6 +58,8 @@ namespace FHN_nonlocal_coupling
             btnSolve.Enabled = false;
             btnPlot.Enabled = false;
 
+            lblError.Visible = false;
+
             prBarSolve.Value = 0;
         }
 
@@ -71,6 +73,8 @@ namespace FHN_nonlocal_coupling
                 btnSolve.Enabled = false;
                 btnLoad.Enabled = true;
             }
+
+            lblError.Visible = false;
 
             trBarT.Value = 0;
             trBarT.Enabled = false;
@@ -89,6 +93,8 @@ namespace FHN_nonlocal_coupling
                 btnSolve.Enabled = true;
             }
 
+            lblError.Visible = false;
+
             trBarT.Value = 0;
             trBarT.Enabled = false;
             timerT.Enabled = false;
@@ -97,11 +103,14 @@ namespace FHN_nonlocal_coupling
         private void btnPlotBeh()
         {
             // Plot button behaviour
-            btnSolve.Enabled = false;
-            btnPlot.Enabled = true;
+            if (!lblError.Visible)
+            {
+                btnSolve.Enabled = false;
+                btnPlot.Enabled = true;
 
-            trBarT.Value = 0;
-            trBarT.Enabled = true;
+                trBarT.Value = 0;
+                trBarT.Enabled = true;
+            }
         }
 
         private void trBarT_Scroll(object sender, EventArgs e)
@@ -316,6 +325,8 @@ namespace FHN_nonlocal_coupling
             btnSolveWOD.Enabled = false;
             btnPlotWOD.Enabled = false;
 
+            lblErrorWOD.Visible = false;
+
             prBarSolveWOD.Value = 0;
         }
 
@@ -329,6 +340,8 @@ namespace FHN_nonlocal_coupling
                 btnSolveWOD.Enabled = false;
                 btnLoadWOD.Enabled = true;
             }
+
+            lblErrorWOD.Visible = false;
 
             trBarTWOD.Value = 0;
             trBarTWOD.Enabled = false;
@@ -347,6 +360,8 @@ namespace FHN_nonlocal_coupling
                 btnSolveWOD.Enabled = true;
             }
 
+            lblErrorWOD.Visible = false;
+
             trBarTWOD.Value = 0;
             trBarTWOD.Enabled = false;
             timerTWOD.Enabled = false;
@@ -355,11 +370,14 @@ namespace FHN_nonlocal_coupling
         private void btnPlotBehWOD()
         {
             // Plot button behaviour
-            btnSolveWOD.Enabled = false;
-            btnPlotWOD.Enabled = true;
+            if (!lblErrorWOD.Visible)
+            {
+                btnSolveWOD.Enabled = false;
+                btnPlotWOD.Enabled = true;
 
-            trBarTWOD.Value = 0;
-            trBarTWOD.Enabled = true;
+                trBarTWOD.Value = 0;
+                trBarTWOD.Enabled = true;
+            }
         }
 
         private void btnLoadWOD_Click(object sender, EventArgs e)

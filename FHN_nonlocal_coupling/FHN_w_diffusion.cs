@@ -219,6 +219,13 @@ namespace FHN_nonlocal_coupling
                         di[i] = this.u[j, i] + this.ht * (f(this.u[j, i]) - this.v[j, i] + this.iExt);
 
                     Q[i] = (ai[1] * Q[i - 1] - di[i]) / (bi[1] - ai[1] * P[i - 1]);
+
+                    if (Double.IsNaN(Q[i]))
+                    {   // catching Q is NaN and show Error label
+                        form.lblError.Visible = true;
+                        break;
+                    }
+
                 }
                 //di[this.n] = this.ht * u_l_t(this.t[j]); // if Neumann condition is not a zero
                 Q[this.n] = (ai[2] * Q[this.n - 1] - di[this.n]) / (bi[2] - ai[2] * P[this.n - 1]);
@@ -226,7 +233,18 @@ namespace FHN_nonlocal_coupling
                 this.u[j + 1, this.n] = Q[this.n];
                 for (i = this.n - 1; i > -1; i--) u[j + 1, i] = P[i] * this.u[j + 1, i + 1] + Q[i];
 
-                for (i = 0; i < this.n + 1; i++) v[j + 1, i] = (this.v[j, i] + this.ht * (this.alpha * this.u[j + 1, i] + this.gamma)) / (1 + this.beta * this.ht);
+                double nextV;
+                for (i = 0; i < this.n + 1; i++)
+                {
+                    nextV = (this.v[j, i] + this.ht * (this.alpha * this.u[j + 1, i] + this.gamma)) / (1 + this.beta * this.ht);
+                    if (Double.IsNaN(nextV))
+                    {   // catching V is NaN and show Error label
+                        form.lblError.Visible = true;
+                        break;
+                    }
+                    else
+                        v[j + 1, i] = nextV;
+                }
             }
 
             if (form.prBarSolve.Value < prBarMax) form.prBarSolve.Value = prBarMax;

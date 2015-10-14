@@ -151,6 +151,17 @@ namespace FHN_nonlocal_coupling
                 utemp = this.u[j] + this.ht * f1(this.u[j], this.v[j]);
                 vtemp = this.v[j] + this.ht * f2(this.u[j], this.v[j]);
 
+                if (Double.IsNaN(utemp))
+                {   // catching NaN
+                    form.lblErrorWOD.Visible = true;
+                    break;
+                }
+                else if (Double.IsNaN(vtemp))
+                {   // catching NaN
+                    form.lblErrorWOD.Visible = true;
+                    break;
+                }
+
                 //// Euler's 1st order
                 //this.u[j + 1] = utemp;
                 //this.v[j + 1] = vtemp;
