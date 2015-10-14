@@ -10,3 +10,6 @@ ToDo:
 [11th Oct 2015]:
 — write exact equations on the form;
 — make possible to plot ODE graphs at any given time.
+
+[14th Oct 2015]:
+— add changable resolution.

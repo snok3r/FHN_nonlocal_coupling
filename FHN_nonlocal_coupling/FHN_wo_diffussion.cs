@@ -18,7 +18,7 @@ namespace FHN_nonlocal_coupling
 
         private double[] u, v, u_null, v1, v2; // v1, v2 are nullclines
         private double u0, v0; // initials
-        private double Iext, tau, alpha, beta, a; // equation's constants
+        private double iExt, tau, alpha, beta, a; // equation's constants
 
         // properties
         public int N
@@ -53,8 +53,8 @@ namespace FHN_nonlocal_coupling
 
         public double I
         {   // current
-            get { return this.Iext; }
-            set { this.Iext = value; }
+            get { return this.iExt; }
+            set { this.iExt = value; }
         }
 
         public double Tau
@@ -88,16 +88,14 @@ namespace FHN_nonlocal_coupling
         }
 
         // constructors
-        public FHN_wo_diffussion() { } // kind of destructor
-
-        public FHN_wo_diffussion(int n, double l, double TB, double u0, double v0, double Iext, double tau, double alpha, double beta, double a, bool classical, Form1 form)
+        public FHN_wo_diffussion(int n, double l, double TB, double u0, double v0, double iExt, double tau, double alpha, double beta, double a, bool classical, Form1 form)
         {
             this.n = n;
             this.l = l;
             this.u0 = u0;
             this.v0 = v0;
             this.TB = TB;
-            this.Iext = Iext;
+            this.iExt = iExt;
             this.tau = tau;
             this.alpha = alpha;
             this.beta = beta;
@@ -108,7 +106,7 @@ namespace FHN_nonlocal_coupling
         }
 
         // methods
-        public void Load(int n, double l, double TB)
+        public void load(int n, double l, double TB)
         {   // initialize/declare arrays and steps
             // If we want to change one of the parameters: n or TB,
             // then it needs to call this (plus Intiials) functions again.
@@ -133,13 +131,13 @@ namespace FHN_nonlocal_coupling
             for (j = 0; j < n + 1; j++) this.u_null[j] = - this.l + j * this.h;
         }
 
-        public void Initials(double u0, double v0)
+        public void initials(double u0, double v0)
         {   // Initialize initials
             this.u[0] = u0;
             this.v[0] = v0;
         }
 
-        public void Solve()
+        public void solve()
         {   // If we changed ONLY alpha, beta, Iext, Kernel or f (either a),
             // then just recall this function.
 
@@ -167,39 +165,57 @@ namespace FHN_nonlocal_coupling
                 }
             }
             
-            Nullclines();
+            nullclines();
 
             if (form.prBarSolveWOD.Value < prBarMax) form.prBarSolveWOD.Value = prBarMax;
         }
 
-        public void Nullclines()
+        public void nullclines()
         {
             if (this.beta != 0.0)
             {
                 for (int j = 0; j < this.n + 1; j++)
                 {
-                    this.v1[j] = f(this.u_null[j]) + this.Iext;
+                    this.v1[j] = f(this.u_null[j]) + this.iExt;
                     this.v2[j] = (this.u_null[j] + this.alpha) / this.beta;
                 }
             }
         }
 
-        public double GetT(int j) { return this.t[j]; }
+        public double getT(int j)
+        { 
+            return this.t[j]; 
+        }
 
-        public double GetU(int j) { return this.u[j]; }
+        public double getU(int j)
+        { 
+            return this.u[j]; 
+        }
 
-        public double GetV(int j) { return this.v[j]; }
+        public double getV(int j)
+        { 
+            return this.v[j]; 
+        }
 
-        public double GetUN(int j) { return this.u_null[j]; } // for nullclines
+        public double getUN(int j)
+        { 
+            return this.u_null[j]; 
+        }
 
-        public double GetV1(int j) { return this.v1[j]; } // for nullclines
+        public double getV1(int j)
+        { 
+            return this.v1[j]; 
+        }
 
-        public double GetV2(int j) { return this.v2[j]; } // for nullclines
+        public double getV2(int j)
+        { 
+            return this.v2[j]; 
+        }
 
         // various functions
         private double f1(double u, double v)
         {
-            return f(u) - v + this.Iext;
+            return f(u) - v + this.iExt;
         }
 
         private double f2(double u, double v)
