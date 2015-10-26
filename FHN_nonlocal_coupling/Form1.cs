@@ -13,6 +13,7 @@ namespace FHN_nonlocal_coupling
     public partial class Form1 : Form
     {
         FHN_w_diffusion pde;
+        FHN_w_diffusion pde2;
         FHN_wo_diffussion ode;
 
         public Form1()
@@ -26,29 +27,46 @@ namespace FHN_nonlocal_coupling
 
         private void plot(int j)
         {   // plots full given t segment of diffusion solution
-            for (int i = 0; i < pde.N + 1; i++) 
-            {   
-                chartWDiff.Series[0].Points.AddXY(pde.getX(i), pde.getU(j, i));
-                chartWDiff.Series[1].Points.AddXY(pde.getX(i), pde.getV(j, i));
+            if (!chBoxPlotWB2.Checked)
+            {
+                for (int i = 0; i < pde.N + 1; i++)
+                {
+                    chartWDiff.Series[0].Points.AddXY(pde.getX(i), pde.getU(j, i));
+                    chartWDiff.Series[1].Points.AddXY(pde.getX(i), pde.getV(j, i));
+                }
+            }
+            else
+            {
+                for (int i = 0; i < pde.N + 1; i++)
+                {
+                    chartWDiff.Series[0].Points.AddXY(pde.getX(i), pde.getU(j, i));
+                    chartWDiff.Series[1].Points.AddXY(pde.getX(i), pde.getV(j, i));
+
+                    chartWDiff.Series[2].Points.AddXY(pde2.getX(i), pde2.getU(j, i));
+                    chartWDiff.Series[3].Points.AddXY(pde2.getX(i), pde2.getV(j, i));
+                }
             }
         }
 
         private void setPlot()
         {
-            chartWDiff.ChartAreas[0].AxisX.Minimum = - pde.L - 0.1;
-            chartWDiff.ChartAreas[0].AxisX.Maximum = pde.L + 0.1;
+            chartWDiff.ChartAreas[0].AxisX.Minimum = - Convert.ToDouble(txtBoxL.Text) - 0.1;
+            chartWDiff.ChartAreas[0].AxisX.Maximum = Convert.ToDouble(txtBoxL.Text) + 0.1;
 
             chartWDiff.ChartAreas[0].AxisY.Maximum = Convert.ToDouble(txtBoxMaxUV.Text);
             chartWDiff.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(txtBoxMinUV.Text);
 
             chartWDiff.ChartAreas[0].AxisX.Interval = Convert.ToInt32((chartWDiff.ChartAreas[0].AxisX.Maximum + chartWDiff.ChartAreas[0].AxisX.Minimum) / 6.0);
             chartWDiff.ChartAreas[0].AxisY.Interval = Convert.ToInt32((chartWDiff.ChartAreas[0].AxisY.Maximum + chartWDiff.ChartAreas[0].AxisY.Minimum) / 6.0);
+
+            chartWDiff.Series[2].Color = Color.Blue;
+            chartWDiff.Series[3].Color = Color.OrangeRed;
         }
 
         private void clearPlot()
         {
-            chartWDiff.Series[0].Points.Clear();
-            chartWDiff.Series[1].Points.Clear();
+            for (int i = 0; i < 4; i++)
+                chartWDiff.Series[i].Points.Clear();
         }
 
         private void btnReset()
@@ -115,16 +133,14 @@ namespace FHN_nonlocal_coupling
 
         private void trBarT_Scroll(object sender, EventArgs e)
         {
-            chartWDiff.Series[0].Points.Clear();
-            chartWDiff.Series[1].Points.Clear();
+            clearPlot();
 
             plot(trBarT.Value);
         }
 
         private void timerT_Tick(object sender, EventArgs e)
-        {   
-            chartWDiff.Series[0].Points.Clear();
-            chartWDiff.Series[1].Points.Clear();
+        {
+            clearPlot(); 
 
             if (trBarT.Value == pde.M)
             {   // if it is the last t segment, plot it and reset trBar.Value
@@ -229,42 +245,62 @@ namespace FHN_nonlocal_coupling
 
         private void btnLoad_Click(object sender, EventArgs e)
         {
-            pde.N = Convert.ToInt32(txtBoxN.Text);
-            pde.M = Convert.ToInt32(txtBoxM.Text);
-            pde.L = Convert.ToDouble(txtBoxL.Text);
-            pde.T = Convert.ToDouble(txtBoxT.Text);
+            loadPDE(ref pde);
 
-            pde.load(pde.M, pde.N, pde.L, pde.T);
-            pde.initials(pde.N);
+            if (chBoxPlotWB2.Checked)
+                loadPDE(ref pde2);
+        }
+
+        private void loadPDE(ref FHN_w_diffusion obj)
+        {
+            obj.N = Convert.ToInt32(txtBoxN.Text);
+            obj.M = Convert.ToInt32(txtBoxM.Text);
+            obj.L = Convert.ToDouble(txtBoxL.Text);
+            obj.T = Convert.ToDouble(txtBoxT.Text);
+
+            obj.load(obj.M, obj.N, obj.L, obj.T);
+            obj.initials(obj.N);
 
             btnLoad.Enabled = false;
             btnSolve.Enabled = true;
 
-            trBarT.Maximum = pde.M;
+            trBarT.Maximum = obj.M;
         }
 
         private void btnSolve_Click(object sender, EventArgs e)
         {
+            solvePDE(ref pde, 1);
+
+            if (chBoxPlotWB2.Checked)
+                solvePDE(ref pde2, 2);
+
+            btnPlotBeh();
+        }
+
+        private void solvePDE(ref FHN_w_diffusion obj, int whichPDE)
+        {
             prBarSolve.Value = 0;
 
-            pde.Alpha = Convert.ToDouble(txtBoxAlpha.Text);
-            pde.Beta = Convert.ToDouble(txtBoxBeta.Text);
-            pde.Gamma = Convert.ToDouble(txtBoxGamma.Text);
-            pde.A = Convert.ToDouble(txtBoxA.Text);
-            pde.B = Convert.ToDouble(txtBoxB.Text);
-            pde.D = Convert.ToDouble(txtBoxD.Text);
-            pde.I = Convert.ToDouble(txtBoxI.Text);
-            pde.Eq = rdBtnDeltaCoupl.Checked;
+            obj.Alpha = Convert.ToDouble(txtBoxAlpha.Text);
+            obj.Beta = Convert.ToDouble(txtBoxBeta.Text);
+            obj.Gamma = Convert.ToDouble(txtBoxGamma.Text);
+            obj.A = Convert.ToDouble(txtBoxA.Text);
 
-            pde.solve();
-            
-            btnPlotBeh();
+            if (whichPDE == 1)
+                obj.B = Convert.ToDouble(txtBoxB.Text);
+            else
+                obj.B = Convert.ToDouble(txtBoxB2.Text);
+
+            obj.D = Convert.ToDouble(txtBoxD.Text);
+            obj.I = Convert.ToDouble(txtBoxI.Text);
+            obj.Eq = rdBtnDeltaCoupl.Checked;
+
+            obj.solve();
         }
 
         private void btnPlot_Click(object sender, EventArgs e)
         {
-            chartWDiff.Series[0].Points.Clear();
-            chartWDiff.Series[1].Points.Clear();
+            clearPlot();
 
             setPlot();
 
@@ -274,6 +310,26 @@ namespace FHN_nonlocal_coupling
                 timerT.Enabled = true;
             else
                 timerT.Enabled = false;
+        }
+
+        private void chBoxPlotWB2_CheckedChanged(object sender, EventArgs e)
+        {
+            btnSolveBeh();
+
+            if (!lblB2.Visible)
+            {
+                lblB2.Visible = true;
+                txtBoxB2.Visible = true;
+
+                preparePDE(ref pde2, 2);
+            }
+            else
+            {
+                lblB2.Visible = false;
+                txtBoxB2.Visible = false;
+
+                pde2 = null;
+            }
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -422,11 +478,9 @@ namespace FHN_nonlocal_coupling
             
             if (rdBtnTmrWOD.Checked) clearPlotWOD();
 
-            for (int j = 0; j < ode.N + 1; j++)
-            {   // clean nullclines before drawing in case Iext changed
-                chartPhaseWOD.Series[1].Points.Clear();
-                chartPhaseWOD.Series[2].Points.Clear();
-            }
+            // clean nullclines before drawing in case Iext changed
+            chartPhaseWOD.Series[1].Points.Clear();
+            chartPhaseWOD.Series[2].Points.Clear();
 
             for (int j = 0; j < ode.N + 1; j++)
             {   // drawing nullclines
@@ -437,7 +491,7 @@ namespace FHN_nonlocal_coupling
             // if 'Plot all' checked then need to clear plot.
             if (rdBtnPlotAllWOD.Checked)
             {
-                trBarTWOD.Enabled = false;
+                //trBarTWOD.Enabled = false;
                 trBarTWOD.Value = 0;
 
                 chartTWOD.Series[0].Points.Clear();
@@ -458,7 +512,7 @@ namespace FHN_nonlocal_coupling
             }
             else
             {
-                trBarTWOD.Enabled = false; 
+                //trBarTWOD.Enabled = false; 
                 timerTWOD.Enabled = false;
             }
         }
@@ -488,7 +542,7 @@ namespace FHN_nonlocal_coupling
             {
                 rdBtnTmrWOD.Checked = false;
                 timerTWOD.Enabled = false;
-                trBarTWOD.Enabled = false;
+                //trBarTWOD.Enabled = false;
 
                 rdBtnPlotAllWOD.Checked = true;
             }
@@ -501,7 +555,11 @@ namespace FHN_nonlocal_coupling
 
             chartPhaseWOD.Series[0].Points.Clear();
 
-            timerTWOD.Enabled = true;
+            timerTWOD.Enabled = false;
+
+            // plot all 'till moment on the trackbar
+            for (int j = 0; j < trBarTWOD.Value; j++)
+                plotWOD(j);
         }
 
         private void txtBoxNWOD_TextChanged(object sender, EventArgs e)
@@ -554,6 +612,11 @@ namespace FHN_nonlocal_coupling
             btnSolveBehWOD();
         }
 
+        private void txtBoxB2_TextChanged(object sender, EventArgs e)
+        {
+            btnSolveBeh();
+        }
+
         private void rdBtnClassicalNLWOD_CheckedChanged(object sender, EventArgs e)
         {
             btnSolveBehWOD();
@@ -582,8 +645,8 @@ namespace FHN_nonlocal_coupling
             chartPhaseWOD.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(txtBoxMinUVPhaseWOD.Text);
         }
 
+        
         // Tabs behaviour
-
         private void tabPageWDiff_Enter(object sender, EventArgs e)
         {
             btnReset();
@@ -593,35 +656,10 @@ namespace FHN_nonlocal_coupling
             clearPlotWOD();
 
             ode = null; // clear pointer reference
+            pde = null;
+            pde2 = null;
 
-            int n = Convert.ToInt32(txtBoxN.Text);
-            int m = Convert.ToInt32(txtBoxM.Text);
-
-            double alpha = Convert.ToDouble(txtBoxAlpha.Text);
-            double beta = Convert.ToDouble(txtBoxBeta.Text);
-            double gamma = Convert.ToDouble(txtBoxGamma.Text);
-
-            double a = Convert.ToDouble(txtBoxA.Text);
-
-            double l = Convert.ToDouble(txtBoxL.Text);
-            double TB = Convert.ToDouble(txtBoxT.Text);
-
-            double b = Convert.ToDouble(txtBoxB.Text);
-            double d = Convert.ToDouble(txtBoxD.Text);
-            double Iext = Convert.ToDouble(txtBoxI.Text);
-            
-            bool deltaKer = rdBtnDeltaCoupl.Checked;
-
-            pde = new FHN_w_diffusion(alpha, beta, gamma, a, b, d, l, TB, Iext, m, n, deltaKer, this);
-
-            setPlot();
-
-            if (pde.T / m * 500 < 1)
-                timerT.Interval = 1;
-            else
-                timerT.Interval = Convert.ToInt32(pde.T / m * 500);
-
-            timerT.Tick += timerT_Tick;
+            preparePDE(ref pde, 1);
         }
 
         private void tabPageWODiff_Enter(object sender, EventArgs e)
@@ -632,7 +670,9 @@ namespace FHN_nonlocal_coupling
             timerTWOD.Enabled = false;
             clearPlot();
 
+            ode = null;
             pde = null; // clear pointer reference
+            pde2 = null; // clear pointer reference
 
             int n = Convert.ToInt32(txtBoxNWOD.Text);
 
@@ -660,6 +700,49 @@ namespace FHN_nonlocal_coupling
                 timerTWOD.Interval = Convert.ToInt32(ode.T / n * 500);
 
             timerTWOD.Tick += timerTWOD_Tick;
+        }
+
+        private void preparePDE(ref FHN_w_diffusion obj, int whichPDE)
+        {
+            btnReset();
+            btnLoadBeh();
+            timerTWOD.Enabled = false;
+            timerT.Enabled = false;
+            clearPlotWOD();
+
+            int n = Convert.ToInt32(txtBoxN.Text);
+            int m = Convert.ToInt32(txtBoxM.Text);
+
+            double alpha = Convert.ToDouble(txtBoxAlpha.Text);
+            double beta = Convert.ToDouble(txtBoxBeta.Text);
+            double gamma = Convert.ToDouble(txtBoxGamma.Text);
+
+            double a = Convert.ToDouble(txtBoxA.Text);
+
+            double l = Convert.ToDouble(txtBoxL.Text);
+            double TB = Convert.ToDouble(txtBoxT.Text);
+
+            double b;
+            if (whichPDE == 1)
+                b = Convert.ToDouble(txtBoxB.Text);
+            else
+                b = Convert.ToDouble(txtBoxB2.Text);
+
+            double d = Convert.ToDouble(txtBoxD.Text);
+            double Iext = Convert.ToDouble(txtBoxI.Text);
+
+            bool deltaKer = rdBtnDeltaCoupl.Checked;
+
+            obj = new FHN_w_diffusion(alpha, beta, gamma, a, b, d, l, TB, Iext, m, n, deltaKer, this);
+
+            setPlot();
+
+            if (obj.T / m * 500 < 1)
+                timerT.Interval = 1;
+            else
+                timerT.Interval = Convert.ToInt32(obj.T / m * 500);
+
+            timerT.Tick += timerT_Tick;
         }
     }
 }
