@@ -8,7 +8,7 @@ namespace FHN_nonlocal_coupling
 {
     class FHN_wo_diffussion
     {
-        public Form1 form; // to access Form's controls
+        public WindowODE form; // to access Form's controls
         // variables and arrays
         private bool classical; // classical non-linearity?
         private int n;
@@ -88,7 +88,7 @@ namespace FHN_nonlocal_coupling
         }
 
         // constructors
-        public FHN_wo_diffussion(int n, double l, double TB, double u0, double v0, double iExt, double tau, double alpha, double beta, double a, bool classical, Form1 form)
+        public FHN_wo_diffussion(int n, double l, double TB, double u0, double v0, double iExt, double tau, double alpha, double beta, double a, bool classical, WindowODE form)
         {
             this.n = n;
             this.l = l;

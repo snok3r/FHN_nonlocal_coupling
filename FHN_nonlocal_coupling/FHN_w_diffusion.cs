@@ -7,9 +7,9 @@ using MathParser;
 
 namespace FHN_nonlocal_coupling
 {
-    class FHN_w_diffusion
+    class FHN_w_diffussion
     {
-        public Form1 form; // to access Form's controls
+        public WindowPDE form; // to access Form's controls
         // variables and arrays
         private bool deltaCoupl; // bool for deciding which equation solves
         private int n, m;
@@ -101,7 +101,7 @@ namespace FHN_nonlocal_coupling
         }
 
         // constructors
-        public FHN_w_diffusion(double alpha, double beta, double gamma, double a,double b, double d, double l, double TB, double iExt, int m, int n, bool deltaCoupl, Form1 form)
+        public FHN_w_diffussion(double alpha, double beta, double gamma, double a,double b, double d, double l, double TB, double iExt, int m, int n, bool deltaCoupl, WindowPDE form)
         {
             this.alpha = alpha;
             this.beta = beta;

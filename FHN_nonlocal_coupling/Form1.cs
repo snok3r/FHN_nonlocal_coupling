@@ -12,8 +12,8 @@ namespace FHN_nonlocal_coupling
 {
     public partial class Form1 : Form
     {
-        FHN_w_diffusion pde;
-        FHN_w_diffusion pde2;
+        FHN_w_diffussion pde;
+        FHN_w_diffussion pde2;
         FHN_wo_diffussion ode;
 
         public Form1()
@@ -251,7 +251,7 @@ namespace FHN_nonlocal_coupling
                 loadPDE(ref pde2);
         }
 
-        private void loadPDE(ref FHN_w_diffusion obj)
+        private void loadPDE(ref FHN_w_diffussion obj)
         {
             obj.N = Convert.ToInt32(txtBoxN.Text);
             obj.M = Convert.ToInt32(txtBoxM.Text);
@@ -277,7 +277,7 @@ namespace FHN_nonlocal_coupling
             btnPlotBeh();
         }
 
-        private void solvePDE(ref FHN_w_diffusion obj, int whichPDE)
+        private void solvePDE(ref FHN_w_diffussion obj, int whichPDE)
         {
             prBarSolve.Value = 0;
 
@@ -702,7 +702,7 @@ namespace FHN_nonlocal_coupling
             timerTWOD.Tick += timerTWOD_Tick;
         }
 
-        private void preparePDE(ref FHN_w_diffusion obj, int whichPDE)
+        private void preparePDE(ref FHN_w_diffussion obj, int whichPDE)
         {
             btnReset();
             btnLoadBeh();
@@ -733,7 +733,7 @@ namespace FHN_nonlocal_coupling
 
             bool deltaKer = rdBtnDeltaCoupl.Checked;
 
-            obj = new FHN_w_diffusion(alpha, beta, gamma, a, b, d, l, TB, Iext, m, n, deltaKer, this);
+            obj = new FHN_w_diffussion(alpha, beta, gamma, a, b, d, l, TB, Iext, m, n, deltaKer, this);
 
             setPlot();
 
