@@ -123,8 +123,6 @@ namespace FHN_nonlocal_coupling
         {   // initialize/declare arrays and steps
             // If we want to change one of the parameters: n or TB,
             // then it needs to call this (plus Intiials) functions again.
-            int j;
-
             this.N = n;
             this.L = l;
             this.T = TB;
@@ -133,7 +131,7 @@ namespace FHN_nonlocal_coupling
             this.ht = TB / n;  // step for t
 
             this.t = new double[n + 1]; // arrange t's
-            for (j = 0; j < n + 1; j++) this.t[j] = j * this.ht;
+            for (int j = 0; j < n + 1; j++) this.t[j] = j * this.ht;
 
             this.u = new double[n + 1];
             this.v = new double[n + 1];
@@ -141,7 +139,7 @@ namespace FHN_nonlocal_coupling
             this.v1 = new double[n + 1];
             this.v2 = new double[n + 1];
             this.u_null = new double[n + 1];
-            for (j = 0; j < n + 1; j++) this.u_null[j] = - this.L + j * this.h;
+            for (int j = 0; j < n + 1; j++) this.u_null[j] = - this.L + j * this.h;
         }
 
         public void initials(double u0, double v0)
@@ -201,7 +199,7 @@ namespace FHN_nonlocal_coupling
                 for (int j = 0; j < this.N + 1; j++)
                 {
                     this.v1[j] = f(this.u_null[j]) + this.I;
-                    this.v2[j] = (this.u_null[j] + this.Alpha) / this.Beta;
+                    this.v2[j] = (this.u_null[j] + Alpha) / Beta;
                 }
             }
         }

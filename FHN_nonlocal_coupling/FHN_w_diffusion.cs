@@ -167,9 +167,8 @@ namespace FHN_nonlocal_coupling
             int prBarMax = 10;
             form.prBarSolve.Maximum = prBarMax;
 
-            int i, j, k;
-
-            k = Convert.ToInt32(this.D / this.hx);
+            
+            int k = Convert.ToInt32(this.D / this.hx);
             this.D = this.hx * k;
             form.txtBoxD.Text = Convert.ToString(this.D);
 
@@ -185,10 +184,10 @@ namespace FHN_nonlocal_coupling
             di[0] = 0; di[this.N] = 0; // if Neumann condition changes (smth except du/dn = zero), it needs to be commented
 
             P[0] = ci[0] / bi[0];
-            for (i = 1; i < this.N; i++) P[i] = ci[1] / (bi[1] - ai[1] * P[i - 1]);
+            for (int i = 1; i < this.N; i++) P[i] = ci[1] / (bi[1] - ai[1] * P[i - 1]);
             P[this.N] = ci[2] / (bi[2] - ai[2] * P[this.N - 1]);
 
-            for (j = 0; j < this.M; j++)
+            for (int j = 0; j < this.M; j++)
             {
                 if ((j % ((this.M) / prBarMax)) == 0)
                 {   // updating progress bar
@@ -197,7 +196,7 @@ namespace FHN_nonlocal_coupling
 
                 //di[0] = this.ht * u_0_t(this.t[j]); // if Neumann condition is not a zero
                 Q[0] = -di[0] / bi[0];
-                for (i = 1; i < this.N; i++)
+                for (int i = 1; i < this.N; i++)
                 {
                     if (this.Eq)
                     {
@@ -239,10 +238,10 @@ namespace FHN_nonlocal_coupling
                 Q[this.N] = (ai[2] * Q[this.N - 1] - di[this.N]) / (bi[2] - ai[2] * P[this.N - 1]);
 
                 this.u[j + 1, this.N] = Q[this.N];
-                for (i = this.N - 1; i > -1; i--) u[j + 1, i] = P[i] * this.u[j + 1, i + 1] + Q[i];
+                for (int i = this.N - 1; i > -1; i--) u[j + 1, i] = P[i] * this.u[j + 1, i + 1] + Q[i];
 
                 double nextV;
-                for (i = 0; i < this.N + 1; i++)
+                for (int i = 0; i < this.N + 1; i++)
                 {
                     nextV = (this.v[j, i] + this.ht * (this.Alpha * this.u[j + 1, i] + this.Gamma)) / (1 + this.Beta * this.ht);
                     if (Double.IsNaN(nextV))
