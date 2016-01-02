@@ -3,121 +3,129 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MathParser;
 
 namespace FHN_nonlocal_coupling
 {
     class FHN_w_diffussion
     {
         public WindowPDE form; // to access Form's controls
+
         // variables and arrays
-        private bool deltaCoupl; // bool for deciding which equation solves
-        private int n, m;
         private double hx, ht; // steps
-        private double l, TB; // bounds; l is for x and TB/TBound is for t
         private double[] x, t;
-
         private double[,] u, v;
-        private double alpha, beta, gamma; // v's equation constants
-        private double a; // f constant
-        private double b, d; // b is before coupling, d is a delay in delta Kernel
-        private double iExt;
-
-        // strings and parsers with initials expression formulas
-        //public String SUx0;
-        //public Parser PUx0;
         
         // properties
         public int N
         {   // quantity of u,v x's
-            get { return this.n; }
-            set { this.n = value; }
+            get;
+            set;
         }
 
         public int M
         {   // quantity of u,v t's
-            get { return this.m; }
-            set { this.m = value; }
+            get;
+            set;
         }
 
-        public double L 
-        {   // x's segment
-            get { return this.l; }
-            set { this.l = value; }
+        public double L
+        {   // bound x's segment
+            get;
+            set;
         }
 
         public double T
-        {   // t's segment
-            get { return this.TB; }
-            set { this.TB = value; }
+        {   // bound t's segment
+            get;
+            set;
         }
 
         public double Alpha
-        {
-            get { return this.alpha; }
-            set { this.alpha = value; }
+        {   // v's equation constants
+            get;
+            set;
         }
-        
+
         public double Beta
-        {
-            get { return this.beta; }
-            set { this.beta = value; }
+        {   // v's equation constants
+            get;
+            set;
         }
 
         public double Gamma
-        {
-            get { return this.gamma; }
-            set { this.gamma = value; }
+        {   // v's equation constants
+            get;
+            set;
         }
 
         public double A
         {   // f's constant
-            get { return this.a; }
-            set { this.a = value; }
+            get;
+            set;
         }
 
         public double B
-        {
-            get { return this.b; }
-            set { this.b = value; }
+        {   // constant before coupling
+            get;
+            set;
         }
 
         public double D
-        {
-            get { return this.d; }
-            set { this.d = value; }
+        {   // a delay in delta Kernel
+            get;
+            set;
         }
 
         public double I
         {   // current
-            get { return this.iExt; }
-            set { this.iExt = value; }
-        }
-        
-        public bool Eq
-        { 
-            get { return this.deltaCoupl; }
-            set { this.deltaCoupl = value; }
+            get;
+            set;
         }
 
-        // constructors
+        public bool Eq
+        {   // bool for deciding which equation solves
+            get;
+            set;
+        }
+
+        //////////////////
+        // Constructors //
+        //////////////////
+
+        // Constructor with default values
+        public FHN_w_diffussion(WindowPDE f)
+        {
+            N = 2000;
+            M = 2000;
+            L = 50.0;
+            T = 40.0;
+            Alpha = 0.08;
+            Beta = 0.064;
+            Gamma = 0.056;
+            A = 0.1;
+            B = 0.0;
+            D = 1.0;
+            I = 0.0;
+            Eq = true;
+
+            this.form = f;
+        }
+
         public FHN_w_diffussion(double alpha, double beta, double gamma, double a,double b, double d, double l, double TB, double iExt, int m, int n, bool deltaCoupl, WindowPDE form)
         {
-            this.alpha = alpha;
-            this.beta = beta;
-            this.gamma = gamma;
-            this.a = a;
-            this.b = b;
-            this.d = d;
-            this.l = l;
-            this.TB = TB;
-            this.iExt = iExt;
-            this.n = n;
-            this.m = m;
-            this.deltaCoupl = deltaCoupl;
+            this.Alpha = alpha;
+            this.Beta = beta;
+            this.Gamma = gamma;
+            this.A = a;
+            this.B = b;
+            this.D = d;
+            this.L = l;
+            this.T = TB;
+            this.I = iExt;
+            this.N = n;
+            this.M = m;
+            this.Eq = deltaCoupl;
             this.form = form;
-
-            //this.PF = new Parser(); this.PF.Mode = Mode.RAD;
         }
 
         // methods
@@ -125,14 +133,14 @@ namespace FHN_nonlocal_coupling
         {   // initialize/declare arrays and steps
             // If we want to change one of the parameters: n, m, l, TB,
             // then it needs to call this (plus Intiials) functions again.
-            this.n = n;
-            this.m = m;
+            this.N = n;
+            this.M = m;
 
             this.hx = 2 * l / n; // step for x
             this.ht = TB / m;  // step for t
 
             this.x = new double[n + 1]; // arrange x's
-            for (int i = 0; i < n + 1; i++) this.x[i] = - this.l + i * this.hx;
+            for (int i = 0; i < n + 1; i++) this.x[i] = - this.L + i * this.hx;
 
             this.t = new double[m + 1]; // arrange t's
             for (int j = 0; j < m + 1; j++) this.t[j] = j * this.ht;
@@ -161,62 +169,62 @@ namespace FHN_nonlocal_coupling
 
             int i, j, k;
 
-            k = Convert.ToInt32(this.d / this.hx);
-            this.d = this.hx * k;
-            form.txtBoxD.Text = Convert.ToString(this.d);
+            k = Convert.ToInt32(this.D / this.hx);
+            this.D = this.hx * k;
+            form.txtBoxD.Text = Convert.ToString(this.D);
 
             double step = this.ht / (this.hx * this.hx);
 
-            double[] P = new double[this.n + 1];
-            double[] Q = new double[this.n + 1];
+            double[] P = new double[this.N + 1];
+            double[] Q = new double[this.N + 1];
 
             double[] ai = new double[3] { 0, -step, 1 };
             double[] bi = new double[3] { -1, -1 - 2 * step, 1 };
             double[] ci = new double[3] { -1, -step, 0 };
-            double[] di = new double[this.n + 1];
-            di[0] = 0; di[this.n] = 0; // if Neumann condition changes (smth except du/dn = zero), it needs to be commented
+            double[] di = new double[this.N + 1];
+            di[0] = 0; di[this.N] = 0; // if Neumann condition changes (smth except du/dn = zero), it needs to be commented
 
             P[0] = ci[0] / bi[0];
-            for (i = 1; i < this.n; i++) P[i] = ci[1] / (bi[1] - ai[1] * P[i - 1]);
-            P[this.n] = ci[2] / (bi[2] - ai[2] * P[this.n - 1]);
+            for (i = 1; i < this.N; i++) P[i] = ci[1] / (bi[1] - ai[1] * P[i - 1]);
+            P[this.N] = ci[2] / (bi[2] - ai[2] * P[this.N - 1]);
 
-            for (j = 0; j < this.m; j++)
+            for (j = 0; j < this.M; j++)
             {
-                if ((j % ((this.m) / prBarMax)) == 0)
+                if ((j % ((this.M) / prBarMax)) == 0)
                 {   // updating progress bar
                     form.prBarSolve.Value++;
                 }
 
                 //di[0] = this.ht * u_0_t(this.t[j]); // if Neumann condition is not a zero
                 Q[0] = -di[0] / bi[0];
-                for (i = 1; i < this.n; i++)
+                for (i = 1; i < this.N; i++)
                 {
-                    if (this.deltaCoupl)
+                    if (this.Eq)
                     {
-                        if (this.b != 0)
+                        if (this.B != 0)
                         {
                             if (i - k <= 1) // if x - d <= -l
                             {
-                                if (i + k <= n - 1) // if x - d <= -l and x + d <= l
-                                    di[i] = this.u[j, i] + this.ht * (this.b * (this.u[j, 1] + this.u[j, i + k] - 2 * this.u[j, i]) + f(this.u[j, i]) - this.v[j, i] + this.iExt);
-                                else if (i + k > n - 1) // if x - d <= -l and x + d > l
-                                    di[i] = this.u[j, i] + this.ht * (this.b * (this.u[j, 1] + this.u[j, n - 1] - 2 * this.u[j, i]) + f(this.u[j, i]) - this.v[j, i] + this.iExt);
+                                if (i + k <= N - 1) // if x - d <= -l and x + d <= l
+                                    di[i] = this.u[j, i] + this.ht * (this.B * (this.u[j, 1] + this.u[j, i + k] - 2 * this.u[j, i]) + f(this.u[j, i]) - this.v[j, i] + this.I);
+                                else if (i + k > N - 1) // if x - d <= -l and x + d > l
+                                    di[i] = this.u[j, i] + this.ht * (this.B * (this.u[j, 1] + this.u[j, N - 1] - 2 * this.u[j, i]) + f(this.u[j, i]) - this.v[j, i] + this.I);
                             }
                             else if (i - k > 1) // if x - d > -l
                             {
-                                if (i + k <= n - 1) // if x - d > -l and x + d <= l
-                                    di[i] = this.u[j, i] + this.ht * (this.b * (this.u[j, i - k] + this.u[j, i + k] - 2 * this.u[j, i]) + f(this.u[j, i]) - this.v[j, i] + this.iExt);
-                                else if (i + k > n - 1)  // if x - d > -l and x + d > l
-                                    di[i] = this.u[j, i] + this.ht * (this.b * (this.u[j, i - k] + this.u[j, n - 1] - 2 * this.u[j, i]) + f(this.u[j, i]) - this.v[j, i] + this.iExt);
+                                if (i + k <= N - 1) // if x - d > -l and x + d <= l
+                                    di[i] = this.u[j, i] + this.ht * (this.B * (this.u[j, i - k] + this.u[j, i + k] - 2 * this.u[j, i]) + f(this.u[j, i]) - this.v[j, i] + this.I);
+                                else if (i + k > N - 1)  // if x - d > -l and x + d > l
+                                    di[i] = this.u[j, i] + this.ht * (this.B * (this.u[j, i - k] + this.u[j, N - 1] - 2 * this.u[j, i]) + f(this.u[j, i]) - this.v[j, i] + this.I);
                             }
                         }
-                        else if (this.b == 0)
-                            di[i] = this.u[j, i] + this.ht * (f(this.u[j, i]) - this.v[j, i] + this.iExt);
+                        else if (this.B == 0)
+                            di[i] = this.u[j, i] + this.ht * (f(this.u[j, i]) - this.v[j, i] + this.I);
                     }
-                    else if (this.b != 0)
-                        di[i] = this.u[j, i] + this.ht * (this.b * (integral(j, i) - this.u[j, i]) + f(this.u[j, i]) - this.v[j, i] + this.iExt);
-                    else if (this.b == 0)
-                        di[i] = this.u[j, i] + this.ht * (f(this.u[j, i]) - this.v[j, i] + this.iExt);
+                    else if (this.B != 0)
+                        di[i] = this.u[j, i] + this.ht * (this.B * (integral(j, i) - this.u[j, i]) + f(this.u[j, i]) - this.v[j, i] + this.I);
+                    else if (this.B == 0)
+                        di[i] = this.u[j, i] + this.ht * (f(this.u[j, i]) - this.v[j, i] + this.I);
 
                     Q[i] = (ai[1] * Q[i - 1] - di[i]) / (bi[1] - ai[1] * P[i - 1]);
 
@@ -228,15 +236,15 @@ namespace FHN_nonlocal_coupling
 
                 }
                 //di[this.n] = this.ht * u_l_t(this.t[j]); // if Neumann condition is not a zero
-                Q[this.n] = (ai[2] * Q[this.n - 1] - di[this.n]) / (bi[2] - ai[2] * P[this.n - 1]);
+                Q[this.N] = (ai[2] * Q[this.N - 1] - di[this.N]) / (bi[2] - ai[2] * P[this.N - 1]);
 
-                this.u[j + 1, this.n] = Q[this.n];
-                for (i = this.n - 1; i > -1; i--) u[j + 1, i] = P[i] * this.u[j + 1, i + 1] + Q[i];
+                this.u[j + 1, this.N] = Q[this.N];
+                for (i = this.N - 1; i > -1; i--) u[j + 1, i] = P[i] * this.u[j + 1, i + 1] + Q[i];
 
                 double nextV;
-                for (i = 0; i < this.n + 1; i++)
+                for (i = 0; i < this.N + 1; i++)
                 {
-                    nextV = (this.v[j, i] + this.ht * (this.alpha * this.u[j + 1, i] + this.gamma)) / (1 + this.beta * this.ht);
+                    nextV = (this.v[j, i] + this.ht * (this.Alpha * this.u[j + 1, i] + this.Gamma)) / (1 + this.Beta * this.ht);
                     if (Double.IsNaN(nextV))
                     {   // catching V is NaN and show Error label
                         form.lblError.Visible = true;
@@ -277,8 +285,8 @@ namespace FHN_nonlocal_coupling
             double sum = 0;
             int k; // k is iteration variable for integrating (n+1 in number)
             sum += kernel(this.x[i] - this.x[0]) * this.u[j, 0];
-            for (k = 1; k < this.n; k++) sum += 2 * kernel(this.x[i] - this.x[k]) * this.u[j, k];
-            sum += kernel(this.x[i] - this.x[this.n]) * this.u[j, this.n];
+            for (k = 1; k < this.N; k++) sum += 2 * kernel(this.x[i] - this.x[k]) * this.u[j, k];
+            sum += kernel(this.x[i] - this.x[this.N]) * this.u[j, this.N];
 
             return this.hx * sum / 2;
         }
@@ -303,9 +311,6 @@ namespace FHN_nonlocal_coupling
                 return (u0 - 1) * (x + 30) / 10 + u0;
             else
                 return u0;
-            
-            //PUx0.Evaluate(SUx0.Replace("x", x.ToString()));
-            //return PUx0.Result;
             
             //return Math.Exp(-x * x / 2) / (2 * Math.PI);
             

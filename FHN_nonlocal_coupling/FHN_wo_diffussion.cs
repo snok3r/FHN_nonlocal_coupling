@@ -10,97 +10,110 @@ namespace FHN_nonlocal_coupling
     {
         public WindowODE form; // to access Form's controls
         // variables and arrays
-        private bool classical; // classical non-linearity?
-        private int n;
         private double h, ht; // step
-        private double l, TB; // bounds; l is for Kernel, TB/TBound is for t
         private double[] t; // time
-
         private double[] u, v, u_null, v1, v2; // v1, v2 are nullclines
-        private double u0, v0; // initials
-        private double iExt, tau, alpha, beta, a; // equation's constants
 
         // properties
         public int N
         {   // quantity of u,v t's
-            get { return this.n; }
-            set { this.n = value; }
+            get;
+            set;
         }
 
         public double L
-        {
-            get { return this.l; }
-            set { this.l = value; }
+        {   // bound for Kernel
+            get;
+            set;
         }
 
         public double T
         {   // t's segment
-            get { return this.TB; }
-            set { this.TB = value; }
+            get;
+            set;
         }
 
         public double U0
         {   // intiial u
-            get { return this.u0; }
-            set { this.u0 = value; }
+            get;
+            set;
         }
 
         public double V0
         {   // intiial v
-            get { return this.v0; }
-            set { this.v0 = value; }
+            get;
+            set;
         }
 
         public double I
         {   // current
-            get { return this.iExt; }
-            set { this.iExt = value; }
+            get;
+            set;
         }
 
         public double Tau
-        {
-            get { return this.tau; }
-            set { this.tau = value; }
+        {   // v's constant
+            get;
+            set;
         }
 
         public double Alpha
-        {
-            get { return this.alpha; }
-            set { this.alpha = value; }
+        {   // v's constant
+            get;
+            set;
         }
 
         public double Beta
-        {
-            get { return this.beta; }
-            set { this.beta = value; }
+        {   // v's constant
+            get;
+            set;
         }
 
         public double A
         {   // f's constant if non-classical
-            get { return this.a; }
-            set { this.a = value; }
+            get;
+            set;
         }
 
         public bool Eq
         {   // Is the equation with classical non-linearity?
-            get { return this.classical; }
-            set { this.classical = value; }
+            get;
+            set;
         }
 
         // constructors
+
+        // Constructor with default parameters
+        public FHN_wo_diffussion(WindowODE f)
+        {
+            N = 1000;
+            L = 2.5;
+            T = 100.0;
+            U0 = 1.0;
+            V0 = 0.1;
+            I = 0.5;
+            Tau = 12.5;
+            Alpha = 0.7;
+            Beta = 0.8;
+            A = 0.1;
+            Eq = true;
+
+            form = f;
+        }
+
         public FHN_wo_diffussion(int n, double l, double TB, double u0, double v0, double iExt, double tau, double alpha, double beta, double a, bool classical, WindowODE form)
         {
-            this.n = n;
-            this.l = l;
-            this.u0 = u0;
-            this.v0 = v0;
-            this.TB = TB;
-            this.iExt = iExt;
-            this.tau = tau;
-            this.alpha = alpha;
-            this.beta = beta;
-            this.a = a;
-            this.classical = classical;
+            this.N = n;
+            this.L = l;
+            this.U0 = u0;
+            this.V0 = v0;
+            this.T = TB;
+            this.I = iExt;
+            this.Tau = tau;
+            this.Alpha = alpha;
+            this.Beta = beta;
+            this.A = a;
+            this.Eq = classical;
 
             this.form = form;
         }
@@ -112,9 +125,9 @@ namespace FHN_nonlocal_coupling
             // then it needs to call this (plus Intiials) functions again.
             int j;
 
-            this.n = n;
-            this.l = l;
-            this.TB = TB;
+            this.N = n;
+            this.L = l;
+            this.T = TB;
 
             this.h = 2 * l / n; //
             this.ht = TB / n;  // step for t
@@ -128,7 +141,7 @@ namespace FHN_nonlocal_coupling
             this.v1 = new double[n + 1];
             this.v2 = new double[n + 1];
             this.u_null = new double[n + 1];
-            for (j = 0; j < n + 1; j++) this.u_null[j] = - this.l + j * this.h;
+            for (j = 0; j < n + 1; j++) this.u_null[j] = - this.L + j * this.h;
         }
 
         public void initials(double u0, double v0)
@@ -146,7 +159,7 @@ namespace FHN_nonlocal_coupling
 
             double utemp, vtemp;
 
-            for (int j = 0; j < this.n; j++)
+            for (int j = 0; j < this.N; j++)
             {
                 utemp = this.u[j] + this.ht * f1(this.u[j], this.v[j]);
                 vtemp = this.v[j] + this.ht * f2(this.u[j], this.v[j]);
@@ -170,7 +183,7 @@ namespace FHN_nonlocal_coupling
                 this.u[j + 1] = this.u[j] + this.ht / 2 * (f1(this.u[j], this.v[j]) + f1(utemp, vtemp));
                 this.v[j + 1] = this.v[j] + this.ht / 2 * (f2(this.u[j], this.v[j]) + f2(utemp, vtemp));
 
-                if ((j % ((this.n) / prBarMax)) == 0)
+                if ((j % ((this.N) / prBarMax)) == 0)
                 {   // updating progress bar
                     form.prBarSolveWOD.Value++;
                 }
@@ -183,12 +196,12 @@ namespace FHN_nonlocal_coupling
 
         public void nullclines()
         {
-            if (this.beta != 0.0)
+            if (this.Beta != 0.0)
             {
-                for (int j = 0; j < this.n + 1; j++)
+                for (int j = 0; j < this.N + 1; j++)
                 {
-                    this.v1[j] = f(this.u_null[j]) + this.iExt;
-                    this.v2[j] = (this.u_null[j] + this.alpha) / this.beta;
+                    this.v1[j] = f(this.u_null[j]) + this.I;
+                    this.v2[j] = (this.u_null[j] + this.Alpha) / this.Beta;
                 }
             }
         }
@@ -226,20 +239,20 @@ namespace FHN_nonlocal_coupling
         // various functions
         private double f1(double u, double v)
         {
-            return f(u) - v + this.iExt;
+            return f(u) - v + I;
         }
 
         private double f2(double u, double v)
         {
-            return (u + this.alpha - this.beta * v) / this.tau;
+            return (u + Alpha - Beta * v) / Tau;
         }
 
         private double f(double u) 
         {
-            if (this.classical)
+            if (Eq)
                 return u - u * u * u / 3;
             else
-                return - u * (u - 1) * (u - this.a);
+                return - u * (u - 1) * (u - A);
         }
     }
 }
