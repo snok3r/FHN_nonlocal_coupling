@@ -19,6 +19,13 @@ namespace FHN_nonlocal_coupling
             InitializeComponent();
         }
 
+        private void WindowODE_Load(object sender, EventArgs e)
+        {
+            ode = new FHN_wo_diffussion(this);
+
+            propertyGrid1.SelectedObject = ode;
+        }
+
         private void setPlotWOD()
         {
             chartTWOD.ChartAreas[0].AxisX.Minimum = 0;
@@ -119,10 +126,6 @@ namespace FHN_nonlocal_coupling
 
         private void btnLoadWOD_Click(object sender, EventArgs e)
         {
-            ode.N = Convert.ToInt32(txtBoxNWOD.Text);
-            ode.L = Convert.ToDouble(txtBoxLWOD.Text);
-            ode.T = Convert.ToDouble(txtBoxTWOD.Text);
-
             ode.load(ode.N, ode.L, ode.T);
 
             btnLoadWOD.Enabled = false;
@@ -134,17 +137,6 @@ namespace FHN_nonlocal_coupling
         private void btnSolveWOD_Click(object sender, EventArgs e)
         {
             prBarSolveWOD.Value = 0;
-
-            ode.U0 = Convert.ToDouble(txtBoxU0WOD.Text);
-            ode.V0 = Convert.ToDouble(txtBoxV0WOD.Text);
-
-            ode.I = Convert.ToDouble(txtBoxIWOD.Text);
-            ode.Tau = Convert.ToDouble(txtBoxTauWOD.Text);
-            ode.Alpha = Convert.ToDouble(txtBoxAlphaWOD.Text);
-            ode.Beta = Convert.ToDouble(txtBoxBetaWOD.Text);
-            ode.A = Convert.ToDouble(txtBoxFAWOD.Text);
-
-            ode.Eq = rdBtnClassicalNLWOD.Checked;
 
             ode.initials(ode.U0, ode.V0);
 
@@ -301,17 +293,11 @@ namespace FHN_nonlocal_coupling
         private void rdBtnClassicalNLWOD_CheckedChanged(object sender, EventArgs e)
         {
             btnSolveBehWOD();
-
-            lblFAWOD.Visible = false;
-            txtBoxFAWOD.Visible = false;
         }
 
         private void rdBtnNLWOD_CheckedChanged(object sender, EventArgs e)
         {
             btnSolveBehWOD();
-
-            lblFAWOD.Visible = true;
-            txtBoxFAWOD.Visible = true;
         }
 
         private void btnTuneTWOD_Click(object sender, EventArgs e)

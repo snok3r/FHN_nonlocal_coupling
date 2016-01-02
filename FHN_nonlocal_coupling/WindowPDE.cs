@@ -288,7 +288,7 @@ namespace FHN_nonlocal_coupling
 
             obj.D = Convert.ToDouble(txtBoxD.Text);
             obj.I = Convert.ToDouble(txtBoxI.Text);
-            obj.Eq = rdBtnDeltaCoupl.Checked;
+            obj.DeltaCoupling = rdBtnDeltaCoupl.Checked;
 
             obj.solve();
         }

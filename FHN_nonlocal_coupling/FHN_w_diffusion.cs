@@ -82,7 +82,7 @@ namespace FHN_nonlocal_coupling
             set;
         }
 
-        public bool Eq
+        public bool DeltaCoupling
         {   // bool for deciding which equation solves
             get;
             set;
@@ -106,7 +106,7 @@ namespace FHN_nonlocal_coupling
             B = 0.0;
             D = 1.0;
             I = 0.0;
-            Eq = true;
+            DeltaCoupling = true;
 
             this.form = f;
         }
@@ -124,7 +124,7 @@ namespace FHN_nonlocal_coupling
             this.I = iExt;
             this.N = n;
             this.M = m;
-            this.Eq = deltaCoupl;
+            this.DeltaCoupling = deltaCoupl;
             this.form = form;
         }
 
@@ -198,7 +198,7 @@ namespace FHN_nonlocal_coupling
                 Q[0] = -di[0] / bi[0];
                 for (int i = 1; i < this.N; i++)
                 {
-                    if (this.Eq)
+                    if (this.DeltaCoupling)
                     {
                         if (this.B != 0)
                         {

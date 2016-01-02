@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace FHN_nonlocal_coupling
 {
     class FHN_wo_diffussion
     {
         public WindowODE form; // to access Form's controls
+
         // variables and arrays
         private double h, ht; // step
         private double[] t; // time
@@ -69,13 +71,15 @@ namespace FHN_nonlocal_coupling
             set;
         }
 
+        [Description("F's constant in non-classical non-linearity (classical == false)")]
         public double A
         {   // f's constant if non-classical
             get;
             set;
         }
 
-        public bool Eq
+        [Description("Whether this is a classical non-linearity or not")]
+        public bool Classical
         {   // Is the equation with classical non-linearity?
             get;
             set;
@@ -96,7 +100,7 @@ namespace FHN_nonlocal_coupling
             Alpha = 0.7;
             Beta = 0.8;
             A = 0.1;
-            Eq = true;
+            Classical = true;
 
             form = f;
         }
@@ -113,7 +117,7 @@ namespace FHN_nonlocal_coupling
             this.Alpha = alpha;
             this.Beta = beta;
             this.A = a;
-            this.Eq = classical;
+            this.Classical = classical;
 
             this.form = form;
         }
@@ -194,7 +198,7 @@ namespace FHN_nonlocal_coupling
 
         public void nullclines()
         {
-            if (this.Beta != 0.0)
+            if (Beta != 0.0)
             {
                 for (int j = 0; j < this.N + 1; j++)
                 {
@@ -247,7 +251,7 @@ namespace FHN_nonlocal_coupling
 
         private double f(double u) 
         {
-            if (Eq)
+            if (Classical)
                 return u - u * u * u / 3;
             else
                 return - u * (u - 1) * (u - A);
