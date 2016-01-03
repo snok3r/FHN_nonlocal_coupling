@@ -48,6 +48,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AboutODE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutODE.Designer.cs">
+      <DependentUpon>AboutODE.cs</DependentUpon>
+    </Compile>
     <Compile Include="FHN_w_diffusion.cs" />
     <Compile Include="FHN_wo_diffussion.cs" />
     <Compile Include="Main.cs">
@@ -70,6 +76,9 @@
     <Compile Include="WindowPDE.Designer.cs">
       <DependentUpon>WindowPDE.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="AboutODE.resx">
+      <DependentUpon>AboutODE.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>

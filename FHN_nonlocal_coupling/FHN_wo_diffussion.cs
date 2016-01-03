@@ -17,6 +17,7 @@ namespace FHN_nonlocal_coupling
         private double[] u, v, u_null, v1, v2; // v1, v2 are nullclines
 
         // properties
+        [Description("Quantity of points for interval [0, T]")]
         public int N
         {   // quantity of u,v t's
             get;
@@ -24,11 +25,12 @@ namespace FHN_nonlocal_coupling
         }
 
         public double L
-        {   // bound for Kernel
+        {
             get;
             set;
         }
 
+        [Description("Interval [0, T]")]
         public double T
         {   // t's segment
             get;
@@ -47,24 +49,28 @@ namespace FHN_nonlocal_coupling
             set;
         }
 
+        [Description("Current I excitatory")]
         public double I
         {   // current
             get;
             set;
         }
 
+        [Description("v's constant")]
         public double Tau
         {   // v's constant
             get;
             set;
         }
 
+        [Description("v's constant")]
         public double Alpha
         {   // v's constant
             get;
             set;
         }
 
+        [Description("v's constant")]
         public double Beta
         {   // v's constant
             get;

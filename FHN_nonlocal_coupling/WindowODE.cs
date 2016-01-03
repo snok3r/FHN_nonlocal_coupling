@@ -12,7 +12,7 @@ namespace FHN_nonlocal_coupling
 {
     public partial class WindowODE : Form
     {
-        FHN_wo_diffussion[] odes = new FHN_wo_diffussion[1];
+        FHN_wo_diffussion[] odes;
 
         public WindowODE()
         {
@@ -21,22 +21,47 @@ namespace FHN_nonlocal_coupling
 
         private void WindowODE_Load(object sender, EventArgs e)
         {
-            for (int i = 0; i < odes.Length; i++)
+            loadEquations(1);
+        }
+
+        private void loadEquations(int num)
+        {
+            odes = new FHN_wo_diffussion[num];
+
+            for (int i = 0; i < num; i++)
                 odes[i] = new FHN_wo_diffussion(this);
 
             propertyGrid1.SelectedObject = odes[0];
-            //propertyGrid2.SelectedObject = odes[1];
+
+            if (num == 2)
+                propertyGrid2.SelectedObject = odes[1];
+            else
+                propertyGrid2.SelectedObject = null;
         }
 
-        private void plotWOD(int j)
+        private void plotWOD(int j, FHN_wo_diffussion obj, int numEq)
         {   // plots single point on t plot and phase plane
-            chartTWOD.Series[0].Points.AddXY(odes[0].getT(j), odes[0].getU(j));
-            chartTWOD.Series[1].Points.AddXY(odes[0].getT(j), odes[0].getV(j));
+            chartTWOD.Series[2 * numEq].Points.AddXY(obj.getT(j), obj.getU(j));
+            chartTWOD.Series[2 * numEq + 1].Points.AddXY(obj.getT(j), obj.getV(j));
 
-            chartPhaseWOD.Series[0].Points.AddXY(odes[0].getU(j), odes[0].getV(j));
+            chartPhaseWOD.Series[3 * numEq].Points.AddXY(obj.getU(j), obj.getV(j));
         }
-        
-        private void propertyGrid1_Validated(object sender, EventArgs e)
+
+        private void plotNullclines(FHN_wo_diffussion obj, int numEq)
+        {
+            for (int j = 0; j < obj.N + 1; j++)
+            {   // drawing nullclines
+                chartPhaseWOD.Series[3 * numEq + 1].Points.AddXY(obj.getUN(j), obj.getV1(j));
+                chartPhaseWOD.Series[3 * numEq + 2].Points.AddXY(obj.getUN(j), obj.getV2(j));
+            }
+        }
+
+        private void propertyGrid1_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
+        {
+            btnSolveBehWOD();
+        }
+
+        private void propertyGrid2_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
         {
             btnSolveBehWOD();
         }
@@ -101,25 +126,23 @@ namespace FHN_nonlocal_coupling
         {
             setPlotWOD();
 
-            if (rdBtnTmrWOD.Checked) clearPlotWOD();
-
-            for (int j = 0; j < odes[0].N + 1; j++)
-            {   // drawing nullclines
-                chartPhaseWOD.Series[1].Points.AddXY(odes[0].getUN(j), odes[0].getV1(j));
-                chartPhaseWOD.Series[2].Points.AddXY(odes[0].getUN(j), odes[0].getV2(j));
-            }
-
             // if 'Plot all' checked then need to clear plot.
             if (rdBtnPlotAllWOD.Checked)
             {
                 //trBarTWOD.Enabled = false;
                 trBarTWOD.Value = 0;
 
-                clearAllButPhasePlotWOD();
+                clearPlotWOD();
 
-                for (int j = 0; j < odes[0].N + 1; j++)
+                for (int i = 0; i < odes.Length; i++)
+                    plotNullclines(odes[i], i);
+
+                for (int i = 0; i < odes.Length; i++)
                 {
-                    plotWOD(j);
+                    for (int j = 0; j < odes[i].N + 1; j++)
+                    {
+                        plotWOD(j, odes[i], i);
+                    }
                 }
             }
 
@@ -139,26 +162,32 @@ namespace FHN_nonlocal_coupling
         {
             if (trBarTWOD.Value == odes[0].N)
             {
-                plotWOD(trBarTWOD.Value);
+                for(int i =0 ; i < odes.Length; i++)
+                    plotWOD(trBarTWOD.Value, odes[i], i);
+
                 trBarTWOD.Value = 0;
 
-                clearAllButPhasePlotWOD();
+                clearAllButNullclinesPlotWOD();
             }
             else
             {
-                trBarTWOD.Value += 1;
-                plotWOD(trBarTWOD.Value);
+                trBarTWOD.Value++;
+                for (int i = 0; i < odes.Length; i++)
+                    plotWOD(trBarTWOD.Value, odes[i], i);
             }
         }
 
         private void trBarTWOD_Scroll(object sender, EventArgs e)
         {
-            clearAllButPhasePlotWOD();
+            clearAllButNullclinesPlotWOD();
             timerTWOD.Enabled = false;
 
             // plot all 'till moment on the trackbar
             for (int j = 0; j < trBarTWOD.Value; j++)
-                plotWOD(j);
+            {
+                for (int i = 0; i < odes.Length; i++)
+                    plotWOD(j, odes[i], i);
+            }
         }
 
         private void btnTuneTWOD_Click(object sender, EventArgs e)
@@ -173,12 +202,13 @@ namespace FHN_nonlocal_coupling
             chartPhaseWOD.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(txtBoxMinUVPhaseWOD.Text);
         }
 
-        private void clearAllButPhasePlotWOD()
+        private void clearAllButNullclinesPlotWOD()
         {
-            chartTWOD.Series[0].Points.Clear();
-            chartTWOD.Series[1].Points.Clear();
+            for (int i = 0; i < chartTWOD.Series.Count(); i++)
+                chartTWOD.Series[i].Points.Clear();
 
-            chartPhaseWOD.Series[0].Points.Clear();
+            for (int i = 0; i < 2; i++)
+                chartPhaseWOD.Series[3 * i].Points.Clear();
         }
 
         private void clearPlotWOD()
@@ -218,6 +248,20 @@ namespace FHN_nonlocal_coupling
 
             chartPhaseWOD.ChartAreas[0].AxisY.Maximum = 1.5 + odes[0].I;
             chartPhaseWOD.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(txtBoxMinUVPhaseWOD.Text);
+        }
+
+        private void checkBox2ndEq_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox2ndEq.Checked)
+                loadEquations(2);
+            else
+                loadEquations(1);
+        }
+
+        private void btnAbout_Click(object sender, EventArgs e)
+        {
+            AboutODE o = new AboutODE();
+            o.Show();
         }
     }
 }
