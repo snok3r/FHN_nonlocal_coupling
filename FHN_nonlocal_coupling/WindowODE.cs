@@ -115,10 +115,7 @@ namespace FHN_nonlocal_coupling
                 //trBarTWOD.Enabled = false;
                 trBarTWOD.Value = 0;
 
-                chartTWOD.Series[0].Points.Clear();
-                chartTWOD.Series[1].Points.Clear();
-
-                chartPhaseWOD.Series[0].Points.Clear();
+                clearAllButPhasePlotWOD();
 
                 for (int j = 0; j < odes[0].N + 1; j++)
                 {
@@ -145,10 +142,7 @@ namespace FHN_nonlocal_coupling
                 plotWOD(trBarTWOD.Value);
                 trBarTWOD.Value = 0;
 
-                chartTWOD.Series[0].Points.Clear();
-                chartTWOD.Series[1].Points.Clear();
-
-                chartPhaseWOD.Series[0].Points.Clear();
+                clearAllButPhasePlotWOD();
             }
             else
             {
@@ -159,11 +153,7 @@ namespace FHN_nonlocal_coupling
 
         private void trBarTWOD_Scroll(object sender, EventArgs e)
         {
-            chartTWOD.Series[0].Points.Clear();
-            chartTWOD.Series[1].Points.Clear();
-
-            chartPhaseWOD.Series[0].Points.Clear();
-
+            clearAllButPhasePlotWOD();
             timerTWOD.Enabled = false;
 
             // plot all 'till moment on the trackbar
@@ -181,6 +171,14 @@ namespace FHN_nonlocal_coupling
         {
             chartPhaseWOD.ChartAreas[0].AxisY.Maximum = Convert.ToDouble(txtBoxMaxUVPhaseWOD.Text);
             chartPhaseWOD.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(txtBoxMinUVPhaseWOD.Text);
+        }
+
+        private void clearAllButPhasePlotWOD()
+        {
+            chartTWOD.Series[0].Points.Clear();
+            chartTWOD.Series[1].Points.Clear();
+
+            chartPhaseWOD.Series[0].Points.Clear();
         }
 
         private void clearPlotWOD()
