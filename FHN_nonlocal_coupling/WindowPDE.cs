@@ -367,5 +367,11 @@ namespace FHN_nonlocal_coupling
 
             timerT.Tick += timerT_Tick;
         }
+
+        private void btnAbout_Click(object sender, EventArgs e)
+        {
+            AboutPDE o = new AboutPDE();
+            o.Show();
+        }
     }
 }

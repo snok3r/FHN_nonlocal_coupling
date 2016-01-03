@@ -54,6 +54,12 @@
     <Compile Include="AboutODE.Designer.cs">
       <DependentUpon>AboutODE.cs</DependentUpon>
     </Compile>
+    <Compile Include="AboutPDE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutPDE.Designer.cs">
+      <DependentUpon>AboutPDE.cs</DependentUpon>
+    </Compile>
     <Compile Include="FHN_w_diffusion.cs" />
     <Compile Include="FHN_wo_diffussion.cs" />
     <Compile Include="Main.cs">
@@ -78,6 +84,9 @@
     </Compile>
     <EmbeddedResource Include="AboutODE.resx">
       <DependentUpon>AboutODE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AboutPDE.resx">
+      <DependentUpon>AboutPDE.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>

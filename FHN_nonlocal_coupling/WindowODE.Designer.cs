@@ -391,7 +391,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(168, 343);
+            this.tabPage2.Size = new System.Drawing.Size(168, 302);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Second eq";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -454,6 +454,7 @@
             this.Controls.Add(this.btnPlotWOD);
             this.Controls.Add(this.btnSolveWOD);
             this.Name = "WindowODE";
+            this.ShowIcon = false;
             this.Text = "WindowODE";
             this.Load += new System.EventHandler(this.WindowODE_Load);
             ((System.ComponentModel.ISupportInitialize)(this.chartTWOD)).EndInit();
