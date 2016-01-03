@@ -85,8 +85,6 @@ namespace FHN_nonlocal_coupling
             set;
         }
 
-        // constructors
-
         // Constructor with default parameters
         public FHN_wo_diffussion(WindowODE f)
         {
@@ -105,137 +103,104 @@ namespace FHN_nonlocal_coupling
             form = f;
         }
 
-        public FHN_wo_diffussion(int n, double l, double TB, double u0, double v0, double iExt, double tau, double alpha, double beta, double a, bool classical, WindowODE form)
-        {
-            this.N = n;
-            this.L = l;
-            this.U0 = u0;
-            this.V0 = v0;
-            this.T = TB;
-            this.I = iExt;
-            this.Tau = tau;
-            this.Alpha = alpha;
-            this.Beta = beta;
-            this.A = a;
-            this.Classical = classical;
-
-            this.form = form;
-        }
-
         // methods
-        public void load(int n, double l, double TB)
+        public void load()
         {   // initialize/declare arrays and steps
             // If we want to change one of the parameters: n or TB,
             // then it needs to call this (plus Intiials) functions again.
-            this.N = n;
-            this.L = l;
-            this.T = TB;
 
-            this.h = 2 * l / n; //
-            this.ht = TB / n;  // step for t
+            h = 2 * L / N; //
+            ht = T / N;  // step for t
 
-            this.t = new double[n + 1]; // arrange t's
-            for (int j = 0; j < n + 1; j++) this.t[j] = j * this.ht;
+            t = new double[N + 1]; // arrange t's
+            for (int j = 0; j < N + 1; j++) 
+                t[j] = j * ht;
 
-            this.u = new double[n + 1];
-            this.v = new double[n + 1];
+            u = new double[N + 1];
+            v = new double[N + 1];
 
-            this.v1 = new double[n + 1];
-            this.v2 = new double[n + 1];
-            this.u_null = new double[n + 1];
-            for (int j = 0; j < n + 1; j++) this.u_null[j] = - this.L + j * this.h;
+            v1 = new double[N + 1];
+            v2 = new double[N + 1];
+            
+            u_null = new double[N + 1];
+            for (int j = 0; j < N + 1; j++) 
+                u_null[j] = - L + j * h;
         }
 
-        public void initials(double u0, double v0)
+        public void initials()
         {   // Initialize initials
-            this.u[0] = u0;
-            this.v[0] = v0;
+            u[0] = U0;
+            v[0] = V0;
         }
 
-        public void solve()
+        public int solve()
         {   // If we changed ONLY alpha, beta, Iext, Kernel or f (either a),
             // then just recall this function.
 
-            int prBarMax = 10;
-            form.prBarSolveWOD.Maximum = prBarMax;
-
             double utemp, vtemp;
 
-            for (int j = 0; j < this.N; j++)
+            for (int j = 0; j < N; j++)
             {
-                utemp = this.u[j] + this.ht * f1(this.u[j], this.v[j]);
-                vtemp = this.v[j] + this.ht * f2(this.u[j], this.v[j]);
+                utemp = u[j] + ht * f1(u[j], v[j]);
+                vtemp = v[j] + ht * f2(u[j], v[j]);
 
-                if (Double.IsNaN(utemp))
-                {   // catching NaN
-                    form.lblErrorWOD.Visible = true;
-                    break;
-                }
-                else if (Double.IsNaN(vtemp))
-                {   // catching NaN
-                    form.lblErrorWOD.Visible = true;
-                    break;
-                }
+                if (Double.IsNaN(utemp) || Double.IsNaN(vtemp))
+                    return -1;
 
                 //// Euler's 1st order
-                //this.u[j + 1] = utemp;
-                //this.v[j + 1] = vtemp;
+                //u[j + 1] = utemp;
+                //v[j + 1] = vtemp;
 
                 // Euler's 2nd order
-                this.u[j + 1] = this.u[j] + this.ht / 2 * (f1(this.u[j], this.v[j]) + f1(utemp, vtemp));
-                this.v[j + 1] = this.v[j] + this.ht / 2 * (f2(this.u[j], this.v[j]) + f2(utemp, vtemp));
-
-                if ((j % ((this.N) / prBarMax)) == 0)
-                {   // updating progress bar
-                    form.prBarSolveWOD.Value++;
-                }
+                u[j + 1] = u[j] + ht / 2 * (f1(u[j], v[j]) + f1(utemp, vtemp));
+                v[j + 1] = v[j] + ht / 2 * (f2(u[j], v[j]) + f2(utemp, vtemp));
             }
             
             nullclines();
 
-            if (form.prBarSolveWOD.Value < prBarMax) form.prBarSolveWOD.Value = prBarMax;
+            return 0;
         }
 
         public void nullclines()
         {
             if (Beta != 0.0)
             {
-                for (int j = 0; j < this.N + 1; j++)
+                for (int j = 0; j < N + 1; j++)
                 {
-                    this.v1[j] = f(this.u_null[j]) + this.I;
-                    this.v2[j] = (this.u_null[j] + Alpha) / Beta;
+                    v1[j] = f(u_null[j]) + I;
+                    v2[j] = (u_null[j] + Alpha) / Beta;
                 }
             }
         }
 
         public double getT(int j)
         { 
-            return this.t[j]; 
+            return t[j]; 
         }
 
         public double getU(int j)
         { 
-            return this.u[j]; 
+            return u[j]; 
         }
 
         public double getV(int j)
         { 
-            return this.v[j]; 
+            return v[j]; 
         }
 
         public double getUN(int j)
         { 
-            return this.u_null[j]; 
+            return u_null[j]; 
         }
 
         public double getV1(int j)
         { 
-            return this.v1[j]; 
+            return v1[j]; 
         }
 
         public double getV2(int j)
         { 
-            return this.v2[j]; 
+            return v2[j]; 
         }
 
         // various functions

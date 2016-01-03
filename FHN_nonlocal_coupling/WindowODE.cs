@@ -12,7 +12,7 @@ namespace FHN_nonlocal_coupling
 {
     public partial class WindowODE : Form
     {
-        FHN_wo_diffussion ode;
+        FHN_wo_diffussion[] odes = new FHN_wo_diffussion[1];
 
         public WindowODE()
         {
@@ -21,75 +21,24 @@ namespace FHN_nonlocal_coupling
 
         private void WindowODE_Load(object sender, EventArgs e)
         {
-            ode = new FHN_wo_diffussion(this);
+            for (int i = 0; i < odes.Length; i++)
+                odes[i] = new FHN_wo_diffussion(this);
 
-            propertyGrid1.SelectedObject = ode;
-        }
-
-        private void setPlotWOD()
-        {
-            chartTWOD.ChartAreas[0].AxisX.Minimum = 0;
-            chartTWOD.ChartAreas[0].AxisX.Maximum = ode.T + 1;
-
-            chartTWOD.ChartAreas[0].AxisY.Maximum = Convert.ToDouble(txtBoxMaxUVTWOD.Text);
-            chartTWOD.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(txtBoxMinUVTWOD.Text);
-
-            chartTWOD.ChartAreas[0].AxisX.Interval = Convert.ToInt32((chartTWOD.ChartAreas[0].AxisX.Maximum + chartTWOD.ChartAreas[0].AxisX.Minimum) / 5.0);
-            chartTWOD.ChartAreas[0].AxisY.Interval = Convert.ToInt32((chartTWOD.ChartAreas[0].AxisY.Maximum + chartTWOD.ChartAreas[0].AxisY.Minimum) / 4.0);
-
-            chartPhaseWOD.ChartAreas[0].AxisX.Minimum = -ode.L;
-            chartPhaseWOD.ChartAreas[0].AxisX.Maximum = ode.L;
-
-            chartPhaseWOD.ChartAreas[0].AxisY.Maximum = 1.5 + ode.I;
-            chartPhaseWOD.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(txtBoxMinUVPhaseWOD.Text);
+            propertyGrid1.SelectedObject = odes[0];
+            //propertyGrid2.SelectedObject = odes[1];
         }
 
         private void plotWOD(int j)
         {   // plots single point on t plot and phase plane
-            chartTWOD.Series[0].Points.AddXY(ode.getT(j), ode.getU(j));
-            chartTWOD.Series[1].Points.AddXY(ode.getT(j), ode.getV(j));
+            chartTWOD.Series[0].Points.AddXY(odes[0].getT(j), odes[0].getU(j));
+            chartTWOD.Series[1].Points.AddXY(odes[0].getT(j), odes[0].getV(j));
 
-            chartPhaseWOD.Series[0].Points.AddXY(ode.getU(j), ode.getV(j));
+            chartPhaseWOD.Series[0].Points.AddXY(odes[0].getU(j), odes[0].getV(j));
         }
-
-        private void clearPlotWOD()
+        
+        private void propertyGrid1_Validated(object sender, EventArgs e)
         {
-            chartTWOD.Series[0].Points.Clear();
-            chartTWOD.Series[1].Points.Clear();
-
-            chartPhaseWOD.Series[0].Points.Clear();
-            chartPhaseWOD.Series[1].Points.Clear();
-            chartPhaseWOD.Series[2].Points.Clear();
-        }
-
-        private void btnResetWOD()
-        {
-            // if tab with non-diffusion eqaution becomes active than recall this funciton
-            btnLoadWOD.Enabled = true;
-            btnSolveWOD.Enabled = false;
-            btnPlotWOD.Enabled = false;
-
-            lblErrorWOD.Visible = false;
-
-            prBarSolveWOD.Value = 0;
-        }
-
-        private void btnLoadBehWOD()
-        {
-            // Load button behaviour
-            // if we change n, w_coupl (?), l, or TB
-            if (btnPlotWOD.Enabled || btnSolveWOD.Enabled)
-            {
-                btnPlotWOD.Enabled = false;
-                btnSolveWOD.Enabled = false;
-                btnLoadWOD.Enabled = true;
-            }
-
-            lblErrorWOD.Visible = false;
-
-            trBarTWOD.Value = 0;
-            trBarTWOD.Enabled = false;
-            timerTWOD.Enabled = false;
+            btnSolveBehWOD();
         }
 
         private void btnSolveBehWOD()
@@ -99,7 +48,6 @@ namespace FHN_nonlocal_coupling
             // then disable Plot and call Solve again.
             if (btnPlotWOD.Enabled)
             {
-                btnLoadWOD.Enabled = false;
                 btnPlotWOD.Enabled = false;
                 btnSolveWOD.Enabled = true;
             }
@@ -124,23 +72,27 @@ namespace FHN_nonlocal_coupling
             }
         }
 
-        private void btnLoadWOD_Click(object sender, EventArgs e)
-        {
-            ode.load(ode.N, ode.L, ode.T);
-
-            btnLoadWOD.Enabled = false;
-            btnSolveWOD.Enabled = true;
-
-            trBarTWOD.Maximum = ode.N;
-        }
-
         private void btnSolveWOD_Click(object sender, EventArgs e)
         {
             prBarSolveWOD.Value = 0;
+            prBarSolveWOD.Maximum = 3;
+            trBarTWOD.Maximum = odes[0].N;
 
-            ode.initials(ode.U0, ode.V0);
+            for (int i = 0; i < odes.Length; i++)
+                odes[i].load();
+            prBarSolveWOD.Value++;
 
-            ode.solve();
+            for (int i = 0; i < odes.Length; i++)
+                odes[i].initials();
+            prBarSolveWOD.Value++;
+
+            for (int i = 0; i < odes.Length; i++)
+            {
+                int err = odes[i].solve();
+                if (err != 0)
+                    lblErrorWOD.Visible = true;
+            }
+            prBarSolveWOD.Value++;
 
             btnPlotBehWOD();
         }
@@ -151,14 +103,10 @@ namespace FHN_nonlocal_coupling
 
             if (rdBtnTmrWOD.Checked) clearPlotWOD();
 
-            // clean nullclines before drawing in case Iext changed
-            chartPhaseWOD.Series[1].Points.Clear();
-            chartPhaseWOD.Series[2].Points.Clear();
-
-            for (int j = 0; j < ode.N + 1; j++)
+            for (int j = 0; j < odes[0].N + 1; j++)
             {   // drawing nullclines
-                chartPhaseWOD.Series[1].Points.AddXY(ode.getUN(j), ode.getV1(j));
-                chartPhaseWOD.Series[2].Points.AddXY(ode.getUN(j), ode.getV2(j));
+                chartPhaseWOD.Series[1].Points.AddXY(odes[0].getUN(j), odes[0].getV1(j));
+                chartPhaseWOD.Series[2].Points.AddXY(odes[0].getUN(j), odes[0].getV2(j));
             }
 
             // if 'Plot all' checked then need to clear plot.
@@ -172,7 +120,7 @@ namespace FHN_nonlocal_coupling
 
                 chartPhaseWOD.Series[0].Points.Clear();
 
-                for (int j = 0; j < ode.N + 1; j++)
+                for (int j = 0; j < odes[0].N + 1; j++)
                 {
                     plotWOD(j);
                 }
@@ -192,7 +140,7 @@ namespace FHN_nonlocal_coupling
 
         private void timerTWOD_Tick(object sender, EventArgs e)
         {
-            if (trBarTWOD.Value == ode.N)
+            if (trBarTWOD.Value == odes[0].N)
             {
                 plotWOD(trBarTWOD.Value);
                 trBarTWOD.Value = 0;
@@ -206,18 +154,6 @@ namespace FHN_nonlocal_coupling
             {
                 trBarTWOD.Value += 1;
                 plotWOD(trBarTWOD.Value);
-            }
-        }
-
-        private void btnStopTimerWOD_Click(object sender, EventArgs e)
-        {
-            if (timerTWOD.Enabled)
-            {
-                rdBtnTmrWOD.Checked = false;
-                timerTWOD.Enabled = false;
-                //trBarTWOD.Enabled = false;
-
-                rdBtnPlotAllWOD.Checked = true;
             }
         }
 
@@ -235,71 +171,6 @@ namespace FHN_nonlocal_coupling
                 plotWOD(j);
         }
 
-        private void txtBoxNWOD_TextChanged(object sender, EventArgs e)
-        {
-            btnLoadBehWOD();
-        }
-
-        private void txtBoxLWOD_TextChanged(object sender, EventArgs e)
-        {
-            btnLoadBehWOD();
-        }
-
-        private void txtBoxTWOD_TextChanged(object sender, EventArgs e)
-        {
-            btnLoadBehWOD();
-        }
-
-        private void txtBoxU0WOD_TextChanged(object sender, EventArgs e)
-        {
-            btnSolveBehWOD();
-        }
-
-        private void txtBoxV0WOD_TextChanged(object sender, EventArgs e)
-        {
-            btnSolveBehWOD();
-        }
-
-        private void txtBoxIWOD_TextChanged(object sender, EventArgs e)
-        {
-            btnSolveBehWOD();
-        }
-
-        private void txtBoxTauWOD_TextChanged(object sender, EventArgs e)
-        {
-            btnSolveBehWOD();
-        }
-
-        private void txtBoxAlphaWOD_TextChanged(object sender, EventArgs e)
-        {
-            btnSolveBehWOD();
-        }
-
-        private void txtBoxBetaWOD_TextChanged(object sender, EventArgs e)
-        {
-            btnSolveBehWOD();
-        }
-
-        private void txtBoxFAWOD_TextChanged(object sender, EventArgs e)
-        {
-            btnSolveBehWOD();
-        }
-
-        private void txtBoxB2_TextChanged(object sender, EventArgs e)
-        {
-            btnSolveBehWOD();
-        }
-
-        private void rdBtnClassicalNLWOD_CheckedChanged(object sender, EventArgs e)
-        {
-            btnSolveBehWOD();
-        }
-
-        private void rdBtnNLWOD_CheckedChanged(object sender, EventArgs e)
-        {
-            btnSolveBehWOD();
-        }
-
         private void btnTuneTWOD_Click(object sender, EventArgs e)
         {
             chartTWOD.ChartAreas[0].AxisY.Maximum = Convert.ToDouble(txtBoxMaxUVTWOD.Text);
@@ -309,6 +180,45 @@ namespace FHN_nonlocal_coupling
         private void btnTunePhaseWOD_Click(object sender, EventArgs e)
         {
             chartPhaseWOD.ChartAreas[0].AxisY.Maximum = Convert.ToDouble(txtBoxMaxUVPhaseWOD.Text);
+            chartPhaseWOD.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(txtBoxMinUVPhaseWOD.Text);
+        }
+
+        private void clearPlotWOD()
+        {
+            for (int i = 0; i < chartTWOD.Series.Count(); i++)
+                chartTWOD.Series[i].Points.Clear();
+
+            for (int i = 0; i < chartPhaseWOD.Series.Count(); i++)
+                chartPhaseWOD.Series[i].Points.Clear();
+        }
+
+        private void btnStopTimerWOD_Click(object sender, EventArgs e)
+        {
+            if (timerTWOD.Enabled)
+            {
+                rdBtnTmrWOD.Checked = false;
+                timerTWOD.Enabled = false;
+                //trBarTWOD.Enabled = false;
+
+                rdBtnPlotAllWOD.Checked = true;
+            }
+        }
+
+        private void setPlotWOD()
+        {
+            chartTWOD.ChartAreas[0].AxisX.Minimum = 0;
+            chartTWOD.ChartAreas[0].AxisX.Maximum = odes[0].T + 1;
+
+            chartTWOD.ChartAreas[0].AxisY.Maximum = Convert.ToDouble(txtBoxMaxUVTWOD.Text);
+            chartTWOD.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(txtBoxMinUVTWOD.Text);
+
+            chartTWOD.ChartAreas[0].AxisX.Interval = Convert.ToInt32((chartTWOD.ChartAreas[0].AxisX.Maximum + chartTWOD.ChartAreas[0].AxisX.Minimum) / 5.0);
+            chartTWOD.ChartAreas[0].AxisY.Interval = Convert.ToInt32((chartTWOD.ChartAreas[0].AxisY.Maximum + chartTWOD.ChartAreas[0].AxisY.Minimum) / 4.0);
+
+            chartPhaseWOD.ChartAreas[0].AxisX.Minimum = -odes[0].L;
+            chartPhaseWOD.ChartAreas[0].AxisX.Maximum = odes[0].L;
+
+            chartPhaseWOD.ChartAreas[0].AxisY.Maximum = 1.5 + odes[0].I;
             chartPhaseWOD.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(txtBoxMinUVPhaseWOD.Text);
         }
     }

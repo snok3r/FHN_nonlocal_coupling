@@ -29,15 +29,15 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series10 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea17 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend17 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series41 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series42 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea18 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend18 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series43 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series44 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series45 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.txtBoxMaxUVTWOD = new System.Windows.Forms.TextBox();
             this.rdBtnPlotAllWOD = new System.Windows.Forms.RadioButton();
             this.txtBoxMinUVTWOD = new System.Windows.Forms.TextBox();
@@ -59,7 +59,6 @@
             this.lblMaxUVWOD = new System.Windows.Forms.Label();
             this.btnPlotWOD = new System.Windows.Forms.Button();
             this.btnSolveWOD = new System.Windows.Forms.Button();
-            this.btnLoadWOD = new System.Windows.Forms.Button();
             this.timerTWOD = new System.Windows.Forms.Timer(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -185,24 +184,24 @@
             // 
             // chartTWOD
             // 
-            chartArea3.Name = "ChartArea1";
-            this.chartTWOD.ChartAreas.Add(chartArea3);
-            legend3.Name = "Legend1";
-            this.chartTWOD.Legends.Add(legend3);
+            chartArea17.Name = "ChartArea1";
+            this.chartTWOD.ChartAreas.Add(chartArea17);
+            legend17.Name = "Legend1";
+            this.chartTWOD.Legends.Add(legend17);
             this.chartTWOD.Location = new System.Drawing.Point(247, 8);
             this.chartTWOD.Name = "chartTWOD";
-            series6.BorderWidth = 3;
-            series6.ChartArea = "ChartArea1";
-            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series6.Legend = "Legend1";
-            series6.Name = "U";
-            series7.BorderWidth = 3;
-            series7.ChartArea = "ChartArea1";
-            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series7.Legend = "Legend1";
-            series7.Name = "V";
-            this.chartTWOD.Series.Add(series6);
-            this.chartTWOD.Series.Add(series7);
+            series41.BorderWidth = 3;
+            series41.ChartArea = "ChartArea1";
+            series41.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series41.Legend = "Legend1";
+            series41.Name = "U";
+            series42.BorderWidth = 3;
+            series42.ChartArea = "ChartArea1";
+            series42.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series42.Legend = "Legend1";
+            series42.Name = "V";
+            this.chartTWOD.Series.Add(series41);
+            this.chartTWOD.Series.Add(series42);
             this.chartTWOD.Size = new System.Drawing.Size(1030, 325);
             this.chartTWOD.TabIndex = 72;
             this.chartTWOD.Text = "chart1";
@@ -213,33 +212,34 @@
             this.trBarTWOD.Name = "trBarTWOD";
             this.trBarTWOD.Size = new System.Drawing.Size(788, 45);
             this.trBarTWOD.TabIndex = 70;
+            this.trBarTWOD.Scroll += new System.EventHandler(this.trBarTWOD_Scroll);
             // 
             // chartPhaseWOD
             // 
-            chartArea4.Name = "ChartArea1";
-            this.chartPhaseWOD.ChartAreas.Add(chartArea4);
-            legend4.Name = "Legend1";
-            this.chartPhaseWOD.Legends.Add(legend4);
+            chartArea18.Name = "ChartArea1";
+            this.chartPhaseWOD.ChartAreas.Add(chartArea18);
+            legend18.Name = "Legend1";
+            this.chartPhaseWOD.Legends.Add(legend18);
             this.chartPhaseWOD.Location = new System.Drawing.Point(247, 333);
             this.chartPhaseWOD.Name = "chartPhaseWOD";
-            series8.BorderWidth = 5;
-            series8.ChartArea = "ChartArea1";
-            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series8.Legend = "Legend1";
-            series8.Name = "V(U)";
-            series9.BorderWidth = 3;
-            series9.ChartArea = "ChartArea1";
-            series9.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series9.Legend = "Legend1";
-            series9.Name = "1 nс V(U)";
-            series10.BorderWidth = 3;
-            series10.ChartArea = "ChartArea1";
-            series10.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series10.Legend = "Legend1";
-            series10.Name = "2 nc V(U)";
-            this.chartPhaseWOD.Series.Add(series8);
-            this.chartPhaseWOD.Series.Add(series9);
-            this.chartPhaseWOD.Series.Add(series10);
+            series43.BorderWidth = 5;
+            series43.ChartArea = "ChartArea1";
+            series43.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series43.Legend = "Legend1";
+            series43.Name = "V(U)";
+            series44.BorderWidth = 3;
+            series44.ChartArea = "ChartArea1";
+            series44.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series44.Legend = "Legend1";
+            series44.Name = "1 nс V(U)";
+            series45.BorderWidth = 3;
+            series45.ChartArea = "ChartArea1";
+            series45.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series45.Legend = "Legend1";
+            series45.Name = "2 nc V(U)";
+            this.chartPhaseWOD.Series.Add(series43);
+            this.chartPhaseWOD.Series.Add(series44);
+            this.chartPhaseWOD.Series.Add(series45);
             this.chartPhaseWOD.Size = new System.Drawing.Size(1030, 325);
             this.chartPhaseWOD.TabIndex = 74;
             this.chartPhaseWOD.Text = "chart2";
@@ -247,7 +247,7 @@
             // prBarSolveWOD
             // 
             this.prBarSolveWOD.Location = new System.Drawing.Point(31, 661);
-            this.prBarSolveWOD.Maximum = 4;
+            this.prBarSolveWOD.Maximum = 3;
             this.prBarSolveWOD.Name = "prBarSolveWOD";
             this.prBarSolveWOD.Size = new System.Drawing.Size(156, 23);
             this.prBarSolveWOD.TabIndex = 47;
@@ -278,6 +278,7 @@
             this.btnStopTimerWOD.TabIndex = 68;
             this.btnStopTimerWOD.Text = "Stop Timer";
             this.btnStopTimerWOD.UseVisualStyleBackColor = true;
+            this.btnStopTimerWOD.Click += new System.EventHandler(this.btnStopTimerWOD_Click);
             // 
             // lblMaxUVWOD
             // 
@@ -309,15 +310,10 @@
             this.btnSolveWOD.UseVisualStyleBackColor = true;
             this.btnSolveWOD.Click += new System.EventHandler(this.btnSolveWOD_Click);
             // 
-            // btnLoadWOD
+            // timerTWOD
             // 
-            this.btnLoadWOD.Location = new System.Drawing.Point(31, 550);
-            this.btnLoadWOD.Name = "btnLoadWOD";
-            this.btnLoadWOD.Size = new System.Drawing.Size(75, 23);
-            this.btnLoadWOD.TabIndex = 65;
-            this.btnLoadWOD.Text = "Load";
-            this.btnLoadWOD.UseVisualStyleBackColor = true;
-            this.btnLoadWOD.Click += new System.EventHandler(this.btnLoadWOD_Click);
+            this.timerTWOD.Interval = 50;
+            this.timerTWOD.Tick += new System.EventHandler(this.timerTWOD_Tick);
             // 
             // tabControl1
             // 
@@ -347,6 +343,7 @@
             this.propertyGrid1.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
             this.propertyGrid1.Size = new System.Drawing.Size(168, 343);
             this.propertyGrid1.TabIndex = 0;
+            this.propertyGrid1.Validated += new System.EventHandler(this.propertyGrid1_Validated);
             // 
             // tabPage2
             // 
@@ -392,7 +389,6 @@
             this.Controls.Add(this.lblMaxUVWOD);
             this.Controls.Add(this.btnPlotWOD);
             this.Controls.Add(this.btnSolveWOD);
-            this.Controls.Add(this.btnLoadWOD);
             this.Name = "WindowODE";
             this.Text = "WindowODE";
             this.Load += new System.EventHandler(this.WindowODE_Load);
@@ -432,7 +428,6 @@
         private System.Windows.Forms.Label lblMaxUVWOD;
         private System.Windows.Forms.Button btnPlotWOD;
         private System.Windows.Forms.Button btnSolveWOD;
-        private System.Windows.Forms.Button btnLoadWOD;
         private System.Windows.Forms.Timer timerTWOD;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
