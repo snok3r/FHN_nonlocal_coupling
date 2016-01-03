@@ -88,10 +88,6 @@ namespace FHN_nonlocal_coupling
             set;
         }
 
-        //////////////////
-        // Constructors //
-        //////////////////
-
         // Constructor with default values
         public FHN_w_diffussion(WindowPDE f)
         {
@@ -108,173 +104,138 @@ namespace FHN_nonlocal_coupling
             I = 0.0;
             DeltaCoupling = true;
 
-            this.form = f;
-        }
-
-        public FHN_w_diffussion(double alpha, double beta, double gamma, double a,double b, double d, double l, double TB, double iExt, int m, int n, bool deltaCoupl, WindowPDE form)
-        {
-            this.Alpha = alpha;
-            this.Beta = beta;
-            this.Gamma = gamma;
-            this.A = a;
-            this.B = b;
-            this.D = d;
-            this.L = l;
-            this.T = TB;
-            this.I = iExt;
-            this.N = n;
-            this.M = m;
-            this.DeltaCoupling = deltaCoupl;
-            this.form = form;
+            form = f;
         }
 
         // methods
-        public void load(int m, int n, double l, double TB)
+        public void load()
         {   // initialize/declare arrays and steps
             // If we want to change one of the parameters: n, m, l, TB,
             // then it needs to call this (plus Intiials) functions again.
-            this.N = n;
-            this.M = m;
+            hx = 2 * L / N; // step for x
+            ht = T / M;  // step for t
 
-            this.hx = 2 * l / n; // step for x
-            this.ht = TB / m;  // step for t
+            x = new double[n + 1]; // arrange x's
+            for (int i = 0; i < n + 1; i++) x[i] = - L + i * hx;
 
-            this.x = new double[n + 1]; // arrange x's
-            for (int i = 0; i < n + 1; i++) this.x[i] = - this.L + i * this.hx;
+            t = new double[m + 1]; // arrange t's
+            for (int j = 0; j < m + 1; j++) t[j] = j * ht;
 
-            this.t = new double[m + 1]; // arrange t's
-            for (int j = 0; j < m + 1; j++) this.t[j] = j * this.ht;
-
-            this.u = new double[m + 1, n + 1];
-            this.v = new double[m + 1, n + 1];
+            u = new double[m + 1, n + 1];
+            v = new double[m + 1, n + 1];
         }
 
-        public void initials(int n)
+        public void initials()
         {   // Initialize initials
 
-            for (int i = 0; i < n + 1; i++)
+            for (int i = 0; i < N + 1; i++)
             {	// setting an initial waves at t = 0
-                this.u[0, i] = u_x_0(x[i]);
-                this.v[0, i] = v_x_0(x[i]);
+                u[0, i] = u_x_0(x[i]);
+                v[0, i] = v_x_0(x[i]);
             }
         }
 
-        public void solve()
+        public int solve()
         {
             // If we changed ONLY alpha, beta, gamma, b, d, Kernel, f or Iext,
             // then just recall this function.
-
-            int prBarMax = 10;
-            form.prBarSolve.Maximum = prBarMax;
-
             
-            int k = Convert.ToInt32(this.D / this.hx);
-            this.D = this.hx * k;
-            form.txtBoxD.Text = Convert.ToString(this.D);
+            int k = Convert.ToInt32(D / hx);
+            D = hx * k;
 
-            double step = this.ht / (this.hx * this.hx);
+            double step = ht / (hx * hx);
 
-            double[] P = new double[this.N + 1];
-            double[] Q = new double[this.N + 1];
+            double[] P = new double[N + 1];
+            double[] Q = new double[N + 1];
 
             double[] ai = new double[3] { 0, -step, 1 };
             double[] bi = new double[3] { -1, -1 - 2 * step, 1 };
             double[] ci = new double[3] { -1, -step, 0 };
-            double[] di = new double[this.N + 1];
-            di[0] = 0; di[this.N] = 0; // if Neumann condition changes (smth except du/dn = zero), it needs to be commented
+            double[] di = new double[N + 1];
+            di[0] = 0; di[N] = 0; // if Neumann condition changes (smth except du/dn = zero), it needs to be commented
 
             P[0] = ci[0] / bi[0];
-            for (int i = 1; i < this.N; i++) P[i] = ci[1] / (bi[1] - ai[1] * P[i - 1]);
-            P[this.N] = ci[2] / (bi[2] - ai[2] * P[this.N - 1]);
+            for (int i = 1; i < N; i++) P[i] = ci[1] / (bi[1] - ai[1] * P[i - 1]);
+            P[N] = ci[2] / (bi[2] - ai[2] * P[N - 1]);
 
-            for (int j = 0; j < this.M; j++)
+            for (int j = 0; j < M; j++)
             {
-                if ((j % ((this.M) / prBarMax)) == 0)
-                {   // updating progress bar
-                    form.prBarSolve.Value++;
-                }
-
-                //di[0] = this.ht * u_0_t(this.t[j]); // if Neumann condition is not a zero
+                //di[0] = ht * u_0_t(t[j]); // if Neumann condition is not a zero
                 Q[0] = -di[0] / bi[0];
-                for (int i = 1; i < this.N; i++)
+                for (int i = 1; i < N; i++)
                 {
-                    if (this.DeltaCoupling)
+                    if (DeltaCoupling)
                     {
-                        if (this.B != 0)
+                        if (B != 0)
                         {
                             if (i - k <= 1) // if x - d <= -l
                             {
                                 if (i + k <= N - 1) // if x - d <= -l and x + d <= l
-                                    di[i] = this.u[j, i] + this.ht * (this.B * (this.u[j, 1] + this.u[j, i + k] - 2 * this.u[j, i]) + f(this.u[j, i]) - this.v[j, i] + this.I);
+                                    di[i] = u[j, i] + ht * (B * (u[j, 1] + u[j, i + k] - 2 * u[j, i]) + f(u[j, i]) - v[j, i] + I);
                                 else if (i + k > N - 1) // if x - d <= -l and x + d > l
-                                    di[i] = this.u[j, i] + this.ht * (this.B * (this.u[j, 1] + this.u[j, N - 1] - 2 * this.u[j, i]) + f(this.u[j, i]) - this.v[j, i] + this.I);
+                                    di[i] = u[j, i] + ht * (B * (u[j, 1] + u[j, N - 1] - 2 * u[j, i]) + f(u[j, i]) - v[j, i] + I);
                             }
                             else if (i - k > 1) // if x - d > -l
                             {
                                 if (i + k <= N - 1) // if x - d > -l and x + d <= l
-                                    di[i] = this.u[j, i] + this.ht * (this.B * (this.u[j, i - k] + this.u[j, i + k] - 2 * this.u[j, i]) + f(this.u[j, i]) - this.v[j, i] + this.I);
+                                    di[i] = u[j, i] + ht * (B * (u[j, i - k] + u[j, i + k] - 2 * u[j, i]) + f(u[j, i]) - v[j, i] + I);
                                 else if (i + k > N - 1)  // if x - d > -l and x + d > l
-                                    di[i] = this.u[j, i] + this.ht * (this.B * (this.u[j, i - k] + this.u[j, N - 1] - 2 * this.u[j, i]) + f(this.u[j, i]) - this.v[j, i] + this.I);
+                                    di[i] = u[j, i] + ht * (B * (u[j, i - k] + u[j, N - 1] - 2 * u[j, i]) + f(u[j, i]) - v[j, i] + I);
                             }
                         }
-                        else if (this.B == 0)
-                            di[i] = this.u[j, i] + this.ht * (f(this.u[j, i]) - this.v[j, i] + this.I);
+                        else if (B == 0)
+                            di[i] = u[j, i] + ht * (f(u[j, i]) - v[j, i] + I);
                     }
-                    else if (this.B != 0)
-                        di[i] = this.u[j, i] + this.ht * (this.B * (integral(j, i) - this.u[j, i]) + f(this.u[j, i]) - this.v[j, i] + this.I);
-                    else if (this.B == 0)
-                        di[i] = this.u[j, i] + this.ht * (f(this.u[j, i]) - this.v[j, i] + this.I);
+                    else if (B != 0)
+                        di[i] = u[j, i] + ht * (B * (integral(j, i) - u[j, i]) + f(u[j, i]) - v[j, i] + I);
+                    else if (B == 0)
+                        di[i] = u[j, i] + ht * (f(u[j, i]) - v[j, i] + I);
 
                     Q[i] = (ai[1] * Q[i - 1] - di[i]) / (bi[1] - ai[1] * P[i - 1]);
 
+                    // catching Q is NaN and show Error label
                     if (Double.IsNaN(Q[i]))
-                    {   // catching Q is NaN and show Error label
-                        form.lblError.Visible = true;
-                        break;
-                    }
-
+                        return -1;
                 }
-                //di[this.n] = this.ht * u_l_t(this.t[j]); // if Neumann condition is not a zero
-                Q[this.N] = (ai[2] * Q[this.N - 1] - di[this.N]) / (bi[2] - ai[2] * P[this.N - 1]);
+                //di[n] = ht * u_l_t(t[j]); // if Neumann condition is not a zero
+                Q[N] = (ai[2] * Q[N - 1] - di[N]) / (bi[2] - ai[2] * P[N - 1]);
 
-                this.u[j + 1, this.N] = Q[this.N];
-                for (int i = this.N - 1; i > -1; i--) u[j + 1, i] = P[i] * this.u[j + 1, i + 1] + Q[i];
+                u[j + 1, N] = Q[N];
+                for (int i = N - 1; i > -1; i--) u[j + 1, i] = P[i] * u[j + 1, i + 1] + Q[i];
 
                 double nextV;
-                for (int i = 0; i < this.N + 1; i++)
+                for (int i = 0; i < N + 1; i++)
                 {
-                    nextV = (this.v[j, i] + this.ht * (this.Alpha * this.u[j + 1, i] + this.Gamma)) / (1 + this.Beta * this.ht);
+                    nextV = (v[j, i] + ht * (Alpha * u[j + 1, i] + Gamma)) / (1 + Beta * ht);
+                    
+                    // catching V is NaN and show Error label
                     if (Double.IsNaN(nextV))
-                    {   // catching V is NaN and show Error label
-                        form.lblError.Visible = true;
-                        break;
-                    }
+                        return -1;
                     else
                         v[j + 1, i] = nextV;
                 }
             }
 
-            if (form.prBarSolve.Value < prBarMax) form.prBarSolve.Value = prBarMax;
         }
 
         public double getX(int i)
         { 
-            return this.x[i]; 
+            return x[i]; 
         }
 
         public double getT(int j) 
         { 
-            return this.t[j]; 
+            return t[j]; 
         }
         
         public double getU(int j, int i)
         { 
-            return this.u[j, i]; 
+            return u[j, i]; 
         }
         
         public double getV(int j, int i)
         { 
-            return this.v[j, i]; 
+            return v[j, i]; 
         }
 
         // various functions
@@ -282,12 +243,11 @@ namespace FHN_nonlocal_coupling
         {   // Trapezoidal rule, uniform grid
             // integrating at point (t[j], x[i]) from -l to l
             double sum = 0;
-            int k; // k is iteration variable for integrating (n+1 in number)
-            sum += kernel(this.x[i] - this.x[0]) * this.u[j, 0];
-            for (k = 1; k < this.N; k++) sum += 2 * kernel(this.x[i] - this.x[k]) * this.u[j, k];
-            sum += kernel(this.x[i] - this.x[this.N]) * this.u[j, this.N];
+            sum += kernel(x[i] - x[0]) * u[j, 0];
+            for (int k = 1; k < N; k++) sum += 2 * kernel(x[i] - x[k]) * u[j, k];
+            sum += kernel(x[i] - x[N]) * u[j, N];
 
-            return this.hx * sum / 2;
+            return hx * sum / 2;
         }
 
         private double kernel(double z)
@@ -297,7 +257,7 @@ namespace FHN_nonlocal_coupling
         }
 
         private double f(double u){
-            //return - u * (u - 1) * (u - this.a); 
+            //return - u * (u - 1) * (u - a); 
             return u - u * u * u / 3;
         }
             
