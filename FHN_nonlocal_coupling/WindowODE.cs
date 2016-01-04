@@ -250,6 +250,11 @@ namespace FHN_nonlocal_coupling
 
             chartPhaseWOD.ChartAreas[0].AxisY.Maximum = 1.5 + odes[0].I;
             chartPhaseWOD.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(txtBoxMinUVPhaseWOD.Text);
+
+            chartTWOD.Series[2].Color = Color.Blue;
+            chartTWOD.Series[3].Color = Color.OrangeRed;
+
+            chartPhaseWOD.Series[3].Color = Color.Blue;
         }
 
         private void checkBox2ndEq_CheckedChanged(object sender, EventArgs e)
