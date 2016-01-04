@@ -215,7 +215,7 @@ namespace FHN_nonlocal_coupling
                         v[j + 1, i] = nextV;
                 }
             }
-
+            return 0;
         }
 
         public double getX(int i)
