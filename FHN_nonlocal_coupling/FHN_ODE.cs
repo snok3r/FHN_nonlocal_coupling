@@ -90,7 +90,7 @@ namespace FHN_nonlocal_coupling
         }
 
         // Constructor with default parameters
-        public FHN_ODE(WindowODE f)
+        public FHN_ODE()
         {
             N = 1000;
             L = 2.5;
