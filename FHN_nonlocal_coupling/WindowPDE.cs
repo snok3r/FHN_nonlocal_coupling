@@ -12,7 +12,7 @@ namespace FHN_nonlocal_coupling
 {
     public partial class WindowPDE : Form
     {
-        FHN_w_diffussion[] pdes;
+        FHN_PDE[] pdes;
 
         public WindowPDE()
         {
@@ -26,10 +26,10 @@ namespace FHN_nonlocal_coupling
 
         private void loadEquations(int num)
         {
-            pdes = new FHN_w_diffussion[num];
+            pdes = new FHN_PDE[num];
 
             for (int i = 0; i < num; i++)
-                pdes[i] = new FHN_w_diffussion(this);
+                pdes[i] = new FHN_PDE(this);
 
             propertyGrid1.SelectedObject = pdes[0];
 
@@ -39,12 +39,12 @@ namespace FHN_nonlocal_coupling
                 propertyGrid2.SelectedObject = null;
         }
 
-        private void plot(int j, FHN_w_diffussion obj, int numEq)
+        private void plot(int j, FHN_PDE obj, int numEq)
         {   // plots full given t segment of diffusion solution
             for (int i = 0; i < obj.N + 1; i++)
             {
-                chartWDiff.Series[2 * numEq].Points.AddXY(obj.getX(i), obj.getU(j, i));
-                chartWDiff.Series[2 * numEq + 1].Points.AddXY(obj.getX(i), obj.getV(j, i));
+                chart.Series[2 * numEq].Points.AddXY(obj.getX(i), obj.getU(j, i));
+                chart.Series[2 * numEq + 1].Points.AddXY(obj.getX(i), obj.getV(j, i));
             }
         }
 
@@ -157,8 +157,8 @@ namespace FHN_nonlocal_coupling
 
         private void btnTune_Click(object sender, EventArgs e)
         {
-            chartWDiff.ChartAreas[0].AxisY.Maximum = Convert.ToDouble(txtBoxMaxUV.Text);
-            chartWDiff.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(txtBoxMinUV.Text);
+            chart.ChartAreas[0].AxisY.Maximum = Convert.ToDouble(txtBoxMaxUV.Text);
+            chart.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(txtBoxMinUV.Text);
         }
 
         private void btnStopTimer_Click(object sender, EventArgs e)
@@ -172,23 +172,23 @@ namespace FHN_nonlocal_coupling
 
         private void clearPlot()
         {
-            for (int i = 0; i < chartWDiff.Series.Count(); i++)
-                chartWDiff.Series[i].Points.Clear();
+            for (int i = 0; i < chart.Series.Count(); i++)
+                chart.Series[i].Points.Clear();
         }
 
         private void setPlot()
         {
-            chartWDiff.ChartAreas[0].AxisX.Minimum = -Convert.ToDouble(pdes[0].L) - 0.1;
-            chartWDiff.ChartAreas[0].AxisX.Maximum = Convert.ToDouble(pdes[0].L) + 0.1;
+            chart.ChartAreas[0].AxisX.Minimum = -Convert.ToDouble(pdes[0].L) - 0.1;
+            chart.ChartAreas[0].AxisX.Maximum = Convert.ToDouble(pdes[0].L) + 0.1;
 
-            chartWDiff.ChartAreas[0].AxisY.Maximum = Convert.ToDouble(txtBoxMaxUV.Text);
-            chartWDiff.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(txtBoxMinUV.Text);
+            chart.ChartAreas[0].AxisY.Maximum = Convert.ToDouble(txtBoxMaxUV.Text);
+            chart.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(txtBoxMinUV.Text);
 
-            chartWDiff.ChartAreas[0].AxisX.Interval = Convert.ToInt32((chartWDiff.ChartAreas[0].AxisX.Maximum + chartWDiff.ChartAreas[0].AxisX.Minimum) / 6.0);
-            chartWDiff.ChartAreas[0].AxisY.Interval = Convert.ToInt32((chartWDiff.ChartAreas[0].AxisY.Maximum + chartWDiff.ChartAreas[0].AxisY.Minimum) / 6.0);
+            chart.ChartAreas[0].AxisX.Interval = Convert.ToInt32((chart.ChartAreas[0].AxisX.Maximum + chart.ChartAreas[0].AxisX.Minimum) / 6.0);
+            chart.ChartAreas[0].AxisY.Interval = Convert.ToInt32((chart.ChartAreas[0].AxisY.Maximum + chart.ChartAreas[0].AxisY.Minimum) / 6.0);
 
-            chartWDiff.Series[2].Color = Color.Blue;
-            chartWDiff.Series[3].Color = Color.OrangeRed;
+            chart.Series[2].Color = Color.Blue;
+            chart.Series[3].Color = Color.OrangeRed;
         }
 
         private void checkBox2ndEq_CheckedChanged(object sender, EventArgs e)

@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 namespace FHN_nonlocal_coupling
 {
-    class FHN_wo_diffussion
+    class FHN_ODE
     {
         public WindowODE form; // to access Form's controls
 
@@ -92,7 +92,7 @@ namespace FHN_nonlocal_coupling
         }
 
         // Constructor with default parameters
-        public FHN_wo_diffussion(WindowODE f)
+        public FHN_ODE(WindowODE f)
         {
             N = 1000;
             L = 2.5;
