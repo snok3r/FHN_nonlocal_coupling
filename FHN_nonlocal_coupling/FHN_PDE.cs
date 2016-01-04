@@ -9,8 +9,6 @@ namespace FHN_nonlocal_coupling
 {
     class FHN_PDE
     {
-        public WindowPDE form; // to access Form's controls
-
         // variables and arrays
         private double hx, ht; // steps
         private double[] x, t;
@@ -100,7 +98,7 @@ namespace FHN_nonlocal_coupling
         }
 
         // Constructor with default values
-        public FHN_PDE(WindowPDE f)
+        public FHN_PDE()
         {
             N = 2000;
             M = 2000;
@@ -114,8 +112,6 @@ namespace FHN_nonlocal_coupling
             D = 1.0;
             I = 0.0;
             DeltaCoupling = true;
-
-            form = f;
         }
 
         // methods

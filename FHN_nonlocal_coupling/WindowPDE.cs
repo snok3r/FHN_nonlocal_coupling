@@ -29,7 +29,7 @@ namespace FHN_nonlocal_coupling
             pdes = new FHN_PDE[num];
 
             for (int i = 0; i < num; i++)
-                pdes[i] = new FHN_PDE(this);
+                pdes[i] = new FHN_PDE();
 
             propertyGrid1.SelectedObject = pdes[0];
 

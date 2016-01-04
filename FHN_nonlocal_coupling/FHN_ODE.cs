@@ -9,8 +9,6 @@ namespace FHN_nonlocal_coupling
 {
     class FHN_ODE
     {
-        public WindowODE form; // to access Form's controls
-
         // variables and arrays
         private double h, ht; // step
         private double[] t; // time
@@ -105,8 +103,6 @@ namespace FHN_nonlocal_coupling
             Beta = 0.8;
             A = 0.1;
             Classical = true;
-
-            form = f;
         }
 
         // methods
