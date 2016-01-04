@@ -359,7 +359,7 @@
 
         #endregion
 
-        public System.Windows.Forms.Label lblError;
+        private System.Windows.Forms.Label lblError;
         private System.Windows.Forms.CheckBox checkBox2ndEq;
         private System.Windows.Forms.Label lblMinUV;
         private System.Windows.Forms.Label lblMaxUV;
@@ -370,7 +370,7 @@
         private System.Windows.Forms.Button btnSolve;
         private System.Windows.Forms.Button btnPlot;
         private System.Windows.Forms.TrackBar trBarT;
-        public System.Windows.Forms.ProgressBar prBarSolve;
+        private System.Windows.Forms.ProgressBar prBarSolve;
         private System.Windows.Forms.RadioButton rdBtnTmr;
         private System.Windows.Forms.Button btnStopTimer;
         private System.Windows.Forms.Timer timerT;

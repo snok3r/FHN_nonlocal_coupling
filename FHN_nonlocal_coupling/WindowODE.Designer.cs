@@ -497,20 +497,20 @@
         #endregion
 
         private System.Windows.Forms.TextBox txtBoxMaxUVT;
-        public System.Windows.Forms.RadioButton rdBtnPlotAll;
+        private System.Windows.Forms.RadioButton rdBtnPlotAll;
         private System.Windows.Forms.TextBox txtBoxMinUVT;
         private System.Windows.Forms.Button btnTuneT;
-        public System.Windows.Forms.RadioButton rdBtnTmr;
+        private System.Windows.Forms.RadioButton rdBtnTmr;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtBoxMaxUVPhase;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtBoxMinUVPhase;
         private System.Windows.Forms.Button btnTunePhase;
-        public System.Windows.Forms.Label lblError;
+        private System.Windows.Forms.Label lblError;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart;
         private System.Windows.Forms.TrackBar trBarT;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartPhase;
-        public System.Windows.Forms.ProgressBar prBarSolve;
+        private System.Windows.Forms.ProgressBar prBarSolve;
         private System.Windows.Forms.Label lblMinUV;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button btnStopTimer;
