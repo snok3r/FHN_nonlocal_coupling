@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace FHN_nonlocal_coupling
 {
@@ -28,60 +29,70 @@ namespace FHN_nonlocal_coupling
             set;
         }
 
+        [Description("Interval for x [-L, L]")]
         public double L
         {   // bound x's segment
             get;
             set;
         }
 
+        [Description("Interval for t [0, T]")]
         public double T
         {   // bound t's segment
             get;
             set;
         }
 
+        [Description("v's equation constant")]
         public double Alpha
         {   // v's equation constants
             get;
             set;
         }
 
+        [Description("v's equation constant")]
         public double Beta
         {   // v's equation constants
             get;
             set;
         }
 
+        [Description("v's equation constant")]
         public double Gamma
         {   // v's equation constants
             get;
             set;
         }
 
+        [Description("f's constant")]
         public double A
         {   // f's constant
             get;
             set;
         }
 
+        [Description("constant in front of Kernel")]
         public double B
         {   // constant before coupling
             get;
             set;
         }
 
+        [Description("Delay in Delta-Kernel")]
         public double D
         {   // a delay in delta Kernel
             get;
             set;
         }
 
+        [Description("Current I excitatory")]
         public double I
         {   // current
             get;
             set;
         }
 
+        [Description("Delta-Kernel or not?")]
         public bool DeltaCoupling
         {   // bool for deciding which equation solves
             get;
@@ -115,14 +126,14 @@ namespace FHN_nonlocal_coupling
             hx = 2 * L / N; // step for x
             ht = T / M;  // step for t
 
-            x = new double[n + 1]; // arrange x's
-            for (int i = 0; i < n + 1; i++) x[i] = - L + i * hx;
+            x = new double[N + 1]; // arrange x's
+            for (int i = 0; i < N + 1; i++) x[i] = - L + i * hx;
 
-            t = new double[m + 1]; // arrange t's
-            for (int j = 0; j < m + 1; j++) t[j] = j * ht;
+            t = new double[M + 1]; // arrange t's
+            for (int j = 0; j < M + 1; j++) t[j] = j * ht;
 
-            u = new double[m + 1, n + 1];
-            v = new double[m + 1, n + 1];
+            u = new double[M + 1, N + 1];
+            v = new double[M + 1, N + 1];
         }
 
         public void initials()
@@ -140,9 +151,6 @@ namespace FHN_nonlocal_coupling
             // If we changed ONLY alpha, beta, gamma, b, d, Kernel, f or Iext,
             // then just recall this function.
             
-            int k = Convert.ToInt32(D / hx);
-            D = hx * k;
-
             double step = ht / (hx * hx);
 
             double[] P = new double[N + 1];
@@ -160,62 +168,80 @@ namespace FHN_nonlocal_coupling
 
             for (int j = 0; j < M; j++)
             {
-                //di[0] = ht * u_0_t(t[j]); // if Neumann condition is not a zero
-                Q[0] = -di[0] / bi[0];
-                for (int i = 1; i < N; i++)
-                {
-                    if (DeltaCoupling)
-                    {
-                        if (B != 0)
-                        {
-                            if (i - k <= 1) // if x - d <= -l
-                            {
-                                if (i + k <= N - 1) // if x - d <= -l and x + d <= l
-                                    di[i] = u[j, i] + ht * (B * (u[j, 1] + u[j, i + k] - 2 * u[j, i]) + f(u[j, i]) - v[j, i] + I);
-                                else if (i + k > N - 1) // if x - d <= -l and x + d > l
-                                    di[i] = u[j, i] + ht * (B * (u[j, 1] + u[j, N - 1] - 2 * u[j, i]) + f(u[j, i]) - v[j, i] + I);
-                            }
-                            else if (i - k > 1) // if x - d > -l
-                            {
-                                if (i + k <= N - 1) // if x - d > -l and x + d <= l
-                                    di[i] = u[j, i] + ht * (B * (u[j, i - k] + u[j, i + k] - 2 * u[j, i]) + f(u[j, i]) - v[j, i] + I);
-                                else if (i + k > N - 1)  // if x - d > -l and x + d > l
-                                    di[i] = u[j, i] + ht * (B * (u[j, i - k] + u[j, N - 1] - 2 * u[j, i]) + f(u[j, i]) - v[j, i] + I);
-                            }
-                        }
-                        else if (B == 0)
-                            di[i] = u[j, i] + ht * (f(u[j, i]) - v[j, i] + I);
-                    }
-                    else if (B != 0)
-                        di[i] = u[j, i] + ht * (B * (integral(j, i) - u[j, i]) + f(u[j, i]) - v[j, i] + I);
-                    else if (B == 0)
-                        di[i] = u[j, i] + ht * (f(u[j, i]) - v[j, i] + I);
-
-                    Q[i] = (ai[1] * Q[i - 1] - di[i]) / (bi[1] - ai[1] * P[i - 1]);
-
-                    // catching Q is NaN and show Error label
-                    if (Double.IsNaN(Q[i]))
-                        return -1;
-                }
-                //di[n] = ht * u_l_t(t[j]); // if Neumann condition is not a zero
-                Q[N] = (ai[2] * Q[N - 1] - di[N]) / (bi[2] - ai[2] * P[N - 1]);
-
-                u[j + 1, N] = Q[N];
-                for (int i = N - 1; i > -1; i--) u[j + 1, i] = P[i] * u[j + 1, i + 1] + Q[i];
-
-                double nextV;
-                for (int i = 0; i < N + 1; i++)
-                {
-                    nextV = (v[j, i] + ht * (Alpha * u[j + 1, i] + Gamma)) / (1 + Beta * ht);
-                    
-                    // catching V is NaN and show Error label
-                    if (Double.IsNaN(nextV))
-                        return -1;
-                    else
-                        v[j + 1, i] = nextV;
-                }
+                int extCode = progonkaJLayer(Q, P, ai, bi, di, j);
+                if (extCode != 0)
+                    return -1;
             }
+
             return 0;
+        }
+
+        private int progonkaJLayer(double[] Q, double[] P, double[] ai, double[] bi, double[] di, int j)
+        {
+            int k = Convert.ToInt32(D / hx);
+            D = hx * k;
+
+            //di[0] = ht * u_0_t(t[j]); // if Neumann condition is not a zero
+            Q[0] = -di[0] / bi[0];
+            for (int i = 1; i < N; i++)
+            {
+                calculateDCoeff(di, i, j, k);
+
+                Q[i] = (ai[1] * Q[i - 1] - di[i]) / (bi[1] - ai[1] * P[i - 1]);
+
+                // catching Q is NaN
+                if (Double.IsNaN(Q[i]))
+                    return -1;
+            }
+            //di[n] = ht * u_l_t(t[j]); // if Neumann condition is not a zero
+            Q[N] = (ai[2] * Q[N - 1] - di[N]) / (bi[2] - ai[2] * P[N - 1]);
+
+            u[j + 1, N] = Q[N];
+            for (int i = N - 1; i > -1; i--) u[j + 1, i] = P[i] * u[j + 1, i + 1] + Q[i];
+
+            double nextV;
+            for (int i = 0; i < N + 1; i++)
+            {
+                nextV = (v[j, i] + ht * (Alpha * u[j + 1, i] + Gamma)) / (1 + Beta * ht);
+
+                // catching V is NaN
+                if (Double.IsNaN(nextV))
+                    return -1;
+                else
+                    v[j + 1, i] = nextV;
+            }
+
+            return 0;
+        }
+
+        private void calculateDCoeff(double[] di, int i, int j, int k)
+        {
+            if (DeltaCoupling)
+            {
+                if (B != 0)
+                {
+                    if (i - k <= 1) // if x - d <= -l
+                    {
+                        if (i + k <= N - 1) // if x - d <= -l and x + d <= l
+                            di[i] = u[j, i] + ht * (B * (u[j, 1] + u[j, i + k] - 2 * u[j, i]) + f(u[j, i]) - v[j, i] + I);
+                        else if (i + k > N - 1) // if x - d <= -l and x + d > l
+                            di[i] = u[j, i] + ht * (B * (u[j, 1] + u[j, N - 1] - 2 * u[j, i]) + f(u[j, i]) - v[j, i] + I);
+                    }
+                    else if (i - k > 1) // if x - d > -l
+                    {
+                        if (i + k <= N - 1) // if x - d > -l and x + d <= l
+                            di[i] = u[j, i] + ht * (B * (u[j, i - k] + u[j, i + k] - 2 * u[j, i]) + f(u[j, i]) - v[j, i] + I);
+                        else if (i + k > N - 1)  // if x - d > -l and x + d > l
+                            di[i] = u[j, i] + ht * (B * (u[j, i - k] + u[j, N - 1] - 2 * u[j, i]) + f(u[j, i]) - v[j, i] + I);
+                    }
+                }
+                else if (B == 0)
+                    di[i] = u[j, i] + ht * (f(u[j, i]) - v[j, i] + I);
+            }
+            else if (B != 0)
+                di[i] = u[j, i] + ht * (B * (integral(j, i) - u[j, i]) + f(u[j, i]) - v[j, i] + I);
+            else if (B == 0)
+                di[i] = u[j, i] + ht * (f(u[j, i]) - v[j, i] + I);
         }
 
         public double getX(int i)

@@ -36,7 +36,7 @@
             System.Windows.Forms.DataVisualization.Charting.Series series19 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Series series20 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.lblError = new System.Windows.Forms.Label();
-            this.chBoxPlotWB2 = new System.Windows.Forms.CheckBox();
+            this.checkBox2ndEq = new System.Windows.Forms.CheckBox();
             this.lblMinUV = new System.Windows.Forms.Label();
             this.lblMaxUV = new System.Windows.Forms.Label();
             this.btnTune = new System.Windows.Forms.Button();
@@ -49,7 +49,6 @@
             this.prBarSolve = new System.Windows.Forms.ProgressBar();
             this.rdBtnTmr = new System.Windows.Forms.RadioButton();
             this.btnStopTimer = new System.Windows.Forms.Button();
-            this.btnLoad = new System.Windows.Forms.Button();
             this.timerT = new System.Windows.Forms.Timer(this.components);
             this.btnAbout = new System.Windows.Forms.Button();
             this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
@@ -57,6 +56,8 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.propertyGrid2 = new System.Windows.Forms.PropertyGrid();
+            this.btnTickSlower = new System.Windows.Forms.Button();
+            this.btnTickFaster = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.chartWDiff)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trBarT)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -76,15 +77,16 @@
             this.lblError.Text = "Error occured";
             this.lblError.Visible = false;
             // 
-            // chBoxPlotWB2
+            // checkBox2ndEq
             // 
-            this.chBoxPlotWB2.AutoSize = true;
-            this.chBoxPlotWB2.Location = new System.Drawing.Point(16, 442);
-            this.chBoxPlotWB2.Name = "chBoxPlotWB2";
-            this.chBoxPlotWB2.Size = new System.Drawing.Size(59, 17);
-            this.chBoxPlotWB2.TabIndex = 82;
-            this.chBoxPlotWB2.Text = "2nd eq";
-            this.chBoxPlotWB2.UseVisualStyleBackColor = true;
+            this.checkBox2ndEq.AutoSize = true;
+            this.checkBox2ndEq.Location = new System.Drawing.Point(16, 442);
+            this.checkBox2ndEq.Name = "checkBox2ndEq";
+            this.checkBox2ndEq.Size = new System.Drawing.Size(59, 17);
+            this.checkBox2ndEq.TabIndex = 82;
+            this.checkBox2ndEq.Text = "2nd eq";
+            this.checkBox2ndEq.UseVisualStyleBackColor = true;
+            this.checkBox2ndEq.CheckedChanged += new System.EventHandler(this.checkBox2ndEq_CheckedChanged);
             // 
             // lblMinUV
             // 
@@ -160,12 +162,12 @@
             series19.ChartArea = "ChartArea1";
             series19.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             series19.Legend = "Legend1";
-            series19.Name = "U(b\')";
+            series19.Name = "U2";
             series20.BorderWidth = 2;
             series20.ChartArea = "ChartArea1";
             series20.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             series20.Legend = "Legend1";
-            series20.Name = "V(b\')";
+            series20.Name = "V2";
             this.chartWDiff.Series.Add(series17);
             this.chartWDiff.Series.Add(series18);
             this.chartWDiff.Series.Add(series19);
@@ -176,7 +178,6 @@
             // 
             // btnSolve
             // 
-            this.btnSolve.Enabled = false;
             this.btnSolve.Location = new System.Drawing.Point(27, 579);
             this.btnSolve.Name = "btnSolve";
             this.btnSolve.Size = new System.Drawing.Size(75, 23);
@@ -203,6 +204,7 @@
             this.trBarT.Name = "trBarT";
             this.trBarT.Size = new System.Drawing.Size(827, 45);
             this.trBarT.TabIndex = 47;
+            this.trBarT.Scroll += new System.EventHandler(this.trBarT_Scroll);
             // 
             // prBarSolve
             // 
@@ -234,15 +236,9 @@
             this.btnStopTimer.UseVisualStyleBackColor = true;
             this.btnStopTimer.Click += new System.EventHandler(this.btnStopTimer_Click);
             // 
-            // btnLoad
+            // timerT
             // 
-            this.btnLoad.Location = new System.Drawing.Point(27, 550);
-            this.btnLoad.Name = "btnLoad";
-            this.btnLoad.Size = new System.Drawing.Size(75, 23);
-            this.btnLoad.TabIndex = 51;
-            this.btnLoad.Text = "Load";
-            this.btnLoad.UseVisualStyleBackColor = true;
-            this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
+            this.timerT.Tick += new System.EventHandler(this.timerT_Tick);
             // 
             // btnAbout
             // 
@@ -261,6 +257,7 @@
             this.propertyGrid1.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
             this.propertyGrid1.Size = new System.Drawing.Size(171, 369);
             this.propertyGrid1.TabIndex = 85;
+            this.propertyGrid1.SelectedGridItemChanged += new System.Windows.Forms.SelectedGridItemChangedEventHandler(this.propertyGrid1_SelectedGridItemChanged);
             // 
             // tabControl1
             // 
@@ -299,18 +296,41 @@
             this.propertyGrid2.Location = new System.Drawing.Point(-4, 0);
             this.propertyGrid2.Name = "propertyGrid2";
             this.propertyGrid2.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
-            this.propertyGrid2.Size = new System.Drawing.Size(167, 369);
+            this.propertyGrid2.Size = new System.Drawing.Size(171, 369);
             this.propertyGrid2.TabIndex = 86;
+            this.propertyGrid2.SelectedGridItemChanged += new System.Windows.Forms.SelectedGridItemChangedEventHandler(this.propertyGrid2_SelectedGridItemChanged);
+            // 
+            // btnTickSlower
+            // 
+            this.btnTickSlower.Location = new System.Drawing.Point(111, 580);
+            this.btnTickSlower.Name = "btnTickSlower";
+            this.btnTickSlower.Size = new System.Drawing.Size(26, 23);
+            this.btnTickSlower.TabIndex = 87;
+            this.btnTickSlower.Text = "-";
+            this.btnTickSlower.UseVisualStyleBackColor = true;
+            this.btnTickSlower.Click += new System.EventHandler(this.btnTickSlower_Click);
+            // 
+            // btnTickFaster
+            // 
+            this.btnTickFaster.Location = new System.Drawing.Point(153, 580);
+            this.btnTickFaster.Name = "btnTickFaster";
+            this.btnTickFaster.Size = new System.Drawing.Size(26, 23);
+            this.btnTickFaster.TabIndex = 88;
+            this.btnTickFaster.Text = "+";
+            this.btnTickFaster.UseVisualStyleBackColor = true;
+            this.btnTickFaster.Click += new System.EventHandler(this.btnTickFaster_Click);
             // 
             // WindowPDE
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1284, 711);
+            this.Controls.Add(this.btnTickFaster);
+            this.Controls.Add(this.btnTickSlower);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.btnAbout);
             this.Controls.Add(this.lblError);
-            this.Controls.Add(this.chBoxPlotWB2);
+            this.Controls.Add(this.checkBox2ndEq);
             this.Controls.Add(this.lblMinUV);
             this.Controls.Add(this.lblMaxUV);
             this.Controls.Add(this.btnTune);
@@ -323,10 +343,10 @@
             this.Controls.Add(this.prBarSolve);
             this.Controls.Add(this.rdBtnTmr);
             this.Controls.Add(this.btnStopTimer);
-            this.Controls.Add(this.btnLoad);
             this.Name = "WindowPDE";
             this.ShowIcon = false;
             this.Text = "WindowPDE";
+            this.Load += new System.EventHandler(this.WindowPDE_Load);
             ((System.ComponentModel.ISupportInitialize)(this.chartWDiff)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trBarT)).EndInit();
             this.tabControl1.ResumeLayout(false);
@@ -340,7 +360,7 @@
         #endregion
 
         public System.Windows.Forms.Label lblError;
-        private System.Windows.Forms.CheckBox chBoxPlotWB2;
+        private System.Windows.Forms.CheckBox checkBox2ndEq;
         private System.Windows.Forms.Label lblMinUV;
         private System.Windows.Forms.Label lblMaxUV;
         private System.Windows.Forms.Button btnTune;
@@ -353,7 +373,6 @@
         public System.Windows.Forms.ProgressBar prBarSolve;
         private System.Windows.Forms.RadioButton rdBtnTmr;
         private System.Windows.Forms.Button btnStopTimer;
-        private System.Windows.Forms.Button btnLoad;
         private System.Windows.Forms.Timer timerT;
         private System.Windows.Forms.Button btnAbout;
         private System.Windows.Forms.PropertyGrid propertyGrid1;
@@ -361,5 +380,7 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.PropertyGrid propertyGrid2;
+        private System.Windows.Forms.Button btnTickSlower;
+        private System.Windows.Forms.Button btnTickFaster;
     }
 }

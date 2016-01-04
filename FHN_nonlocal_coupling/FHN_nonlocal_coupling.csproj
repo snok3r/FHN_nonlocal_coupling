@@ -60,7 +60,7 @@
     <Compile Include="AboutPDE.Designer.cs">
       <DependentUpon>AboutPDE.cs</DependentUpon>
     </Compile>
-    <Compile Include="FHN_w_diffusion.cs" />
+    <Compile Include="FHN_w_diffussion.cs" />
     <Compile Include="FHN_wo_diffussion.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>

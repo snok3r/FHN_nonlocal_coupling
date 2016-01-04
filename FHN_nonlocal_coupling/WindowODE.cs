@@ -113,8 +113,8 @@ namespace FHN_nonlocal_coupling
 
             for (int i = 0; i < odes.Length; i++)
             {
-                int err = odes[i].solve();
-                if (err != 0)
+                int extCode = odes[i].solve();
+                if (extCode != 0)
                     lblErrorWOD.Visible = true;
             }
             prBarSolveWOD.Value++;
@@ -148,6 +148,8 @@ namespace FHN_nonlocal_coupling
 
             if (rdBtnTmrWOD.Checked)
             {
+                clearAllButNullclinesPlotWOD();
+
                 trBarTWOD.Enabled = true;
                 timerTWOD.Enabled = true;
             }
@@ -202,6 +204,18 @@ namespace FHN_nonlocal_coupling
             chartPhaseWOD.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(txtBoxMinUVPhaseWOD.Text);
         }
 
+        private void btnStopTimerWOD_Click(object sender, EventArgs e)
+        {
+            if (timerTWOD.Enabled)
+            {
+                rdBtnTmrWOD.Checked = false;
+                timerTWOD.Enabled = false;
+                //trBarTWOD.Enabled = false;
+
+                rdBtnPlotAllWOD.Checked = true;
+            }
+        }
+
         private void clearAllButNullclinesPlotWOD()
         {
             for (int i = 0; i < chartTWOD.Series.Count(); i++)
@@ -218,18 +232,6 @@ namespace FHN_nonlocal_coupling
 
             for (int i = 0; i < chartPhaseWOD.Series.Count(); i++)
                 chartPhaseWOD.Series[i].Points.Clear();
-        }
-
-        private void btnStopTimerWOD_Click(object sender, EventArgs e)
-        {
-            if (timerTWOD.Enabled)
-            {
-                rdBtnTmrWOD.Checked = false;
-                timerTWOD.Enabled = false;
-                //trBarTWOD.Enabled = false;
-
-                rdBtnPlotAllWOD.Checked = true;
-            }
         }
 
         private void setPlotWOD()
