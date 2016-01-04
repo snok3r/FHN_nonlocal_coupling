@@ -265,5 +265,20 @@ namespace FHN_nonlocal_coupling
             AboutODE o = new AboutODE();
             o.Show();
         }
+
+        private void btnTickSlower_Click(object sender, EventArgs e)
+        {
+            timerTWOD.Interval += odes[0].N / 5;
+        }
+
+        private void btnTickFaster_Click(object sender, EventArgs e)
+        {
+            if (timerTWOD.Interval - odes[0].N / 10 > 0)
+                timerTWOD.Interval -= odes[0].N / 10;
+            else
+            {
+                timerTWOD.Interval = 1;
+            }
+        }
     }
 }

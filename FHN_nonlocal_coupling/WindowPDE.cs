@@ -207,13 +207,13 @@ namespace FHN_nonlocal_coupling
 
         private void btnTickSlower_Click(object sender, EventArgs e)
         {
-            timerT.Interval += 50;
+            timerT.Interval += pdes[0].M / 5;
         }
 
         private void btnTickFaster_Click(object sender, EventArgs e)
         {
-            if (timerT.Interval - 50 > 0)
-                timerT.Interval -= 50;
+            if (timerT.Interval - pdes[0].M / 5 > 0)
+                timerT.Interval -= pdes[0].M / 5;
             else
             {
                 timerT.Interval = 1;
