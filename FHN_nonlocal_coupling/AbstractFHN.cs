@@ -11,7 +11,13 @@ namespace FHN_nonlocal_coupling
     {
         protected double[] t; // time
 
-        public AbstractFHN() { }
+        public AbstractFHN() {
+            Eps = 0.08;
+            Beta = 0.064;
+            Alpha = 0.056;
+            A = 0.1;
+            Classical = true;
+        }
 
         public abstract void load();
         public abstract void initials();
@@ -26,6 +32,13 @@ namespace FHN_nonlocal_coupling
         [Description("Interval for t [0, T]")]
         public double T
         {   // bound t's segment
+            get;
+            set;
+        }
+
+        [Description("v's equation constant")]
+        public double Eps
+        {   // v's equation constants
             get;
             set;
         }

@@ -32,15 +32,8 @@ namespace FHN_nonlocal_coupling
             set;
         }
 
-        [Description("v's constant")]
-        public double Tau
-        {   // v's constant
-            get;
-            set;
-        }
-
         // Constructor with default parameters
-        public FHN_ODE()
+        public FHN_ODE() : base()
         {
             N = 1000;
             L = 2.5;
@@ -48,11 +41,6 @@ namespace FHN_nonlocal_coupling
             U0 = 1.0;
             V0 = 0.1;
             I = 0.5;
-            Tau = 12.5;
-            Alpha = 0.7;
-            Beta = 0.8;
-            A = 0.1;
-            Classical = true;
         }
 
         // methods
@@ -120,7 +108,7 @@ namespace FHN_nonlocal_coupling
                 for (int j = 0; j < N + 1; j++)
                 {
                     v1[j] = f(u_null[j]) + I;
-                    v2[j] = (u_null[j] + Alpha) / Beta;
+                    v2[j] = (u_null[j] + Eps) / Beta;
                 }
             }
         }
@@ -158,7 +146,7 @@ namespace FHN_nonlocal_coupling
 
         private double f2(double u, double v)
         {
-            return (u + Alpha - Beta * v) / Tau;
+            return Eps * u + Alpha - Beta * v;
         }
     }
 }

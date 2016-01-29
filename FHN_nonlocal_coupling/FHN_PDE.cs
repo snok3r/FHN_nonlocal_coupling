@@ -28,13 +28,6 @@ namespace FHN_nonlocal_coupling
             set;
         }
 
-        [Description("v's equation constant")]
-        public double Gamma
-        {   // v's equation constants
-            get;
-            set;
-        }
-
         [Description("constant in front of Kernel")]
         public double B
         {   // constant before coupling
@@ -57,21 +50,16 @@ namespace FHN_nonlocal_coupling
         }
 
         // Constructor with default values
-        public FHN_PDE()
+        public FHN_PDE() : base()
         {
             N = 2000;
             M = 2000;
             L = 50.0;
             T = 40.0;
-            Alpha = 0.08;
-            Beta = 0.064;
-            Gamma = 0.056;
-            A = 0.1;
             B = 0.0;
             D = 1.0;
             I = 0.0;
             DeltaCoupling = true;
-            Classical = true;
         }
 
         // methods
@@ -104,7 +92,7 @@ namespace FHN_nonlocal_coupling
 
         public override int solve()
         {
-            // If we changed ONLY alpha, beta, gamma, b, d, Kernel, f or Iext,
+            // If we changed ONLY eps, beta, gamma, b, d, Kernel, f or Iext,
             // then just recall this function.
             
             double step = ht / (hx * hx);
@@ -158,7 +146,7 @@ namespace FHN_nonlocal_coupling
             double nextV;
             for (int i = 0; i < N + 1; i++)
             {
-                nextV = (v[j, i] + ht * (Alpha * u[j + 1, i] + Gamma)) / (1 + Beta * ht);
+                nextV = (v[j, i] + ht * (Eps * u[j + 1, i] + Alpha)) / (1 + Beta * ht);
 
                 // catching V is NaN
                 if (Double.IsNaN(nextV))
@@ -191,12 +179,12 @@ namespace FHN_nonlocal_coupling
                             di[i] = u[j, i] + ht * (B * (u[j, i - k] + u[j, N - 1] - 2 * u[j, i]) + f(u[j, i]) - v[j, i] + I);
                     }
                 }
-                else if (B == 0)
+                else
                     di[i] = u[j, i] + ht * (f(u[j, i]) - v[j, i] + I);
             }
             else if (B != 0)
                 di[i] = u[j, i] + ht * (B * (integral(j, i) - u[j, i]) + f(u[j, i]) - v[j, i] + I);
-            else if (B == 0)
+            else
                 di[i] = u[j, i] + ht * (f(u[j, i]) - v[j, i] + I);
         }
 
