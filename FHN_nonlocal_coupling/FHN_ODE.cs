@@ -7,30 +7,15 @@ using System.ComponentModel;
 
 namespace FHN_nonlocal_coupling
 {
-    class FHN_ODE
+    class FHN_ODE : AbstractFHN
     {
         // variables and arrays
         private double h, ht; // step
-        private double[] t; // time
         private double[] u, v, u_null, v1, v2; // v1, v2 are nullclines
 
         // properties
-        [Description("Quantity of points for interval [0, T]")]
-        public int N
-        {   // quantity of u,v t's
-            get;
-            set;
-        }
-
         public double L
         {
-            get;
-            set;
-        }
-
-        [Description("Interval [0, T]")]
-        public double T
-        {   // t's segment
             get;
             set;
         }
@@ -47,44 +32,9 @@ namespace FHN_nonlocal_coupling
             set;
         }
 
-        [Description("Current I excitatory")]
-        public double I
-        {   // current
-            get;
-            set;
-        }
-
         [Description("v's constant")]
         public double Tau
         {   // v's constant
-            get;
-            set;
-        }
-
-        [Description("v's constant")]
-        public double Alpha
-        {   // v's constant
-            get;
-            set;
-        }
-
-        [Description("v's constant")]
-        public double Beta
-        {   // v's constant
-            get;
-            set;
-        }
-
-        [Description("F's constant in non-classical non-linearity (classical == false)")]
-        public double A
-        {   // f's constant if non-classical
-            get;
-            set;
-        }
-
-        [Description("Whether this is a classical non-linearity or not")]
-        public bool Classical
-        {   // Is the equation with classical non-linearity?
             get;
             set;
         }
@@ -106,7 +56,7 @@ namespace FHN_nonlocal_coupling
         }
 
         // methods
-        public void load()
+        public override void load()
         {   // initialize/declare arrays and steps
             // If we want to change one of the parameters: n or TB,
             // then it needs to call this (plus Intiials) functions again.
@@ -129,13 +79,13 @@ namespace FHN_nonlocal_coupling
                 u_null[j] = - L + j * h;
         }
 
-        public void initials()
+        public override void initials()
         {   // Initialize initials
             u[0] = U0;
             v[0] = V0;
         }
 
-        public int solve()
+        public override int solve()
         {   // If we changed ONLY alpha, beta, Iext, Kernel or f (either a),
             // then just recall this function.
 
@@ -175,11 +125,6 @@ namespace FHN_nonlocal_coupling
             }
         }
 
-        public double getT(int j)
-        { 
-            return t[j]; 
-        }
-
         public double getU(int j)
         { 
             return u[j]; 
@@ -214,14 +159,6 @@ namespace FHN_nonlocal_coupling
         private double f2(double u, double v)
         {
             return (u + Alpha - Beta * v) / Tau;
-        }
-
-        private double f(double u) 
-        {
-            if (Classical)
-                return u - u * u * u / 3;
-            else
-                return - u * (u - 1) * (u - A);
         }
     }
 }

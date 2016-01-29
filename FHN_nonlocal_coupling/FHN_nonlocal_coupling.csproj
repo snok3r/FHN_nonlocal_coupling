@@ -57,6 +57,7 @@
     <Compile Include="AboutPDE.Designer.cs">
       <DependentUpon>AboutPDE.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbstractFHN.cs" />
     <Compile Include="FHN_ODE.cs" />
     <Compile Include="FHN_PDE.cs" />
     <Compile Include="Main.cs">

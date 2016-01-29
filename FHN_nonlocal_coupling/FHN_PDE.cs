@@ -7,20 +7,14 @@ using System.ComponentModel;
 
 namespace FHN_nonlocal_coupling
 {
-    class FHN_PDE
+    class FHN_PDE : AbstractFHN
     {
         // variables and arrays
         private double hx, ht; // steps
-        private double[] x, t;
+        private double[] x;
         private double[,] u, v;
         
         // properties
-        public int N
-        {   // quantity of u,v x's
-            get;
-            set;
-        }
-
         public int M
         {   // quantity of u,v t's
             get;
@@ -34,37 +28,9 @@ namespace FHN_nonlocal_coupling
             set;
         }
 
-        [Description("Interval for t [0, T]")]
-        public double T
-        {   // bound t's segment
-            get;
-            set;
-        }
-
-        [Description("v's equation constant")]
-        public double Alpha
-        {   // v's equation constants
-            get;
-            set;
-        }
-
-        [Description("v's equation constant")]
-        public double Beta
-        {   // v's equation constants
-            get;
-            set;
-        }
-
         [Description("v's equation constant")]
         public double Gamma
         {   // v's equation constants
-            get;
-            set;
-        }
-
-        [Description("f's constant")]
-        public double A
-        {   // f's constant
             get;
             set;
         }
@@ -79,13 +45,6 @@ namespace FHN_nonlocal_coupling
         [Description("Delay in Delta-Kernel")]
         public double D
         {   // a delay in delta Kernel
-            get;
-            set;
-        }
-
-        [Description("Current I excitatory")]
-        public double I
-        {   // current
             get;
             set;
         }
@@ -112,10 +71,11 @@ namespace FHN_nonlocal_coupling
             D = 1.0;
             I = 0.0;
             DeltaCoupling = true;
+            Classical = true;
         }
 
         // methods
-        public void load()
+        public override void load()
         {   // initialize/declare arrays and steps
             // If we want to change one of the parameters: n, m, l, TB,
             // then it needs to call this (plus Intiials) functions again.
@@ -132,7 +92,7 @@ namespace FHN_nonlocal_coupling
             v = new double[M + 1, N + 1];
         }
 
-        public void initials()
+        public override void initials()
         {   // Initialize initials
 
             for (int i = 0; i < N + 1; i++)
@@ -142,7 +102,7 @@ namespace FHN_nonlocal_coupling
             }
         }
 
-        public int solve()
+        public override int solve()
         {
             // If we changed ONLY alpha, beta, gamma, b, d, Kernel, f or Iext,
             // then just recall this function.
@@ -244,11 +204,6 @@ namespace FHN_nonlocal_coupling
         { 
             return x[i]; 
         }
-
-        public double getT(int j) 
-        { 
-            return t[j]; 
-        }
         
         public double getU(int j, int i)
         { 
@@ -276,13 +231,7 @@ namespace FHN_nonlocal_coupling
         {
             //return Math.Exp(-z * z / 2) / Math.Sqrt(2 * Math.PI);
             return 1.0 / 2 * Math.Exp(-Math.Abs(z + 2));
-        }
-
-        private double f(double u){
-            //return - u * (u - 1) * (u - a); 
-            return u - u * u * u / 3;
-        }
-            
+        }            
 
         private double u_x_0(double x)
         {	// initial u wave at t = 0
