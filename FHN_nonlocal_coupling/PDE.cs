@@ -7,22 +7,14 @@ using System.ComponentModel;
 
 namespace FHN_nonlocal_coupling
 {
-    class FHN_w_diffussion
+    class PDE : AbstractFHN
     {
-        public WindowPDE form; // to access Form's controls
-
         // variables and arrays
         private double hx, ht; // steps
-        private double[] x, t;
+        private double[] x;
         private double[,] u, v;
         
         // properties
-        public int N
-        {   // quantity of u,v x's
-            get;
-            set;
-        }
-
         public int M
         {   // quantity of u,v t's
             get;
@@ -32,41 +24,6 @@ namespace FHN_nonlocal_coupling
         [Description("Interval for x [-L, L]")]
         public double L
         {   // bound x's segment
-            get;
-            set;
-        }
-
-        [Description("Interval for t [0, T]")]
-        public double T
-        {   // bound t's segment
-            get;
-            set;
-        }
-
-        [Description("v's equation constant")]
-        public double Alpha
-        {   // v's equation constants
-            get;
-            set;
-        }
-
-        [Description("v's equation constant")]
-        public double Beta
-        {   // v's equation constants
-            get;
-            set;
-        }
-
-        [Description("v's equation constant")]
-        public double Gamma
-        {   // v's equation constants
-            get;
-            set;
-        }
-
-        [Description("f's constant")]
-        public double A
-        {   // f's constant
             get;
             set;
         }
@@ -85,13 +42,6 @@ namespace FHN_nonlocal_coupling
             set;
         }
 
-        [Description("Current I excitatory")]
-        public double I
-        {   // current
-            get;
-            set;
-        }
-
         [Description("Delta-Kernel or not?")]
         public bool DeltaCoupling
         {   // bool for deciding which equation solves
@@ -100,26 +50,20 @@ namespace FHN_nonlocal_coupling
         }
 
         // Constructor with default values
-        public FHN_w_diffussion(WindowPDE f)
+        public PDE() : base()
         {
             N = 2000;
             M = 2000;
             L = 50.0;
             T = 40.0;
-            Alpha = 0.08;
-            Beta = 0.064;
-            Gamma = 0.056;
-            A = 0.1;
             B = 0.0;
             D = 1.0;
             I = 0.0;
             DeltaCoupling = true;
-
-            form = f;
         }
 
         // methods
-        public void load()
+        public override void load()
         {   // initialize/declare arrays and steps
             // If we want to change one of the parameters: n, m, l, TB,
             // then it needs to call this (plus Intiials) functions again.
@@ -136,7 +80,7 @@ namespace FHN_nonlocal_coupling
             v = new double[M + 1, N + 1];
         }
 
-        public void initials()
+        public override void initials()
         {   // Initialize initials
 
             for (int i = 0; i < N + 1; i++)
@@ -146,9 +90,9 @@ namespace FHN_nonlocal_coupling
             }
         }
 
-        public int solve()
+        public override int solve()
         {
-            // If we changed ONLY alpha, beta, gamma, b, d, Kernel, f or Iext,
+            // If we changed ONLY eps, beta, gamma, b, d, Kernel, f or Iext,
             // then just recall this function.
             
             double step = ht / (hx * hx);
@@ -202,7 +146,7 @@ namespace FHN_nonlocal_coupling
             double nextV;
             for (int i = 0; i < N + 1; i++)
             {
-                nextV = (v[j, i] + ht * (Alpha * u[j + 1, i] + Gamma)) / (1 + Beta * ht);
+                nextV = (v[j, i] + ht * (Eps * u[j + 1, i] + Alpha)) / (1 + Beta * ht);
 
                 // catching V is NaN
                 if (Double.IsNaN(nextV))
@@ -235,23 +179,18 @@ namespace FHN_nonlocal_coupling
                             di[i] = u[j, i] + ht * (B * (u[j, i - k] + u[j, N - 1] - 2 * u[j, i]) + f(u[j, i]) - v[j, i] + I);
                     }
                 }
-                else if (B == 0)
+                else
                     di[i] = u[j, i] + ht * (f(u[j, i]) - v[j, i] + I);
             }
             else if (B != 0)
                 di[i] = u[j, i] + ht * (B * (integral(j, i) - u[j, i]) + f(u[j, i]) - v[j, i] + I);
-            else if (B == 0)
+            else
                 di[i] = u[j, i] + ht * (f(u[j, i]) - v[j, i] + I);
         }
 
         public double getX(int i)
         { 
             return x[i]; 
-        }
-
-        public double getT(int j) 
-        { 
-            return t[j]; 
         }
         
         public double getU(int j, int i)
@@ -280,13 +219,7 @@ namespace FHN_nonlocal_coupling
         {
             //return Math.Exp(-z * z / 2) / Math.Sqrt(2 * Math.PI);
             return 1.0 / 2 * Math.Exp(-Math.Abs(z + 2));
-        }
-
-        private double f(double u){
-            //return - u * (u - 1) * (u - a); 
-            return u - u * u * u / 3;
-        }
-            
+        }            
 
         private double u_x_0(double x)
         {	// initial u wave at t = 0
