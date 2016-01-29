@@ -12,7 +12,7 @@ namespace FHN_nonlocal_coupling
 {
     public partial class WindowPDE : Form
     {
-        FHN_PDE[] pdes;
+        PDE[] pdes;
 
         public WindowPDE()
         {
@@ -26,10 +26,10 @@ namespace FHN_nonlocal_coupling
 
         private void loadEquations(int num)
         {
-            pdes = new FHN_PDE[num];
+            pdes = new PDE[num];
 
             for (int i = 0; i < num; i++)
-                pdes[i] = new FHN_PDE();
+                pdes[i] = new PDE();
 
             propertyGrid1.SelectedObject = pdes[0];
 
@@ -39,7 +39,7 @@ namespace FHN_nonlocal_coupling
                 propertyGrid2.SelectedObject = null;
         }
 
-        private void plot(int j, FHN_PDE obj, int numEq)
+        private void plot(int j, PDE obj, int numEq)
         {   // plots full given t segment of diffusion solution
             for (int i = 0; i < obj.N + 1; i++)
             {

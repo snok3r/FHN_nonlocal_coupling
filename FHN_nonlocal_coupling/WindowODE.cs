@@ -12,7 +12,7 @@ namespace FHN_nonlocal_coupling
 {
     public partial class WindowODE : Form
     {
-        FHN_ODE[] odes;
+        ODE[] odes;
 
         public WindowODE()
         {
@@ -26,10 +26,10 @@ namespace FHN_nonlocal_coupling
 
         private void loadEquations(int num)
         {
-            odes = new FHN_ODE[num];
+            odes = new ODE[num];
 
             for (int i = 0; i < num; i++)
-                odes[i] = new FHN_ODE();
+                odes[i] = new ODE();
 
             propertyGrid1.SelectedObject = odes[0];
 
@@ -39,7 +39,7 @@ namespace FHN_nonlocal_coupling
                 propertyGrid2.SelectedObject = null;
         }
 
-        private void plot(int j, FHN_ODE obj, int numEq)
+        private void plot(int j, ODE obj, int numEq)
         {   // plots single point on t plot and phase plane
             chart.Series[2 * numEq].Points.AddXY(obj.getT(j), obj.getU(j));
             chart.Series[2 * numEq + 1].Points.AddXY(obj.getT(j), obj.getV(j));
@@ -47,7 +47,7 @@ namespace FHN_nonlocal_coupling
             chartPhase.Series[3 * numEq].Points.AddXY(obj.getU(j), obj.getV(j));
         }
 
-        private void plotNullclines(FHN_ODE obj, int numEq)
+        private void plotNullclines(ODE obj, int numEq)
         {
             for (int j = 0; j < obj.N + 1; j++)
             {   // drawing nullclines

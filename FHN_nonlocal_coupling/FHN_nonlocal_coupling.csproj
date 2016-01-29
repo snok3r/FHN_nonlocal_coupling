@@ -58,8 +58,8 @@
       <DependentUpon>AboutPDE.cs</DependentUpon>
     </Compile>
     <Compile Include="AbstractFHN.cs" />
-    <Compile Include="FHN_ODE.cs" />
-    <Compile Include="FHN_PDE.cs" />
+    <Compile Include="ODE.cs" />
+    <Compile Include="PDE.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>

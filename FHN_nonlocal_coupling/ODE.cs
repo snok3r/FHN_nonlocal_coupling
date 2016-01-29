@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 namespace FHN_nonlocal_coupling
 {
-    class FHN_ODE : AbstractFHN
+    class ODE : AbstractFHN
     {
         // variables and arrays
         private double h, ht; // step
@@ -33,7 +33,7 @@ namespace FHN_nonlocal_coupling
         }
 
         // Constructor with default parameters
-        public FHN_ODE() : base()
+        public ODE() : base()
         {
             N = 1000;
             L = 2.5;
