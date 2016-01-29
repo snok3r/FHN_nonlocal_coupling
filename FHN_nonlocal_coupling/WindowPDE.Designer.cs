@@ -42,7 +42,7 @@
             this.btnTune = new System.Windows.Forms.Button();
             this.txtBoxMinUV = new System.Windows.Forms.TextBox();
             this.txtBoxMaxUV = new System.Windows.Forms.TextBox();
-            this.chartWDiff = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.chart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.btnSolve = new System.Windows.Forms.Button();
             this.btnPlot = new System.Windows.Forms.Button();
             this.trBarT = new System.Windows.Forms.TrackBar();
@@ -58,7 +58,7 @@
             this.propertyGrid2 = new System.Windows.Forms.PropertyGrid();
             this.btnTickSlower = new System.Windows.Forms.Button();
             this.btnTickFaster = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.chartWDiff)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trBarT)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -134,14 +134,14 @@
             this.txtBoxMaxUV.Text = "2,0";
             this.txtBoxMaxUV.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // chartWDiff
+            // chart
             // 
             chartArea5.Name = "ChartArea1";
-            this.chartWDiff.ChartAreas.Add(chartArea5);
+            this.chart.ChartAreas.Add(chartArea5);
             legend5.Name = "Legend1";
-            this.chartWDiff.Legends.Add(legend5);
-            this.chartWDiff.Location = new System.Drawing.Point(242, 8);
-            this.chartWDiff.Name = "chartWDiff";
+            this.chart.Legends.Add(legend5);
+            this.chart.Location = new System.Drawing.Point(242, 8);
+            this.chart.Name = "chart";
             series17.BorderWidth = 3;
             series17.ChartArea = "ChartArea1";
             series17.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
@@ -168,13 +168,13 @@
             series20.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             series20.Legend = "Legend1";
             series20.Name = "V2";
-            this.chartWDiff.Series.Add(series17);
-            this.chartWDiff.Series.Add(series18);
-            this.chartWDiff.Series.Add(series19);
-            this.chartWDiff.Series.Add(series20);
-            this.chartWDiff.Size = new System.Drawing.Size(1031, 650);
-            this.chartWDiff.TabIndex = 44;
-            this.chartWDiff.Text = "chart1";
+            this.chart.Series.Add(series17);
+            this.chart.Series.Add(series18);
+            this.chart.Series.Add(series19);
+            this.chart.Series.Add(series20);
+            this.chart.Size = new System.Drawing.Size(1031, 650);
+            this.chart.TabIndex = 44;
+            this.chart.Text = "chart1";
             // 
             // btnSolve
             // 
@@ -336,7 +336,7 @@
             this.Controls.Add(this.btnTune);
             this.Controls.Add(this.txtBoxMinUV);
             this.Controls.Add(this.txtBoxMaxUV);
-            this.Controls.Add(this.chartWDiff);
+            this.Controls.Add(this.chart);
             this.Controls.Add(this.btnSolve);
             this.Controls.Add(this.btnPlot);
             this.Controls.Add(this.trBarT);
@@ -347,7 +347,7 @@
             this.ShowIcon = false;
             this.Text = "WindowPDE";
             this.Load += new System.EventHandler(this.WindowPDE_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.chartWDiff)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chart)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trBarT)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
@@ -359,18 +359,18 @@
 
         #endregion
 
-        public System.Windows.Forms.Label lblError;
+        private System.Windows.Forms.Label lblError;
         private System.Windows.Forms.CheckBox checkBox2ndEq;
         private System.Windows.Forms.Label lblMinUV;
         private System.Windows.Forms.Label lblMaxUV;
         private System.Windows.Forms.Button btnTune;
         private System.Windows.Forms.TextBox txtBoxMinUV;
         private System.Windows.Forms.TextBox txtBoxMaxUV;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chartWDiff;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart;
         private System.Windows.Forms.Button btnSolve;
         private System.Windows.Forms.Button btnPlot;
         private System.Windows.Forms.TrackBar trBarT;
-        public System.Windows.Forms.ProgressBar prBarSolve;
+        private System.Windows.Forms.ProgressBar prBarSolve;
         private System.Windows.Forms.RadioButton rdBtnTmr;
         private System.Windows.Forms.Button btnStopTimer;
         private System.Windows.Forms.Timer timerT;
