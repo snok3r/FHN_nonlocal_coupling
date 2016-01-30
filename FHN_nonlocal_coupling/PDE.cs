@@ -10,7 +10,6 @@ namespace FHN_nonlocal_coupling
     class PDE : AbstractFHN
     {
         // variables and arrays
-        private double hx, ht; // steps
         private double[] x;
         private double[,] u, v;
         

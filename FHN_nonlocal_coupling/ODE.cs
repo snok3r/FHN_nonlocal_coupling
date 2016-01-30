@@ -10,8 +10,8 @@ namespace FHN_nonlocal_coupling
     class ODE : AbstractFHN
     {
         // variables and arrays
-        private double h, ht; // step
-        private double[] u, v, u_null, v1, v2; // v1, v2 are nullclines
+        private double[] u, v;
+        private double[] u_null, v1, v2; // nullclines
 
         // properties
         public double L
@@ -49,7 +49,7 @@ namespace FHN_nonlocal_coupling
             // If we want to change one of the parameters: n or TB,
             // then it needs to call this (plus Intiials) functions again.
 
-            h = 2 * L / N; //
+            hx = 2 * L / N; //
             ht = T / N;  // step for t
 
             t = new double[N + 1]; // arrange t's
@@ -64,7 +64,7 @@ namespace FHN_nonlocal_coupling
             
             u_null = new double[N + 1];
             for (int j = 0; j < N + 1; j++) 
-                u_null[j] = - L + j * h;
+                u_null[j] = - L + j * hx;
         }
 
         public override void initials()

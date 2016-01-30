@@ -9,6 +9,7 @@ namespace FHN_nonlocal_coupling
 {
     abstract class AbstractFHN
     {
+        protected double hx, ht; // steps
         protected double[] t; // time
 
         public AbstractFHN() {
