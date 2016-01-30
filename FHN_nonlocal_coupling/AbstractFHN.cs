@@ -30,6 +30,12 @@ namespace FHN_nonlocal_coupling
             set;
         }
 
+		public virtual double L
+        {
+            get;
+            set;
+        }
+
         [Description("Interval for t [0, T]")]
         public double T
         {   // bound t's segment

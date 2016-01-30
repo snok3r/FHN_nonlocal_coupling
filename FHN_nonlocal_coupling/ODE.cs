@@ -14,12 +14,6 @@ namespace FHN_nonlocal_coupling
         private double[] u_null, v1, v2; // nullclines
 
         // properties
-        public double L
-        {
-            get;
-            set;
-        }
-
         public double U0
         {   // intiial u
             get;

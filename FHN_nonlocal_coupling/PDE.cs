@@ -21,7 +21,7 @@ namespace FHN_nonlocal_coupling
         }
 
         [Description("Interval for x [-L, L]")]
-        public double L
+        public override double L
         {   // bound x's segment
             get;
             set;
