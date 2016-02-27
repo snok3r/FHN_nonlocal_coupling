@@ -9,10 +9,22 @@ namespace FHN_nonlocal_coupling
 {
     abstract class AbstractFHN
     {
+        protected const int POINTS_THRESHOLD = 5;
+
         protected double hx, ht; // steps
         protected double[] t; // time
 
-        public AbstractFHN() {
+        private int varN;
+        protected double varL;
+        private double varA;
+        private double varT;
+
+        public abstract void load();
+        public abstract void initials();
+        public abstract int solve();
+
+        public AbstractFHN()
+        {
             Eps = 0.08;
             Beta = 0.064;
             Alpha = 0.056;
@@ -20,27 +32,36 @@ namespace FHN_nonlocal_coupling
             Classical = true;
         }
 
-        public abstract void load();
-        public abstract void initials();
-        public abstract int solve();
-
+        // properties
         public int N
         {   // quantity of u,v t's (x's)
-            get;
-            set;
+            get { return varN; }
+            set
+            {
+                if (value > POINTS_THRESHOLD)
+                    varN = value;
+            }
         }
-
-		public virtual double L
+        
+        public virtual double L
         {
-            get;
-            set;
+            get { return varL; }
+            set 
+            {
+                if (value > 0)
+                    varL = value;
+            }
         }
 
         [Description("Interval for t [0, T]")]
         public double T
         {   // bound t's segment
-            get;
-            set;
+            get { return varT; }
+            set
+            {
+                if (value > 0)
+                    varT = value;
+            }
         }
 
         [Description("v's equation constant")]
@@ -74,8 +95,12 @@ namespace FHN_nonlocal_coupling
         [Description("F's constant in non-classical non-linearity (classical == false)")]
         public double A
         {   // f's constant if non-classical
-            get;
-            set;
+            get { return varA; }
+            set
+            {
+                if (value > 0 && value < 1)
+                    varA = value;
+            }
         }
 
         [Description("Whether this is a classical f(u) or not")]

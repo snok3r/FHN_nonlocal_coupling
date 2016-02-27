@@ -12,19 +12,42 @@ namespace FHN_nonlocal_coupling
         // variables and arrays
         private double[] x;
         private double[,] u, v;
-        
+
+        private int varM;
+
+        // Constructor with default values
+        public PDE() : base()
+        {
+            N = 2000;
+            M = 2000;
+            L = 50.0;
+            T = 40.0;
+            B = 0.0;
+            D = 1.0;
+            I = 0.0;
+            DeltaCoupling = true;
+        }
+
         // properties
         public int M
         {   // quantity of u,v t's
-            get;
-            set;
+            get { return varM; }
+            set 
+            {
+                if (value > POINTS_THRESHOLD)
+                    varM = value;
+            }
         }
 
         [Description("Interval for x [-L, L]")]
         public override double L
         {   // bound x's segment
-            get;
-            set;
+            get { return varL; }
+            set
+            {
+                if (value > 0)
+                    varL = value;
+            }
         }
 
         [Description("constant in front of Kernel")]
@@ -46,19 +69,6 @@ namespace FHN_nonlocal_coupling
         {   // bool for deciding which equation solves
             get;
             set;
-        }
-
-        // Constructor with default values
-        public PDE() : base()
-        {
-            N = 2000;
-            M = 2000;
-            L = 50.0;
-            T = 40.0;
-            B = 0.0;
-            D = 1.0;
-            I = 0.0;
-            DeltaCoupling = true;
         }
 
         // methods
@@ -116,6 +126,13 @@ namespace FHN_nonlocal_coupling
                     return -1;
             }
 
+            P = null; 
+            Q = null;
+            ai = null;
+            bi = null;
+            ci = null;
+            di = null;
+
             return 0;
         }
 
@@ -142,10 +159,9 @@ namespace FHN_nonlocal_coupling
             u[j + 1, N] = Q[N];
             for (int i = N - 1; i > -1; i--) u[j + 1, i] = P[i] * u[j + 1, i + 1] + Q[i];
 
-            double nextV;
             for (int i = 0; i < N + 1; i++)
             {
-                nextV = (v[j, i] + ht * (Eps * u[j + 1, i] + Alpha)) / (1 + Beta * ht);
+                double nextV = (v[j, i] + ht * (Eps * u[j + 1, i] + Alpha)) / (1 + Beta * ht);
 
                 // catching V is NaN
                 if (Double.IsNaN(nextV))

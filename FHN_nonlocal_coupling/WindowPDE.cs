@@ -24,6 +24,19 @@ namespace FHN_nonlocal_coupling
             loadEquations(1);
         }
 
+        private void WindowPDE_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            timerT.Enabled = false;
+            trBarT.Enabled = false;
+
+            chart.Series.Clear();
+
+            for (int i = 0; i < pdes.Length; i++)
+                pdes[i] = null;
+
+            pdes = null;
+        }
+
         private void loadEquations(int num)
         {
             pdes = new PDE[num];

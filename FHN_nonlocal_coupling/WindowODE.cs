@@ -24,6 +24,19 @@ namespace FHN_nonlocal_coupling
             loadEquations(1);
         }
 
+        private void WindowODE_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            timerT.Enabled = false;
+            trBarT.Enabled = false;
+
+            chart.Series.Clear();
+            
+            for (int i = 0; i < odes.Length; i++)
+                odes[i] = null;
+            
+            odes = null;
+        }
+
         private void loadEquations(int num)
         {
             odes = new ODE[num];

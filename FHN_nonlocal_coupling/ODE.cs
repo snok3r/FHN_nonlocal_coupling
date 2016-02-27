@@ -13,6 +13,17 @@ namespace FHN_nonlocal_coupling
         private double[] u, v;
         private double[] u_null, v1, v2; // nullclines
 
+        // Constructor with default parameters
+        public ODE() : base()
+        {
+            N = 1000;
+            L = 2.5;
+            T = 100.0;
+            U0 = 1.0;
+            V0 = 0.1;
+            I = 0.5;
+        }
+
         // properties
         public double U0
         {   // intiial u
@@ -24,17 +35,6 @@ namespace FHN_nonlocal_coupling
         {   // intiial v
             get;
             set;
-        }
-
-        // Constructor with default parameters
-        public ODE() : base()
-        {
-            N = 1000;
-            L = 2.5;
-            T = 100.0;
-            U0 = 1.0;
-            V0 = 0.1;
-            I = 0.5;
         }
 
         // methods
