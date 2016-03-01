@@ -80,10 +80,12 @@ namespace FHN_nonlocal_coupling
             ht = T / M;  // step for t
 
             x = new double[N + 1]; // arrange x's
-            for (int i = 0; i < N + 1; i++) x[i] = - L + i * hx;
+            for (int i = 0; i < N + 1; i++) 
+                x[i] = - L + i * hx;
 
             t = new double[M + 1]; // arrange t's
-            for (int j = 0; j < M + 1; j++) t[j] = j * ht;
+            for (int j = 0; j < M + 1; j++) 
+                t[j] = j * ht;
 
             u = new double[M + 1, N + 1];
             v = new double[M + 1, N + 1];
@@ -223,9 +225,11 @@ namespace FHN_nonlocal_coupling
         {   // Trapezoidal rule, uniform grid
             // integrating at point (t[j], x[i]) from -l to l
             double sum = 0;
-            sum += kernel(x[i] - x[0]) * u[j, 0];
-            for (int k = 1; k < N; k++) sum += 2 * kernel(x[i] - x[k]) * u[j, k];
-            sum += kernel(x[i] - x[N]) * u[j, N];
+            double xi = x[i];
+
+            sum += kernel(xi - x[0]) * u[j, 0];
+            for (int k = 1; k < N; k++) sum += 2 * kernel(xi - x[k]) * u[j, k];
+            sum += kernel(xi - x[N]) * u[j, N];
 
             return hx * sum / 2;
         }

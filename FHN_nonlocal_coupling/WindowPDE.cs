@@ -56,8 +56,10 @@ namespace FHN_nonlocal_coupling
         {   // plots full given t segment of diffusion solution
             for (int i = 0; i < obj.N + 1; i++)
             {
-                chart.Series[2 * numEq].Points.AddXY(obj.getX(i), obj.getU(j, i));
-                chart.Series[2 * numEq + 1].Points.AddXY(obj.getX(i), obj.getV(j, i));
+                double x = obj.getX(i);
+
+                chart.Series[2 * numEq].Points.AddXY(x, obj.getU(j, i));
+                chart.Series[2 * numEq + 1].Points.AddXY(x, obj.getV(j, i));
             }
         }
 

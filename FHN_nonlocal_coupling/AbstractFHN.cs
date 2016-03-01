@@ -14,8 +14,9 @@ namespace FHN_nonlocal_coupling
         protected double hx, ht; // steps
         protected double[] t; // time
 
-        private int varN;
+        // variables for properties
         protected double varL;
+        private int varN;
         private double varA;
         private double varT;
 

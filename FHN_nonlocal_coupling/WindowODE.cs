@@ -54,18 +54,24 @@ namespace FHN_nonlocal_coupling
 
         private void plot(int j, ODE obj, int numEq)
         {   // plots single point on t plot and phase plane
-            chart.Series[2 * numEq].Points.AddXY(obj.getT(j), obj.getU(j));
-            chart.Series[2 * numEq + 1].Points.AddXY(obj.getT(j), obj.getV(j));
+            double t = obj.getT(j);
+            double u = obj.getU(j);
+            double v = obj.getV(j);
 
-            chartPhase.Series[3 * numEq].Points.AddXY(obj.getU(j), obj.getV(j));
+            chart.Series[2 * numEq].Points.AddXY(t, u);
+            chart.Series[2 * numEq + 1].Points.AddXY(t, v);
+
+            chartPhase.Series[3 * numEq].Points.AddXY(u, v);
         }
 
         private void plotNullclines(ODE obj, int numEq)
         {
             for (int j = 0; j < obj.N + 1; j++)
             {   // drawing nullclines
-                chartPhase.Series[3 * numEq + 1].Points.AddXY(obj.getUN(j), obj.getV1(j));
-                chartPhase.Series[3 * numEq + 2].Points.AddXY(obj.getUN(j), obj.getV2(j));
+                double un = obj.getUN(j);
+
+                chartPhase.Series[3 * numEq + 1].Points.AddXY(un, obj.getV1(j));
+                chartPhase.Series[3 * numEq + 2].Points.AddXY(un, obj.getV2(j));
             }
         }
 

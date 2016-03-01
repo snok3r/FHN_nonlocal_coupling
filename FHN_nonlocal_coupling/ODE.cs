@@ -71,12 +71,13 @@ namespace FHN_nonlocal_coupling
         {   // If we changed ONLY alpha, beta, Iext, Kernel or f (either a),
             // then just recall this function.
 
-            double utemp, vtemp;
-
             for (int j = 0; j < N; j++)
             {
-                utemp = u[j] + ht * f1(u[j], v[j]);
-                vtemp = v[j] + ht * f2(u[j], v[j]);
+                double u_j = f1(u[j], v[j]);
+                double v_j = f2(u[j], v[j]);
+
+                double utemp = u[j] + ht * u_j;
+                double vtemp = v[j] + ht * v_j;
 
                 if (Double.IsNaN(utemp) || Double.IsNaN(vtemp))
                     return -1;
@@ -86,8 +87,8 @@ namespace FHN_nonlocal_coupling
                 //v[j + 1] = vtemp;
 
                 // Euler's 2nd order
-                u[j + 1] = u[j] + ht / 2 * (f1(u[j], v[j]) + f1(utemp, vtemp));
-                v[j + 1] = v[j] + ht / 2 * (f2(u[j], v[j]) + f2(utemp, vtemp));
+                u[j + 1] = u[j] + ht * 0.5 * (u_j + f1(utemp, vtemp));
+                v[j + 1] = v[j] + ht * 0.5 * (v_j + f2(utemp, vtemp));
             }
             
             nullclines();
