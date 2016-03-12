@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel;
 
 namespace FHN_nonlocal_coupling
@@ -39,8 +35,7 @@ namespace FHN_nonlocal_coupling
             get { return varN; }
             set
             {
-                if (value > POINTS_THRESHOLD)
-                    varN = value;
+                if (value > POINTS_THRESHOLD) varN = value;
             }
         }
         
@@ -49,8 +44,7 @@ namespace FHN_nonlocal_coupling
             get { return varL; }
             set 
             {
-                if (value > 0)
-                    varL = value;
+                if (value > 0) varL = value;
             }
         }
 
@@ -60,38 +54,21 @@ namespace FHN_nonlocal_coupling
             get { return varT; }
             set
             {
-                if (value > 0)
-                    varT = value;
+                if (value > 0) varT = value;
             }
         }
 
         [Description("v's equation constant")]
-        public double Eps
-        {   // v's equation constants
-            get;
-            set;
-        }
+        public double Eps { get; set; }
 
         [Description("v's equation constant")]
-        public double Alpha
-        {   // v's equation constants
-            get;
-            set;
-        }
+        public double Alpha { get; set; }
 
         [Description("v's equation constant")]
-        public double Beta
-        {   // v's equation constants
-            get;
-            set;
-        }
+        public double Beta { get; set; }
 
         [Description("Current I excitatory")]
-        public double I
-        {   // current
-            get;
-            set;
-        }
+        public double I { get; set; }
 
         [Description("F's constant in non-classical non-linearity (classical == false)")]
         public double A
@@ -99,22 +76,15 @@ namespace FHN_nonlocal_coupling
             get { return varA; }
             set
             {
-                if (value > 0 && value < 1)
-                    varA = value;
+                if (value > 0 && value < 1) varA = value;
             }
         }
 
         [Description("Whether this is a classical f(u) or not")]
-        public bool Classical
-        {   // Is the equation with classical non-linearity?
-            get;
-            set;
-        }
+        public bool Classical { get; set; }
 
         public double getT(int j)
-        {
-            return t[j];
-        }
+        { return t[j]; }
 
         protected double f(double u)
         {

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel;
 
 namespace FHN_nonlocal_coupling
@@ -14,6 +10,7 @@ namespace FHN_nonlocal_coupling
         private double[,] u, v;
 
         private int varM;
+        private double varD;
 
         // Constructor with default values
         public PDE() : base()
@@ -34,8 +31,7 @@ namespace FHN_nonlocal_coupling
             get { return varM; }
             set 
             {
-                if (value > POINTS_THRESHOLD)
-                    varM = value;
+                if (value > POINTS_THRESHOLD) varM = value;
             }
         }
 
@@ -45,31 +41,25 @@ namespace FHN_nonlocal_coupling
             get { return varL; }
             set
             {
-                if (value > 0)
-                    varL = value;
+                if (value > 0) varL = value;
             }
-        }
-
-        [Description("constant in front of Kernel")]
-        public double B
-        {   // constant before coupling
-            get;
-            set;
         }
 
         [Description("Delay in Delta-Kernel")]
         public double D
         {   // a delay in delta Kernel
-            get;
-            set;
+            get { return varD; }
+            set
+            {
+                if (value > 0) varD = value;
+            }
         }
 
+        [Description("constant in front of Kernel")]
+        public double B { get; set; }
+
         [Description("Delta-Kernel or not?")]
-        public bool DeltaCoupling
-        {   // bool for deciding which equation solves
-            get;
-            set;
-        }
+        public bool DeltaCoupling { get; set; }
 
         // methods
         public override void load()
@@ -93,7 +83,6 @@ namespace FHN_nonlocal_coupling
 
         public override void initials()
         {   // Initialize initials
-
             for (int i = 0; i < N + 1; i++)
             {	// setting an initial waves at t = 0
                 u[0, i] = u_x_0(x[i]);
@@ -127,13 +116,6 @@ namespace FHN_nonlocal_coupling
                 if (extCode != 0)
                     return -1;
             }
-
-            P = null; 
-            Q = null;
-            ai = null;
-            bi = null;
-            ci = null;
-            di = null;
 
             return 0;
         }
@@ -205,20 +187,43 @@ namespace FHN_nonlocal_coupling
                 di[i] = u[j, i] + ht * (f(u[j, i]) - v[j, i] + I);
         }
 
-        public double getX(int i)
-        { 
-            return x[i]; 
+        public double getVelocity(int j0)
+        {
+            if (u != null)
+            {
+                int deltaj = (int)(1 / ht);
+
+                int i0 = 0; // X0 max = u[j0, i0]
+                for (int i = 1; i < N + 1; i++)
+                    if (u[j0, i] > u[j0, i0])
+                        i0 = i;
+
+                int j1 = (j0 + deltaj);
+                if (j1 > M + 1) return 0; // we're out of frame
+
+                int i1 = 0; // X1 max = u[j1, i0]
+
+                for (int i = 1; i < N + 1; i++)
+                    if (u[j1, i] > u[j1, i1])
+                        i1 = i;
+
+                double x0 = i0 * hx; double x1 = i1 * hx;
+                double t0 = j0 * ht; double t1 = j1 * ht;
+
+                return (x1 - x0) / (t1 - t0);
+            }
+
+            return 0;
         }
+
+        public double getX(int i)
+        { return x[i]; }
         
         public double getU(int j, int i)
-        { 
-            return u[j, i]; 
-        }
+        { return u[j, i]; }
         
         public double getV(int j, int i)
-        { 
-            return v[j, i]; 
-        }
+        { return v[j, i]; }
 
         // various functions
         private double integral(int j, int i)

@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FHN_nonlocal_coupling
@@ -80,6 +75,8 @@ namespace FHN_nonlocal_coupling
             // then disable Plot and call Solve again.
             if (btnPlot.Enabled)
             {
+                lblVelocity.Text = "--- x/t";
+                btnGetVelocity.Enabled = false;
                 btnPlot.Enabled = false;
                 btnSolve.Enabled = true;
             }
@@ -96,9 +93,10 @@ namespace FHN_nonlocal_coupling
             // Plot button behaviour
             if (!lblError.Visible)
             {
+                btnGetVelocity.Enabled = true;
                 btnSolve.Enabled = false;
                 btnPlot.Enabled = true;
-
+                
                 trBarT.Value = 0;
                 trBarT.Enabled = true;
             }
@@ -212,6 +210,11 @@ namespace FHN_nonlocal_coupling
                 loadEquations(2);
             else
                 loadEquations(1);
+        }
+
+        private void btnGetVelocity_Click(object sender, EventArgs e)
+        {
+            lblVelocity.Text = Math.Round(pdes[0].getVelocity(trBarT.Value), 4).ToString() + " x/t";
         }
 
         private void btnAbout_Click(object sender, EventArgs e)

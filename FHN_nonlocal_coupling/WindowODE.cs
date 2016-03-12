@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FHN_nonlocal_coupling
@@ -66,7 +61,7 @@ namespace FHN_nonlocal_coupling
 
         private void plotNullclines(ODE obj, int numEq)
         {
-            for (int j = 0; j < obj.N + 1; j++)
+            for (int j = 0; j < obj.N; j++)
             {   // drawing nullclines
                 double un = obj.getUN(j);
 
@@ -120,7 +115,7 @@ namespace FHN_nonlocal_coupling
         {
             prBarSolve.Value = 0;
             prBarSolve.Maximum = 3;
-            trBarT.Maximum = odes[0].N;
+            trBarT.Maximum = odes[0].N - 1;
 
             for (int i = 0; i < odes.Length; i++)
                 odes[i].load();
@@ -158,7 +153,7 @@ namespace FHN_nonlocal_coupling
 
                 for (int i = 0; i < odes.Length; i++)
                 {
-                    for (int j = 0; j < odes[i].N + 1; j++)
+                    for (int j = 0; j < odes[i].N; j++)
                     {
                         plot(j, odes[i], i);
                     }
@@ -181,7 +176,7 @@ namespace FHN_nonlocal_coupling
 
         private void timerT_Tick(object sender, EventArgs e)
         {
-            if (trBarT.Value == odes[0].N)
+            if (trBarT.Value == odes[0].N - 1)
             {
                 for(int i =0 ; i < odes.Length; i++)
                     plot(trBarT.Value, odes[i], i);
