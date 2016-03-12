@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series17 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series18 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series19 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series20 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series9 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series10 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series11 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series12 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.lblError = new System.Windows.Forms.Label();
             this.checkBox2ndEq = new System.Windows.Forms.CheckBox();
             this.lblMinUV = new System.Windows.Forms.Label();
@@ -58,6 +58,8 @@
             this.propertyGrid2 = new System.Windows.Forms.PropertyGrid();
             this.btnTickSlower = new System.Windows.Forms.Button();
             this.btnTickFaster = new System.Windows.Forms.Button();
+            this.btnGetVelocity = new System.Windows.Forms.Button();
+            this.lblVelocity = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trBarT)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -136,42 +138,42 @@
             // 
             // chart
             // 
-            chartArea5.Name = "ChartArea1";
-            this.chart.ChartAreas.Add(chartArea5);
-            legend5.Name = "Legend1";
-            this.chart.Legends.Add(legend5);
+            chartArea3.Name = "ChartArea1";
+            this.chart.ChartAreas.Add(chartArea3);
+            legend3.Name = "Legend1";
+            this.chart.Legends.Add(legend3);
             this.chart.Location = new System.Drawing.Point(242, 8);
             this.chart.Name = "chart";
-            series17.BorderWidth = 3;
-            series17.ChartArea = "ChartArea1";
-            series17.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series17.Legend = "Legend1";
-            series17.MarkerSize = 7;
-            series17.Name = "U";
-            series17.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            series17.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            series18.BorderWidth = 3;
-            series18.ChartArea = "ChartArea1";
-            series18.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series18.Legend = "Legend1";
-            series18.MarkerSize = 7;
-            series18.Name = "V";
-            series18.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            series18.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            series19.BorderWidth = 2;
-            series19.ChartArea = "ChartArea1";
-            series19.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series19.Legend = "Legend1";
-            series19.Name = "U2";
-            series20.BorderWidth = 2;
-            series20.ChartArea = "ChartArea1";
-            series20.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series20.Legend = "Legend1";
-            series20.Name = "V2";
-            this.chart.Series.Add(series17);
-            this.chart.Series.Add(series18);
-            this.chart.Series.Add(series19);
-            this.chart.Series.Add(series20);
+            series9.BorderWidth = 3;
+            series9.ChartArea = "ChartArea1";
+            series9.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series9.Legend = "Legend1";
+            series9.MarkerSize = 7;
+            series9.Name = "U";
+            series9.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            series9.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            series10.BorderWidth = 3;
+            series10.ChartArea = "ChartArea1";
+            series10.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series10.Legend = "Legend1";
+            series10.MarkerSize = 7;
+            series10.Name = "V";
+            series10.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            series10.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            series11.BorderWidth = 2;
+            series11.ChartArea = "ChartArea1";
+            series11.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series11.Legend = "Legend1";
+            series11.Name = "U2";
+            series12.BorderWidth = 2;
+            series12.ChartArea = "ChartArea1";
+            series12.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series12.Legend = "Legend1";
+            series12.Name = "V2";
+            this.chart.Series.Add(series9);
+            this.chart.Series.Add(series10);
+            this.chart.Series.Add(series11);
+            this.chart.Series.Add(series12);
             this.chart.Size = new System.Drawing.Size(1031, 650);
             this.chart.TabIndex = 44;
             this.chart.Text = "chart1";
@@ -320,11 +322,34 @@
             this.btnTickFaster.UseVisualStyleBackColor = true;
             this.btnTickFaster.Click += new System.EventHandler(this.btnTickFaster_Click);
             // 
+            // btnGetVelocity
+            // 
+            this.btnGetVelocity.Enabled = false;
+            this.btnGetVelocity.Location = new System.Drawing.Point(27, 519);
+            this.btnGetVelocity.Name = "btnGetVelocity";
+            this.btnGetVelocity.Size = new System.Drawing.Size(75, 26);
+            this.btnGetVelocity.TabIndex = 89;
+            this.btnGetVelocity.Text = "Get Velocity";
+            this.btnGetVelocity.UseVisualStyleBackColor = true;
+            this.btnGetVelocity.Click += new System.EventHandler(this.btnGetVelocity_Click);
+            // 
+            // lblVelocity
+            // 
+            this.lblVelocity.AutoSize = true;
+            this.lblVelocity.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblVelocity.Location = new System.Drawing.Point(108, 524);
+            this.lblVelocity.Name = "lblVelocity";
+            this.lblVelocity.Size = new System.Drawing.Size(36, 16);
+            this.lblVelocity.TabIndex = 90;
+            this.lblVelocity.Text = "--- x/t";
+            // 
             // WindowPDE
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1284, 711);
+            this.Controls.Add(this.lblVelocity);
+            this.Controls.Add(this.btnGetVelocity);
             this.Controls.Add(this.btnTickFaster);
             this.Controls.Add(this.btnTickSlower);
             this.Controls.Add(this.tabControl1);
@@ -346,6 +371,7 @@
             this.Name = "WindowPDE";
             this.ShowIcon = false;
             this.Text = "WindowPDE";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.WindowPDE_FormClosing);
             this.Load += new System.EventHandler(this.WindowPDE_Load);
             ((System.ComponentModel.ISupportInitialize)(this.chart)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trBarT)).EndInit();
@@ -382,5 +408,7 @@
         private System.Windows.Forms.PropertyGrid propertyGrid2;
         private System.Windows.Forms.Button btnTickSlower;
         private System.Windows.Forms.Button btnTickFaster;
+        private System.Windows.Forms.Button btnGetVelocity;
+        private System.Windows.Forms.Label lblVelocity;
     }
 }

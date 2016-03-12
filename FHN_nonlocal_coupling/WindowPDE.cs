@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FHN_nonlocal_coupling
@@ -22,6 +17,19 @@ namespace FHN_nonlocal_coupling
         private void WindowPDE_Load(object sender, EventArgs e)
         {
             loadEquations(1);
+        }
+
+        private void WindowPDE_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            timerT.Enabled = false;
+            trBarT.Enabled = false;
+
+            chart.Series.Clear();
+
+            for (int i = 0; i < pdes.Length; i++)
+                pdes[i] = null;
+
+            pdes = null;
         }
 
         private void loadEquations(int num)
@@ -41,10 +49,12 @@ namespace FHN_nonlocal_coupling
 
         private void plot(int j, PDE obj, int numEq)
         {   // plots full given t segment of diffusion solution
-            for (int i = 0; i < obj.N + 1; i++)
+            for (int i = 0; i < obj.N; i++)
             {
-                chart.Series[2 * numEq].Points.AddXY(obj.getX(i), obj.getU(j, i));
-                chart.Series[2 * numEq + 1].Points.AddXY(obj.getX(i), obj.getV(j, i));
+                double x = obj.getX(i);
+
+                chart.Series[2 * numEq].Points.AddXY(x, obj.getU(j, i));
+                chart.Series[2 * numEq + 1].Points.AddXY(x, obj.getV(j, i));
             }
         }
 
@@ -65,6 +75,8 @@ namespace FHN_nonlocal_coupling
             // then disable Plot and call Solve again.
             if (btnPlot.Enabled)
             {
+                lblVelocity.Text = "--- x/t";
+                btnGetVelocity.Enabled = false;
                 btnPlot.Enabled = false;
                 btnSolve.Enabled = true;
             }
@@ -81,9 +93,10 @@ namespace FHN_nonlocal_coupling
             // Plot button behaviour
             if (!lblError.Visible)
             {
+                btnGetVelocity.Enabled = true;
                 btnSolve.Enabled = false;
                 btnPlot.Enabled = true;
-
+                
                 trBarT.Value = 0;
                 trBarT.Enabled = true;
             }
@@ -93,7 +106,7 @@ namespace FHN_nonlocal_coupling
         {
             prBarSolve.Value = 0;
             prBarSolve.Maximum = 3;
-            trBarT.Maximum = pdes[0].M;
+            trBarT.Maximum = pdes[0].M - 1;
 
             for (int i = 0; i < pdes.Length; i++)
                 pdes[i].load();
@@ -132,7 +145,7 @@ namespace FHN_nonlocal_coupling
         {
             clearPlot();
 
-            if (trBarT.Value == pdes[0].M)
+            if (trBarT.Value == pdes[0].M - 1)
             {   // if it is the last t segment, plot it and reset trBar.Value
                 for (int i = 0; i < pdes.Length; i++)
                     plot(trBarT.Value, pdes[i], i);
@@ -197,6 +210,11 @@ namespace FHN_nonlocal_coupling
                 loadEquations(2);
             else
                 loadEquations(1);
+        }
+
+        private void btnGetVelocity_Click(object sender, EventArgs e)
+        {
+            lblVelocity.Text = Math.Round(pdes[0].getVelocity(trBarT.Value), 3).ToString() + " x/t";
         }
 
         private void btnAbout_Click(object sender, EventArgs e)
