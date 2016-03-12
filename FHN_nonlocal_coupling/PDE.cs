@@ -15,10 +15,10 @@ namespace FHN_nonlocal_coupling
         // Constructor with default values
         public PDE() : base()
         {
-            N = 2000;
-            M = 2000;
+            N = 1000;
+            M = 1000;
             L = 50.0;
-            T = 40.0;
+            T = 100.0;
             B = 0.0;
             D = 1.0;
             I = 0.0;
@@ -66,24 +66,24 @@ namespace FHN_nonlocal_coupling
         {   // initialize/declare arrays and steps
             // If we want to change one of the parameters: n, m, l, TB,
             // then it needs to call this (plus Intiials) functions again.
-            hx = 2 * L / N; // step for x
-            ht = T / M;  // step for t
+            hx = 2 * L / (N - 1); // step for x
+            ht = T / (M - 1);  // step for t
 
-            x = new double[N + 1]; // arrange x's
-            for (int i = 0; i < N + 1; i++) 
+            x = new double[N]; // arrange x's
+            for (int i = 0; i < N; i++) 
                 x[i] = - L + i * hx;
 
-            t = new double[M + 1]; // arrange t's
-            for (int j = 0; j < M + 1; j++) 
+            t = new double[M]; // arrange t's
+            for (int j = 0; j < M; j++) 
                 t[j] = j * ht;
 
-            u = new double[M + 1, N + 1];
-            v = new double[M + 1, N + 1];
+            u = new double[M, N];
+            v = new double[M, N];
         }
 
         public override void initials()
         {   // Initialize initials
-            for (int i = 0; i < N + 1; i++)
+            for (int i = 0; i < N; i++)
             {	// setting an initial waves at t = 0
                 u[0, i] = u_x_0(x[i]);
                 v[0, i] = v_x_0(x[i]);
@@ -97,20 +97,20 @@ namespace FHN_nonlocal_coupling
             
             double step = ht / (hx * hx);
 
-            double[] P = new double[N + 1];
-            double[] Q = new double[N + 1];
+            double[] P = new double[N];
+            double[] Q = new double[N];
 
             double[] ai = new double[3] { 0, -step, 1 };
             double[] bi = new double[3] { -1, -1 - 2 * step, 1 };
             double[] ci = new double[3] { -1, -step, 0 };
-            double[] di = new double[N + 1];
-            di[0] = 0; di[N] = 0; // if Neumann condition changes (smth except du/dn = zero), it needs to be commented
+            double[] di = new double[N];
+            di[0] = 0; di[N - 1] = 0; // if Neumann condition changes (smth except du/dn = zero), it needs to be commented
 
             P[0] = ci[0] / bi[0];
-            for (int i = 1; i < N; i++) P[i] = ci[1] / (bi[1] - ai[1] * P[i - 1]);
-            P[N] = ci[2] / (bi[2] - ai[2] * P[N - 1]);
+            for (int i = 1; i < N - 1; i++) P[i] = ci[1] / (bi[1] - ai[1] * P[i - 1]);
+            P[N - 1] = ci[2] / (bi[2] - ai[2] * P[N - 2]);
 
-            for (int j = 0; j < M; j++)
+            for (int j = 0; j < M - 1; j++)
             {
                 int extCode = progonkaJLayer(Q, P, ai, bi, di, j);
                 if (extCode != 0)
@@ -127,7 +127,7 @@ namespace FHN_nonlocal_coupling
 
             //di[0] = ht * u_0_t(t[j]); // if Neumann condition is not a zero
             Q[0] = -di[0] / bi[0];
-            for (int i = 1; i < N; i++)
+            for (int i = 1; i < N - 1; i++)
             {
                 calculateDCoeff(di, i, j, k);
 
@@ -138,12 +138,12 @@ namespace FHN_nonlocal_coupling
                     return -1;
             }
             //di[n] = ht * u_l_t(t[j]); // if Neumann condition is not a zero
-            Q[N] = (ai[2] * Q[N - 1] - di[N]) / (bi[2] - ai[2] * P[N - 1]);
+            Q[N - 1] = (ai[2] * Q[N - 2] - di[N - 1]) / (bi[2] - ai[2] * P[N - 2]);
 
-            u[j + 1, N] = Q[N];
-            for (int i = N - 1; i > -1; i--) u[j + 1, i] = P[i] * u[j + 1, i + 1] + Q[i];
+            u[j + 1, N - 1] = Q[N - 1];
+            for (int i = N - 2; i > -1; i--) u[j + 1, i] = P[i] * u[j + 1, i + 1] + Q[i];
 
-            for (int i = 0; i < N + 1; i++)
+            for (int i = 0; i < N; i++)
             {
                 double nextV = (v[j, i] + ht * (Eps * u[j + 1, i] + Alpha)) / (1 + Beta * ht);
 
@@ -165,17 +165,17 @@ namespace FHN_nonlocal_coupling
                 {
                     if (i - k <= 1) // if x - d <= -l
                     {
-                        if (i + k <= N - 1) // if x - d <= -l and x + d <= l
+                        if (i + k <= N - 2) // if x - d <= -l and x + d <= l
                             di[i] = u[j, i] + ht * (B * (u[j, 1] + u[j, i + k] - 2 * u[j, i]) + f(u[j, i]) - v[j, i] + I);
-                        else if (i + k > N - 1) // if x - d <= -l and x + d > l
-                            di[i] = u[j, i] + ht * (B * (u[j, 1] + u[j, N - 1] - 2 * u[j, i]) + f(u[j, i]) - v[j, i] + I);
+                        else if (i + k > N - 2) // if x - d <= -l and x + d > l
+                            di[i] = u[j, i] + ht * (B * (u[j, 1] + u[j, N - 2] - 2 * u[j, i]) + f(u[j, i]) - v[j, i] + I);
                     }
                     else if (i - k > 1) // if x - d > -l
                     {
-                        if (i + k <= N - 1) // if x - d > -l and x + d <= l
+                        if (i + k <= N - 2) // if x - d > -l and x + d <= l
                             di[i] = u[j, i] + ht * (B * (u[j, i - k] + u[j, i + k] - 2 * u[j, i]) + f(u[j, i]) - v[j, i] + I);
-                        else if (i + k > N - 1)  // if x - d > -l and x + d > l
-                            di[i] = u[j, i] + ht * (B * (u[j, i - k] + u[j, N - 1] - 2 * u[j, i]) + f(u[j, i]) - v[j, i] + I);
+                        else if (i + k > N - 2)  // if x - d > -l and x + d > l
+                            di[i] = u[j, i] + ht * (B * (u[j, i - k] + u[j, N - 2] - 2 * u[j, i]) + f(u[j, i]) - v[j, i] + I);
                     }
                 }
                 else
@@ -194,16 +194,16 @@ namespace FHN_nonlocal_coupling
                 int deltaj = (int)(1 / ht);
 
                 int i0 = 0; // X0 max = u[j0, i0]
-                for (int i = 1; i < N + 1; i++)
+                for (int i = 1; i < N; i++)
                     if (u[j0, i] > u[j0, i0])
                         i0 = i;
 
                 int j1 = (j0 + deltaj);
-                if (j1 > M + 1) return 0; // we're out of frame
+                if (j1 > M - 1) return 0; // we're out of frame
 
                 int i1 = 0; // X1 max = u[j1, i0]
 
-                for (int i = 1; i < N + 1; i++)
+                for (int i = 1; i < N; i++)
                     if (u[j1, i] > u[j1, i1])
                         i1 = i;
 
@@ -233,8 +233,8 @@ namespace FHN_nonlocal_coupling
             double xi = x[i];
 
             sum += kernel(xi - x[0]) * u[j, 0];
-            for (int k = 1; k < N; k++) sum += 2 * kernel(xi - x[k]) * u[j, k];
-            sum += kernel(xi - x[N]) * u[j, N];
+            for (int k = 1; k < N - 1; k++) sum += 2 * kernel(xi - x[k]) * u[j, k];
+            sum += kernel(xi - x[N - 1]) * u[j, N - 1];
 
             return hx * sum / 2;
         }

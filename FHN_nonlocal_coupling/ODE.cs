@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel;
 
 namespace FHN_nonlocal_coupling
@@ -25,17 +21,11 @@ namespace FHN_nonlocal_coupling
         }
 
         // properties
-        public double U0
-        {   // intiial u
-            get;
-            set;
-        }
+        [Description("Initial U(0)")]
+        public double U0 { get; set; }
 
-        public double V0
-        {   // intiial v
-            get;
-            set;
-        }
+        [Description("Initial V(0)")]
+        public double V0 { get; set; }
 
         // methods
         public override void load()
@@ -43,21 +33,21 @@ namespace FHN_nonlocal_coupling
             // If we want to change one of the parameters: n or TB,
             // then it needs to call this (plus Intiials) functions again.
 
-            hx = 2 * L / N; //
-            ht = T / N;  // step for t
+            hx = 2 * L / (N - 1); //
+            ht = T / (N - 1);  // step for t
 
-            t = new double[N + 1]; // arrange t's
-            for (int j = 0; j < N + 1; j++) 
+            t = new double[N]; // arrange t's
+            for (int j = 0; j < N; j++) 
                 t[j] = j * ht;
 
-            u = new double[N + 1];
-            v = new double[N + 1];
+            u = new double[N];
+            v = new double[N];
 
-            v1 = new double[N + 1];
-            v2 = new double[N + 1];
+            v1 = new double[N];
+            v2 = new double[N];
             
-            u_null = new double[N + 1];
-            for (int j = 0; j < N + 1; j++) 
+            u_null = new double[N];
+            for (int j = 0; j < N; j++) 
                 u_null[j] = - L + j * hx;
         }
 
@@ -71,7 +61,7 @@ namespace FHN_nonlocal_coupling
         {   // If we changed ONLY alpha, beta, Iext, Kernel or f (either a),
             // then just recall this function.
 
-            for (int j = 0; j < N; j++)
+            for (int j = 0; j < N - 1; j++)
             {
                 double u_j = f1(u[j], v[j]);
                 double v_j = f2(u[j], v[j]);
@@ -82,11 +72,6 @@ namespace FHN_nonlocal_coupling
                 if (Double.IsNaN(utemp) || Double.IsNaN(vtemp))
                     return -1;
 
-                //// Euler's 1st order
-                //u[j + 1] = utemp;
-                //v[j + 1] = vtemp;
-
-                // Euler's 2nd order
                 u[j + 1] = u[j] + ht * 0.5 * (u_j + f1(utemp, vtemp));
                 v[j + 1] = v[j] + ht * 0.5 * (v_j + f2(utemp, vtemp));
             }
@@ -100,7 +85,7 @@ namespace FHN_nonlocal_coupling
         {
             if (Beta != 0.0)
             {
-                for (int j = 0; j < N + 1; j++)
+                for (int j = 0; j < N; j++)
                 {
                     v1[j] = f(u_null[j]) + I;
                     v2[j] = (u_null[j] + Eps) / Beta;
@@ -109,39 +94,25 @@ namespace FHN_nonlocal_coupling
         }
 
         public double getU(int j)
-        { 
-            return u[j]; 
-        }
+        { return u[j]; }
 
         public double getV(int j)
-        { 
-            return v[j]; 
-        }
+        { return v[j]; }
 
         public double getUN(int j)
-        { 
-            return u_null[j]; 
-        }
+        { return u_null[j]; }
 
         public double getV1(int j)
-        { 
-            return v1[j]; 
-        }
+        { return v1[j]; }
 
         public double getV2(int j)
-        { 
-            return v2[j]; 
-        }
+        { return v2[j]; }
 
         // various functions
         private double f1(double u, double v)
-        {
-            return f(u) - v + I;
-        }
+        { return f(u) - v + I; }
 
         private double f2(double u, double v)
-        {
-            return Eps * u + Alpha - Beta * v;
-        }
+        { return Eps * u + Alpha - Beta * v; }
     }
 }

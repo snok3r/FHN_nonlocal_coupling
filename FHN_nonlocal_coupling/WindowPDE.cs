@@ -49,7 +49,7 @@ namespace FHN_nonlocal_coupling
 
         private void plot(int j, PDE obj, int numEq)
         {   // plots full given t segment of diffusion solution
-            for (int i = 0; i < obj.N + 1; i++)
+            for (int i = 0; i < obj.N; i++)
             {
                 double x = obj.getX(i);
 
@@ -106,7 +106,7 @@ namespace FHN_nonlocal_coupling
         {
             prBarSolve.Value = 0;
             prBarSolve.Maximum = 3;
-            trBarT.Maximum = pdes[0].M;
+            trBarT.Maximum = pdes[0].M - 1;
 
             for (int i = 0; i < pdes.Length; i++)
                 pdes[i].load();
@@ -145,7 +145,7 @@ namespace FHN_nonlocal_coupling
         {
             clearPlot();
 
-            if (trBarT.Value == pdes[0].M)
+            if (trBarT.Value == pdes[0].M - 1)
             {   // if it is the last t segment, plot it and reset trBar.Value
                 for (int i = 0; i < pdes.Length; i++)
                     plot(trBarT.Value, pdes[i], i);
@@ -214,7 +214,7 @@ namespace FHN_nonlocal_coupling
 
         private void btnGetVelocity_Click(object sender, EventArgs e)
         {
-            lblVelocity.Text = Math.Round(pdes[0].getVelocity(trBarT.Value), 4).ToString() + " x/t";
+            lblVelocity.Text = Math.Round(pdes[0].getVelocity(trBarT.Value), 3).ToString() + " x/t";
         }
 
         private void btnAbout_Click(object sender, EventArgs e)
