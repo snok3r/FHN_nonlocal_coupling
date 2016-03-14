@@ -7,72 +7,40 @@ namespace FHN_nonlocal_coupling
 {
     public partial class WindowPDE : Form
     {
-        PDE[] pdes;
+        private PDEModel model;
 
         public WindowPDE()
         {
             InitializeComponent();
+            model = new PDEModel();
         }
 
         private void WindowPDE_Load(object sender, EventArgs e)
         {
-            loadEquations(1);
+            model.loadEquations(1, propertyGrid1, propertyGrid2);
         }
 
         private void WindowPDE_FormClosing(object sender, FormClosingEventArgs e)
         {
             timerT.Enabled = false;
             trBarT.Enabled = false;
-
             chart.Series.Clear();
-
-            for (int i = 0; i < pdes.Length; i++)
-                pdes[i] = null;
-
-            pdes = null;
-        }
-
-        private void loadEquations(int num)
-        {
-            pdes = new PDE[num];
-
-            for (int i = 0; i < num; i++)
-                pdes[i] = new PDE();
-
-            propertyGrid1.SelectedObject = pdes[0];
-
-            if (num == 2)
-                propertyGrid2.SelectedObject = pdes[1];
-            else
-                propertyGrid2.SelectedObject = null;
-        }
-
-        private void plot(int j, PDE obj, int numEq)
-        {   // plots full given t segment of diffusion solution
-            for (int i = 0; i < obj.N; i++)
-            {
-                double x = obj.getX(i);
-
-                chart.Series[2 * numEq].Points.AddXY(x, obj.getU(j, i));
-                chart.Series[2 * numEq + 1].Points.AddXY(x, obj.getV(j, i));
-            }
+            
+            model.formClosing();
         }
 
         private void propertyGrid1_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
         {
-            btnSolveBeh();
+            disablePlotBtn();
         }
 
         private void propertyGrid2_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
         {
-            btnSolveBeh();
+            disablePlotBtn();
         }
 
-        private void btnSolveBeh()
+        private void disablePlotBtn()
         {
-            // Solve button behaviour
-            // if we change alpha, beta, gamma, Kernel or f,
-            // then disable Plot and call Solve again.
             if (btnPlot.Enabled)
             {
                 lblVelocity.Text = "--- x/t";
@@ -88,9 +56,8 @@ namespace FHN_nonlocal_coupling
             timerT.Enabled = false;
         }
 
-        private void btnPlotBeh()
+        private void enablePlotBtn()
         {
-            // Plot button behaviour
             if (!lblError.Visible)
             {
                 btnGetVelocity.Enabled = true;
@@ -106,25 +73,12 @@ namespace FHN_nonlocal_coupling
         {
             prBarSolve.Value = 0;
             prBarSolve.Maximum = 3;
-            trBarT.Maximum = pdes[0].M - 1;
+            trBarT.Maximum = model.trackBarMax();
 
-            for (int i = 0; i < pdes.Length; i++)
-                pdes[i].load();
-            prBarSolve.Value++;
+            if (model.btnSolveClick(prBarSolve) != 0)
+                lblError.Visible = true;
 
-            for (int i = 0; i < pdes.Length; i++)
-                pdes[i].initials();
-            prBarSolve.Value++;
-
-            for (int i = 0; i < pdes.Length; i++)
-            {
-                int extCode = pdes[i].solve();
-                if (extCode != 0)
-                    lblError.Visible = true;
-            }
-            prBarSolve.Value++;
-
-            btnPlotBeh();
+            enablePlotBtn();
         }
 
         private void btnPlot_Click(object sender, EventArgs e)
@@ -132,8 +86,7 @@ namespace FHN_nonlocal_coupling
             clearPlot();
             setPlot();
 
-            for (int i = 0; i < pdes.Length; i++)
-                plot(trBarT.Value, pdes[i], i);
+            model.plotLayer(trBarT.Value, chart);
 
             if (rdBtnTmr.Checked)
                 timerT.Enabled = true;
@@ -144,28 +97,13 @@ namespace FHN_nonlocal_coupling
         private void timerT_Tick(object sender, EventArgs e)
         {
             clearPlot();
-
-            if (trBarT.Value == pdes[0].M - 1)
-            {   // if it is the last t segment, plot it and reset trBar.Value
-                for (int i = 0; i < pdes.Length; i++)
-                    plot(trBarT.Value, pdes[i], i);
-
-                trBarT.Value = 0;
-            }
-            else
-            {
-                trBarT.Value++;
-                for (int i = 0; i < pdes.Length; i++)
-                    plot(trBarT.Value, pdes[i], i);
-            }
+            model.plotTimerTick(trBarT, chart);
         }
 
         private void trBarT_Scroll(object sender, EventArgs e)
         {
             clearPlot();
-
-            for (int i = 0; i < pdes.Length; i++)
-                plot(trBarT.Value, pdes[i], i);
+            model.plotLayer(trBarT.Value, chart);
         }
 
         private void btnTune_Click(object sender, EventArgs e)
@@ -191,8 +129,8 @@ namespace FHN_nonlocal_coupling
 
         private void setPlot()
         {
-            chart.ChartAreas[0].AxisX.Minimum = -Convert.ToDouble(pdes[0].L) - 0.1;
-            chart.ChartAreas[0].AxisX.Maximum = Convert.ToDouble(pdes[0].L) + 0.1;
+            chart.ChartAreas[0].AxisX.Minimum = model.getChartXMin();
+            chart.ChartAreas[0].AxisX.Maximum = model.getChartXMax();
 
             chart.ChartAreas[0].AxisY.Maximum = Convert.ToDouble(txtBoxMaxUV.Text);
             chart.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(txtBoxMinUV.Text);
@@ -207,35 +145,20 @@ namespace FHN_nonlocal_coupling
         private void checkBox2ndEq_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBox2ndEq.Checked)
-                loadEquations(2);
+                model.loadEquations(2, propertyGrid1, propertyGrid2);
             else
-                loadEquations(1);
+                model.loadEquations(1, propertyGrid1, propertyGrid2);
         }
 
         private void btnGetVelocity_Click(object sender, EventArgs e)
         {
-            lblVelocity.Text = Math.Round(pdes[0].getVelocity(trBarT.Value), 3).ToString() + " x/t";
+            lblVelocity.Text = model.getVelocity(trBarT.Value);
         }
 
         private void btnAbout_Click(object sender, EventArgs e)
         {
             AboutPDE o = new AboutPDE();
             o.Show();
-        }
-
-        private void btnTickSlower_Click(object sender, EventArgs e)
-        {
-            timerT.Interval += pdes[0].M / 5;
-        }
-
-        private void btnTickFaster_Click(object sender, EventArgs e)
-        {
-            if (timerT.Interval - pdes[0].M / 5 > 0)
-                timerT.Interval -= pdes[0].M / 5;
-            else
-            {
-                timerT.Interval = 1;
-            }
         }
     }
 }
