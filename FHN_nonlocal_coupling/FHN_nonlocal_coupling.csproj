@@ -59,6 +59,7 @@
     </Compile>
     <Compile Include="AbstractFHN.cs" />
     <Compile Include="ODE.cs" />
+    <Compile Include="ODEModel.cs" />
     <Compile Include="PDE.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>

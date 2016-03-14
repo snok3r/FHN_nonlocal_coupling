@@ -114,5 +114,12 @@ namespace FHN_nonlocal_coupling
 
         private double f2(double u, double v)
         { return Eps * u + Alpha - Beta * v; }
+
+        public override void dispose()
+        {
+            base.dispose();
+            u = null; v = null;
+            u_null = null; v1 = null; v2 = null;
+        }
     }
 }

@@ -267,5 +267,8 @@ namespace FHN_nonlocal_coupling
         private double u_0_t(double t) { return 0.0; } // Neumann boundary condition at x = -l
 
         private double u_l_t(double t) { return 0.0; } // Neumann boundary condition at x = l
+
+        public override void dispose()
+        { base.dispose(); x = null; u = null; v = null; }
     }
 }

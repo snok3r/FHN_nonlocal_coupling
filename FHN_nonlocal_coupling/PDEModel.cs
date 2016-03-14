@@ -11,13 +11,20 @@ namespace FHN_nonlocal_coupling
         public void formClosing()
         {
             for (int i = 0; i < pdes.Length; i++)
+            {
+                pdes[i].dispose(); 
                 pdes[i] = null;
+            }
 
             pdes = null;
         }
 
-        public void loadEquations(int count, PropertyGrid pg1, PropertyGrid pg2)
+        public void loadEquations(bool chckd, PropertyGrid pg1, PropertyGrid pg2)
         {
+            int count;
+            if (chckd) count = 2;
+            else count = 1;
+
             pdes = new PDE[count];
 
             for (int i = 0; i < count; i++)
@@ -31,6 +38,11 @@ namespace FHN_nonlocal_coupling
                 pg2.SelectedObject = null;
         }
 
+        /// <summary>
+        /// Call to solve equations
+        /// <para>Returns -1, if computation error occurred,
+        /// 0 otherwise.</para>
+        /// </summary>
         public int btnSolveClick(ProgressBar progressBar)
         {
             for (int i = 0; i < pdes.Length; i++)
@@ -42,10 +54,7 @@ namespace FHN_nonlocal_coupling
             progressBar.Value++;
 
             for (int i = 0; i < pdes.Length; i++)
-            {
-                if (pdes[i].solve() != 0)
-                    return -1;
-            }
+                if (pdes[i].solve() != 0) return -1;
             progressBar.Value++;
 
             return 0;
@@ -65,6 +74,9 @@ namespace FHN_nonlocal_coupling
             }
         }
 
+        /// <summary>
+        /// Plots layer 'j'
+        /// </summary>
         public void plotLayer(int j, Chart chart)
         {
             for (int i = 0; i < pdes.Length; i++)
@@ -88,7 +100,7 @@ namespace FHN_nonlocal_coupling
 
         /// <summary>
         /// Returns formatted String with velocity
-        /// at point TrackBar.Value point
+        /// at trackBarValue point
         /// </summary>
         public String getVelocity(int trackBarValue)
         {

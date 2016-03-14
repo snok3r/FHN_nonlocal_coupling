@@ -93,5 +93,8 @@ namespace FHN_nonlocal_coupling
             else
                 return -u * (u - 1) * (u - A);
         }
+
+        public virtual void dispose()
+        { t = null; }
     }
 }

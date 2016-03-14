@@ -72,8 +72,6 @@
             this.propertyGrid2 = new System.Windows.Forms.PropertyGrid();
             this.checkBox2ndEq = new System.Windows.Forms.CheckBox();
             this.btnAbout = new System.Windows.Forms.Button();
-            this.btnTickFaster = new System.Windows.Forms.Button();
-            this.btnTickSlower = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trBarT)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartPhase)).BeginInit();
@@ -354,7 +352,7 @@
             // 
             // timerT
             // 
-            this.timerT.Interval = 50;
+            this.timerT.Interval = 1;
             this.timerT.Tick += new System.EventHandler(this.timerT_Tick);
             // 
             // tabControl1
@@ -428,33 +426,11 @@
             this.btnAbout.UseVisualStyleBackColor = true;
             this.btnAbout.Click += new System.EventHandler(this.btnAbout_Click);
             // 
-            // btnTickFaster
-            // 
-            this.btnTickFaster.Location = new System.Drawing.Point(147, 553);
-            this.btnTickFaster.Name = "btnTickFaster";
-            this.btnTickFaster.Size = new System.Drawing.Size(26, 23);
-            this.btnTickFaster.TabIndex = 90;
-            this.btnTickFaster.Text = "+";
-            this.btnTickFaster.UseVisualStyleBackColor = true;
-            this.btnTickFaster.Click += new System.EventHandler(this.btnTickFaster_Click);
-            // 
-            // btnTickSlower
-            // 
-            this.btnTickSlower.Location = new System.Drawing.Point(115, 553);
-            this.btnTickSlower.Name = "btnTickSlower";
-            this.btnTickSlower.Size = new System.Drawing.Size(26, 23);
-            this.btnTickSlower.TabIndex = 89;
-            this.btnTickSlower.Text = "-";
-            this.btnTickSlower.UseVisualStyleBackColor = true;
-            this.btnTickSlower.Click += new System.EventHandler(this.btnTickSlower_Click);
-            // 
             // WindowODE
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1284, 711);
-            this.Controls.Add(this.btnTickFaster);
-            this.Controls.Add(this.btnTickSlower);
             this.Controls.Add(this.btnAbout);
             this.Controls.Add(this.checkBox2ndEq);
             this.Controls.Add(this.tabControl1);
@@ -526,7 +502,5 @@
         private System.Windows.Forms.PropertyGrid propertyGrid2;
         private System.Windows.Forms.CheckBox checkBox2ndEq;
         private System.Windows.Forms.Button btnAbout;
-        private System.Windows.Forms.Button btnTickFaster;
-        private System.Windows.Forms.Button btnTickSlower;
     }
 }

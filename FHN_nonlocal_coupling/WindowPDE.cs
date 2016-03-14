@@ -17,7 +17,7 @@ namespace FHN_nonlocal_coupling
 
         private void WindowPDE_Load(object sender, EventArgs e)
         {
-            model.loadEquations(1, propertyGrid1, propertyGrid2);
+            model.loadEquations(checkBox2ndEq.Checked, propertyGrid1, propertyGrid2);
         }
 
         private void WindowPDE_FormClosing(object sender, FormClosingEventArgs e)
@@ -144,10 +144,7 @@ namespace FHN_nonlocal_coupling
 
         private void checkBox2ndEq_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBox2ndEq.Checked)
-                model.loadEquations(2, propertyGrid1, propertyGrid2);
-            else
-                model.loadEquations(1, propertyGrid1, propertyGrid2);
+            model.loadEquations(checkBox2ndEq.Checked, propertyGrid1, propertyGrid2);
         }
 
         private void btnGetVelocity_Click(object sender, EventArgs e)
