@@ -26,7 +26,7 @@ namespace FHN_nonlocal_coupling
             trBarT.Enabled = false;
             chart.Series.Clear();
             
-            model.formClosing();
+            model.dispose();
         }
 
         private void propertyGrid1_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
@@ -129,8 +129,8 @@ namespace FHN_nonlocal_coupling
 
         private void setPlot()
         {
-            chart.ChartAreas[0].AxisX.Minimum = model.getChartXMin();
-            chart.ChartAreas[0].AxisX.Maximum = model.getChartXMax();
+            chart.ChartAreas[0].AxisX.Minimum = model.chartXMin();
+            chart.ChartAreas[0].AxisX.Maximum = model.chartXMax();
 
             chart.ChartAreas[0].AxisY.Maximum = Convert.ToDouble(txtBoxMaxUV.Text);
             chart.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(txtBoxMinUV.Text);

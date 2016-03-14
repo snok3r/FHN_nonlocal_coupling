@@ -8,17 +8,20 @@ namespace FHN_nonlocal_coupling
     {
         private PDE[] pdes;
 
-        public void formClosing()
+        public void dispose()
         {
             for (int i = 0; i < pdes.Length; i++)
             {
                 pdes[i].dispose(); 
                 pdes[i] = null;
             }
-
             pdes = null;
         }
 
+        /// <summary>
+        /// Call when you need to reload equations
+        /// or to reassign them to property grid
+        /// </summary>
         public void loadEquations(bool chckd, PropertyGrid pg1, PropertyGrid pg2)
         {
             int count;
@@ -107,14 +110,14 @@ namespace FHN_nonlocal_coupling
             return Math.Round(pdes[0].getVelocity(trackBarValue), 3).ToString() + " x/t";
         }
 
-        public double getChartXMin()
+        public double chartXMin()
         {
             return -(pdes[0].L - 0.1);
         }
 
-        public double getChartXMax()
+        public double chartXMax()
         {
-            return (pdes[0].L + 0.1);
+            return pdes[0].L + 0.1;
         }
 
         public int trackBarMax()

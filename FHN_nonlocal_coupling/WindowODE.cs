@@ -24,10 +24,9 @@ namespace FHN_nonlocal_coupling
         {
             timerT.Enabled = false;
             trBarT.Enabled = false;
-
             chart.Series.Clear();
 
-            model.formClosing();
+            model.dispose();
         }
 
         private void propertyGrid1_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
@@ -91,7 +90,7 @@ namespace FHN_nonlocal_coupling
 
                 clearPlot();
 
-                model.plotAll(chart, chartPhase);
+                model.plot(chart, chartPhase);
             }
 
             if (rdBtnTmr.Checked)

@@ -57,17 +57,17 @@
     <Compile Include="AboutPDE.Designer.cs">
       <DependentUpon>AboutPDE.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbstractFHN.cs" />
-    <Compile Include="ODE.cs" />
-    <Compile Include="ODEModel.cs" />
-    <Compile Include="PDE.cs" />
+    <Compile Include="Classes\AbstractFHN.cs" />
+    <Compile Include="Classes\ODE.cs" />
+    <Compile Include="Models\ODEModel.cs" />
+    <Compile Include="Classes\PDE.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
-    <Compile Include="PDEModel.cs" />
+    <Compile Include="Models\PDEModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WindowODE.cs">

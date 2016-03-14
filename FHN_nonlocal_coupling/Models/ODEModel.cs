@@ -8,17 +8,20 @@ namespace FHN_nonlocal_coupling
     {
         private ODE[] odes;
 
-        public void formClosing()
+        public void dispose()
         {
             for (int i = 0; i < odes.Length; i++)
             {
                 odes[i].dispose(); 
                 odes[i] = null;
             }
-
             odes = null;
         }
 
+        /// <summary>
+        /// Call when you need to reload equations
+        /// or to reassign them to property grid
+        /// </summary>
         public void loadEquations(bool chckd, PropertyGrid pg1, PropertyGrid pg2)
         {
             int count;
@@ -76,6 +79,19 @@ namespace FHN_nonlocal_coupling
         }
 
         /// <summary>
+        /// Plots all at once
+        /// </summary>
+        public void plot(Chart chart, Chart chartPhase)
+        {
+            for (int i = 0; i < odes.Length; i++)
+            {
+                plotNullclines(odes[i], i, chartPhase);
+                for (int j = 0; j < odes[i].N; j++)
+                    plot(j, odes[i], i, chart, chartPhase);
+            }
+        }
+
+        /// <summary>
         /// Plots nullclines
         /// </summary>
         private void plotNullclines(ODE obj, int numEq, Chart chartPhase)
@@ -100,20 +116,7 @@ namespace FHN_nonlocal_coupling
         }
 
         /// <summary>
-        /// Plots all at once
-        /// </summary>
-        public void plotAll(Chart chart, Chart chartPhase)
-        {
-            for (int i = 0; i < odes.Length; i++)
-            {
-                plotNullclines(odes[i], i, chartPhase);
-                for (int j = 0; j < odes[i].N; j++)
-                    plot(j, odes[i], i, chart, chartPhase);
-            }
-        }
-
-        /// <summary>
-        /// Plots single points according to trackBar
+        /// Plots single point according to trackBar
         /// </summary>
         public void plotTimerTick(TrackBar trackBar, Chart chart, Chart chartPhase)
         {
@@ -131,7 +134,6 @@ namespace FHN_nonlocal_coupling
                     plot(trackBar.Value, odes[i], i, chart, chartPhase);
             }
         }
-
 
         public double chartXMax()
         {
