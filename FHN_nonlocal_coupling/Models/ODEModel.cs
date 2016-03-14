@@ -4,10 +4,8 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace FHN_nonlocal_coupling
 {
-    class ODEModel : AbstractModel
+    class ODEModel : AbstractModel<ODE>
     {
-        public ODEModel() : base(typeof(ODE)) { }
-
         public override double chartXMax()
         { return fhn[0].T + 1; }
 

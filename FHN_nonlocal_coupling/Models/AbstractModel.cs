@@ -4,17 +4,16 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace FHN_nonlocal_coupling
 {
-    abstract class AbstractModel
+    abstract class AbstractModel<T>
     {
         protected AbstractFHN[] fhn;
-        protected Type type;
-
-        protected AbstractModel(Type type)
-        { this.type = type; }
 
         abstract public double chartXMax();
         abstract public int trackBarMax();
 
+        /// <summary>
+        /// Makes all the data point to null
+        /// </summary>
         public void dispose()
         {
             for (int i = 0; i < fhn.Length; i++)
@@ -35,9 +34,9 @@ namespace FHN_nonlocal_coupling
             if (chckd) count = 2;
             else count = 1;
 
-            if (type == typeof(PDE))
+            if (typeof(T) == typeof(PDE))
                 fhn = PDE.allocArray(count);
-            else if (type == typeof(ODE))
+            else if (typeof(T) == typeof(ODE))
                 fhn = ODE.allocArray(count);
             else throw new ArgumentException("must be ODE or PDE class");
             

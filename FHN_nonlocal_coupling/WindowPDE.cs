@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace FHN_nonlocal_coupling
 {
-    public partial class WindowPDE : Form
+    partial class WindowPDE : Form
     {
         private PDEModel model;
 

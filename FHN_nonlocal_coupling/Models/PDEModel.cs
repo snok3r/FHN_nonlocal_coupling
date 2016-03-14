@@ -4,10 +4,8 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace FHN_nonlocal_coupling
 {
-    class PDEModel : AbstractModel
+    class PDEModel : AbstractModel<PDE>
     {
-        public PDEModel() : base(typeof(PDE)) { }
-
         public override double chartXMax()
         { return fhn[0].L + 0.1; }
 

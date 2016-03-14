@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace FHN_nonlocal_coupling
 {
-    public partial class WindowODE : Form
+    partial class WindowODE : Form
     {
         private ODEModel model;
 
