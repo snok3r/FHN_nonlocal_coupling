@@ -4,64 +4,15 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace FHN_nonlocal_coupling
 {
-    class PDEModel
+    class PDEModel : AbstractModel
     {
-        private PDE[] pdes;
+        public PDEModel() : base(typeof(PDE)) { }
 
-        public void dispose()
-        {
-            for (int i = 0; i < pdes.Length; i++)
-            {
-                pdes[i].dispose(); 
-                pdes[i] = null;
-            }
-            pdes = null;
-        }
+        public override double chartXMax()
+        { return fhn[0].L + 0.1; }
 
-        /// <summary>
-        /// Call when you need to reload equations
-        /// or to reassign them to property grid
-        /// </summary>
-        public void loadEquations(bool chckd, PropertyGrid pg1, PropertyGrid pg2)
-        {
-            int count;
-            if (chckd) count = 2;
-            else count = 1;
-
-            pdes = new PDE[count];
-
-            for (int i = 0; i < count; i++)
-                pdes[i] = new PDE();
-
-            pg1.SelectedObject = pdes[0];
-
-            if (count == 2)
-                pg2.SelectedObject = pdes[1];
-            else
-                pg2.SelectedObject = null;
-        }
-
-        /// <summary>
-        /// Call to solve equations
-        /// <para>Returns -1, if computation error occurred,
-        /// 0 otherwise.</para>
-        /// </summary>
-        public int btnSolveClick(ProgressBar progressBar)
-        {
-            for (int i = 0; i < pdes.Length; i++)
-                pdes[i].load();
-            progressBar.Value++;
-
-            for (int i = 0; i < pdes.Length; i++)
-                pdes[i].initials();
-            progressBar.Value++;
-
-            for (int i = 0; i < pdes.Length; i++)
-                if (pdes[i].solve() != 0) return -1;
-            progressBar.Value++;
-
-            return 0;
-        }
+        public override int trackBarMax()
+        { return ((PDE)fhn[0]).M - 1; }
 
         /// <summary>
         /// Plots full j segment
@@ -82,24 +33,18 @@ namespace FHN_nonlocal_coupling
         /// </summary>
         public void plotLayer(int j, Chart chart)
         {
-            for (int i = 0; i < pdes.Length; i++)
-                plot(j, pdes[i], i, chart);
+            for (int i = 0; i < fhn.Length; i++)
+                plot(j, (PDE)fhn[i], i, chart);
         }
 
         public void plotTimerTick(TrackBar trackBar, Chart chart)
         {
-            if (trackBar.Value == trackBarMax())
-            {   // if it is the last t segment, plot it and reset trBar.Value
-                plotLayer(trackBar.Value, chart);
-                trackBar.Value = 0;
-            }
-            else
-            {
+            if (trackBar.Value < trackBarMax()){
                 trackBar.Value++;
                 plotLayer(trackBar.Value, chart);
             }
+            else trackBar.Value = 0;
         }
-
 
         /// <summary>
         /// Returns formatted String with velocity
@@ -107,22 +52,12 @@ namespace FHN_nonlocal_coupling
         /// </summary>
         public String getVelocity(int trackBarValue)
         {
-            return Math.Round(pdes[0].getVelocity(trackBarValue), 3).ToString() + " x/t";
+            return Math.Round(((PDE)fhn[0]).getVelocity(trackBarValue), 3).ToString() + " x/t";
         }
 
         public double chartXMin()
         {
-            return -(pdes[0].L - 0.1);
-        }
-
-        public double chartXMax()
-        {
-            return pdes[0].L + 0.1;
-        }
-
-        public int trackBarMax()
-        {
-            return pdes[0].M - 1;
+            return -(fhn[0].L - 0.1);
         }
     }
 }

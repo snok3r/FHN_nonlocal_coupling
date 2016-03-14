@@ -59,6 +59,7 @@
     </Compile>
     <Compile Include="Classes\AbstractFHN.cs" />
     <Compile Include="Classes\ODE.cs" />
+    <Compile Include="Models\AbstractModel.cs" />
     <Compile Include="Models\ODEModel.cs" />
     <Compile Include="Classes\PDE.cs" />
     <Compile Include="Main.cs">

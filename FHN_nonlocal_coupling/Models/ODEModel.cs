@@ -4,64 +4,15 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace FHN_nonlocal_coupling
 {
-    class ODEModel
+    class ODEModel : AbstractModel
     {
-        private ODE[] odes;
+        public ODEModel() : base(typeof(ODE)) { }
 
-        public void dispose()
-        {
-            for (int i = 0; i < odes.Length; i++)
-            {
-                odes[i].dispose(); 
-                odes[i] = null;
-            }
-            odes = null;
-        }
+        public override double chartXMax()
+        { return fhn[0].T + 1; }
 
-        /// <summary>
-        /// Call when you need to reload equations
-        /// or to reassign them to property grid
-        /// </summary>
-        public void loadEquations(bool chckd, PropertyGrid pg1, PropertyGrid pg2)
-        {
-            int count;
-            if (chckd) count = 2;
-            else count = 1;
-
-            odes = new ODE[count];
-
-            for (int i = 0; i < count; i++)
-                odes[i] = new ODE();
-
-            pg1.SelectedObject = odes[0];
-
-            if (count == 2)
-                pg2.SelectedObject = odes[1];
-            else
-                pg2.SelectedObject = null;
-        }
-
-        /// <summary>
-        /// Call to solve equations
-        /// <para>Returns -1, if computation error occurred,
-        /// 0 otherwise.</para>
-        /// </summary>
-        public int btnSolveClick(ProgressBar progressBar)
-        {
-            for (int i = 0; i < odes.Length; i++)
-                odes[i].load();
-            progressBar.Value++;
-
-            for (int i = 0; i < odes.Length; i++)
-                odes[i].initials();
-            progressBar.Value++;
-
-            for (int i = 0; i < odes.Length; i++)
-                if (odes[i].solve() != 0) return -1;
-            progressBar.Value++;
-
-            return 0;
-        }
+        public override int trackBarMax()
+        { return fhn[0].N - 1; }
 
         /// <summary>
         /// Plots single point on t plot and phase plane
@@ -83,11 +34,12 @@ namespace FHN_nonlocal_coupling
         /// </summary>
         public void plot(Chart chart, Chart chartPhase)
         {
-            for (int i = 0; i < odes.Length; i++)
+            for (int i = 0; i < fhn.Length; i++)
             {
-                plotNullclines(odes[i], i, chartPhase);
-                for (int j = 0; j < odes[i].N; j++)
-                    plot(j, odes[i], i, chart, chartPhase);
+                plotNullclines((ODE)fhn[i], i, chartPhase);
+
+                for (int j = 0; j < fhn[i].N; j++)
+                    plot(j, (ODE)fhn[i], i, chart, chartPhase);
             }
         }
 
@@ -111,8 +63,8 @@ namespace FHN_nonlocal_coupling
         public void plotTrackBarScroll(int trackBarValue, Chart chart, Chart chartPhase)
         {
             for (int j = 0; j < trackBarValue; j++)
-                for (int i = 0; i < odes.Length; i++)
-                    plot(j, odes[i], i, chart, chartPhase);
+                for (int i = 0; i < fhn.Length; i++)
+                    plot(j, (ODE)fhn[i], i, chart, chartPhase);
         }
 
         /// <summary>
@@ -120,44 +72,28 @@ namespace FHN_nonlocal_coupling
         /// </summary>
         public void plotTimerTick(TrackBar trackBar, Chart chart, Chart chartPhase)
         {
-            if (trackBar.Value == trackBarMax())
-            {
-                for (int i = 0; i < odes.Length; i++)
-                    plot(trackBar.Value, odes[i], i, chart, chartPhase);
-
-                trackBar.Value = 0;
-            }
-            else
+            if (trackBar.Value < trackBarMax())
             {
                 trackBar.Value++;
-                for (int i = 0; i < odes.Length; i++)
-                    plot(trackBar.Value, odes[i], i, chart, chartPhase);
+                for (int i = 0; i < fhn.Length; i++)
+                    plot(trackBar.Value, (ODE)fhn[i], i, chart, chartPhase);
             }
-        }
-
-        public double chartXMax()
-        {
-            return odes[0].T + 1;
+            else trackBar.Value = 0;
         }
 
         public double chartPhaseXMin()
         {
-            return -odes[0].L;
+            return -fhn[0].L;
         }
 
         public double chartPhaseXMax()
         {
-            return odes[0].L;
+            return fhn[0].L;
         }
 
         public double chartPhaseYMax()
         {
-            return 1.5 + odes[0].I;
-        }
-
-        public int trackBarMax()
-        {
-            return odes[0].N - 1;
+            return 1.5 + fhn[0].I;
         }
     }
 }

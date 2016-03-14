@@ -121,6 +121,11 @@ namespace FHN_nonlocal_coupling
             }
         }
 
+        private void btnGetVelocity_Click(object sender, EventArgs e)
+        {
+            lblVelocity.Text = model.getVelocity(trBarT.Value);
+        }
+
         private void clearPlot()
         {
             for (int i = 0; i < chart.Series.Count(); i++)
@@ -145,11 +150,6 @@ namespace FHN_nonlocal_coupling
         private void checkBox2ndEq_CheckedChanged(object sender, EventArgs e)
         {
             model.loadEquations(checkBox2ndEq.Checked, propertyGrid1, propertyGrid2);
-        }
-
-        private void btnGetVelocity_Click(object sender, EventArgs e)
-        {
-            lblVelocity.Text = model.getVelocity(trBarT.Value);
         }
 
         private void btnAbout_Click(object sender, EventArgs e)
