@@ -8,6 +8,7 @@ namespace FHN_nonlocal_coupling.Models
         // variables and arrays
         private double[] x;
         private double[,] u, v;
+        private Velocity[] velocity;
 
         private int varM;
         private double varD;
@@ -87,6 +88,10 @@ namespace FHN_nonlocal_coupling.Models
 
             u = new double[M, N];
             v = new double[M, N];
+
+            velocity = new Velocity[M];
+            for (int j = 0; j < M; j++)
+                velocity[j] = new Velocity();
         }
 
         public override void initials()
@@ -197,6 +202,9 @@ namespace FHN_nonlocal_coupling.Models
 
         public double getVelocity(int j0)
         {
+            if (velocity[j0].calculated)
+                return velocity[j0].velocity;
+
             if (u != null)
             {
                 int deltaj = (int)(1 / ht);
@@ -218,7 +226,10 @@ namespace FHN_nonlocal_coupling.Models
                 double x0 = i0 * hx; double x1 = i1 * hx;
                 double t0 = j0 * ht; double t1 = j1 * ht;
 
-                return (x1 - x0) / (t1 - t0);
+                velocity[j0].velocity = (x1 - x0) / (t1 - t0);
+                velocity[j0].calculated = true;
+
+                return velocity[j0].velocity;
             }
 
             return 0;
@@ -278,5 +289,11 @@ namespace FHN_nonlocal_coupling.Models
 
         public override void dispose()
         { base.dispose(); x = null; u = null; v = null; }
+
+        internal class Velocity
+        {
+            internal double velocity;
+            internal bool calculated;
+        }
     }
 }

@@ -54,17 +54,23 @@ namespace FHN_nonlocal_coupling.View
         private void timerT_Tick(object sender, EventArgs e)
         {
             controller.plot();
+
+            if (checkBoxContiniousVelocity.Checked)
+                lblVelocity.Text = controller.getVelocity(trBarT.Value).ToString() + " x/t";
         }
 
         private void trBarT_Scroll(object sender, EventArgs e)
         {
             controller.plot(trBarT.Value);
+
+            if (checkBoxContiniousVelocity.Checked)
+                lblVelocity.Text = controller.getVelocity(trBarT.Value).ToString() + " x/t";
         }
 
         private void btnGetVelocity_Click(object sender, EventArgs e)
         {
             lblVelocity.Text = controller.getVelocity(trBarT.Value).ToString() + " x/t";
-        }        
+        }
 
         private void disablePlotBtn()
         {
