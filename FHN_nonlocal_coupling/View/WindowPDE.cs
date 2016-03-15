@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using FHN_nonlocal_coupling.View.Other;
-using FHN_nonlocal_coupling.Controllers;
+using FHN_nonlocal_coupling.Controller;
 
 namespace FHN_nonlocal_coupling.View
 {

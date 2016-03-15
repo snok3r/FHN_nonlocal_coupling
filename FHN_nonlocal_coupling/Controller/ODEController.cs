@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
-using FHN_nonlocal_coupling.Models;
+using FHN_nonlocal_coupling.Model;
 
-namespace FHN_nonlocal_coupling.Controllers
+namespace FHN_nonlocal_coupling.Controller
 {
     class ODEController : AbstractController<ODE>
     {

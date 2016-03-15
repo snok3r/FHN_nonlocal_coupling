@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace FHN_nonlocal_coupling.Models
+namespace FHN_nonlocal_coupling.Model
 {
     class PDE : AbstractFHN
     {
