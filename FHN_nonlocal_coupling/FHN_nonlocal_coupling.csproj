@@ -59,8 +59,8 @@
     </Compile>
     <Compile Include="Classes\AbstractFHN.cs" />
     <Compile Include="Classes\ODE.cs" />
-    <Compile Include="Models\AbstractModel.cs" />
-    <Compile Include="Models\ODEModel.cs" />
+    <Compile Include="Controllers\AbstractController.cs" />
+    <Compile Include="Controllers\ODEController.cs" />
     <Compile Include="Classes\PDE.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
@@ -68,7 +68,7 @@
     <Compile Include="Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\PDEModel.cs" />
+    <Compile Include="Controllers\PDEController.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WindowODE.cs">

@@ -7,17 +7,17 @@ namespace FHN_nonlocal_coupling
 {
     partial class WindowODE : Form
     {
-        private ODEModel model;
+        private ODEController controller;
 
         public WindowODE()
         {
             InitializeComponent();
-            model = new ODEModel();
+            controller = new ODEController();
         }
 
         private void WindowODE_Load(object sender, EventArgs e)
         {
-            model.loadEquations(checkBox2ndEq.Checked, propertyGrid1, propertyGrid2);
+            controller.load(checkBox2ndEq.Checked, propertyGrid1, propertyGrid2);
         }
 
         private void WindowODE_FormClosing(object sender, FormClosingEventArgs e)
@@ -26,7 +26,7 @@ namespace FHN_nonlocal_coupling
             trBarT.Enabled = false;
             chart.Series.Clear();
 
-            model.dispose();
+            controller.dispose();
         }
 
         private void propertyGrid1_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
@@ -70,9 +70,9 @@ namespace FHN_nonlocal_coupling
         {
             prBarSolve.Value = 0;
             prBarSolve.Maximum = 3;
-            trBarT.Maximum = model.trackBarMax();
+            trBarT.Maximum = controller.trackBarMax();
 
-            if (model.btnSolveClick(prBarSolve) != 0)
+            if (controller.solve(prBarSolve) != 0)
                 lblError.Visible = true;
 
             enablePlotBtn();
@@ -90,7 +90,7 @@ namespace FHN_nonlocal_coupling
 
                 clearPlot();
 
-                model.plot(chart, chartPhase);
+                controller.plot(chart, chartPhase);
             }
 
             if (rdBtnTmr.Checked)
@@ -109,10 +109,10 @@ namespace FHN_nonlocal_coupling
 
         private void timerT_Tick(object sender, EventArgs e)
         {
-            if (trBarT.Value == model.trackBarMax())
+            if (trBarT.Value == controller.trackBarMax())
                 clearAllButNullclinesPlot();
 
-            model.plotTimerTick(trBarT, chart, chartPhase);
+            controller.plot(trBarT, chart, chartPhase);
         }
 
         private void trBarT_Scroll(object sender, EventArgs e)
@@ -120,7 +120,7 @@ namespace FHN_nonlocal_coupling
             clearAllButNullclinesPlot();
             timerT.Enabled = false;
 
-            model.plotTrackBarScroll(trBarT.Value, chart, chartPhase);
+            controller.plot(trBarT.Value, chart, chartPhase);
         }
 
         private void btnTuneT_Click(object sender, EventArgs e)
@@ -168,7 +168,7 @@ namespace FHN_nonlocal_coupling
         private void setPlot()
         {
             chart.ChartAreas[0].AxisX.Minimum = 0;
-            chart.ChartAreas[0].AxisX.Maximum = model.chartXMax();
+            chart.ChartAreas[0].AxisX.Maximum = controller.chartXMax();
 
             chart.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(txtBoxMinUVT.Text);
             chart.ChartAreas[0].AxisY.Maximum = Convert.ToDouble(txtBoxMaxUVT.Text);
@@ -176,11 +176,11 @@ namespace FHN_nonlocal_coupling
             chart.ChartAreas[0].AxisX.Interval = Convert.ToInt32((chart.ChartAreas[0].AxisX.Maximum + chart.ChartAreas[0].AxisX.Minimum) / 5.0);
             chart.ChartAreas[0].AxisY.Interval = Convert.ToInt32((chart.ChartAreas[0].AxisY.Maximum + chart.ChartAreas[0].AxisY.Minimum) / 4.0);
 
-            chartPhase.ChartAreas[0].AxisX.Minimum = model.chartPhaseXMin();
-            chartPhase.ChartAreas[0].AxisX.Maximum = model.chartPhaseXMax();
+            chartPhase.ChartAreas[0].AxisX.Minimum = controller.chartPhaseXMin();
+            chartPhase.ChartAreas[0].AxisX.Maximum = controller.chartPhaseXMax();
 
             chartPhase.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(txtBoxMinUVPhase.Text);
-            chartPhase.ChartAreas[0].AxisY.Maximum = model.chartPhaseYMax();
+            chartPhase.ChartAreas[0].AxisY.Maximum = controller.chartPhaseYMax();
 
             chart.Series[2].Color = Color.Blue;
             chart.Series[3].Color = Color.OrangeRed;
@@ -190,7 +190,7 @@ namespace FHN_nonlocal_coupling
 
         private void checkBox2ndEq_CheckedChanged(object sender, EventArgs e)
         {
-            model.loadEquations(checkBox2ndEq.Checked, propertyGrid1, propertyGrid2);
+            controller.load(checkBox2ndEq.Checked, propertyGrid1, propertyGrid2);
         }
 
         private void btnAbout_Click(object sender, EventArgs e)

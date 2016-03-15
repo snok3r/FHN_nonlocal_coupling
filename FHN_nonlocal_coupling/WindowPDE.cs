@@ -7,17 +7,17 @@ namespace FHN_nonlocal_coupling
 {
     partial class WindowPDE : Form
     {
-        private PDEModel model;
+        private PDEController controller;
 
         public WindowPDE()
         {
             InitializeComponent();
-            model = new PDEModel();
+            controller = new PDEController();
         }
 
         private void WindowPDE_Load(object sender, EventArgs e)
         {
-            model.loadEquations(checkBox2ndEq.Checked, propertyGrid1, propertyGrid2);
+            controller.load(checkBox2ndEq.Checked, propertyGrid1, propertyGrid2);
         }
 
         private void WindowPDE_FormClosing(object sender, FormClosingEventArgs e)
@@ -26,7 +26,7 @@ namespace FHN_nonlocal_coupling
             trBarT.Enabled = false;
             chart.Series.Clear();
             
-            model.dispose();
+            controller.dispose();
         }
 
         private void propertyGrid1_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
@@ -73,9 +73,9 @@ namespace FHN_nonlocal_coupling
         {
             prBarSolve.Value = 0;
             prBarSolve.Maximum = 3;
-            trBarT.Maximum = model.trackBarMax();
+            trBarT.Maximum = controller.trackBarMax();
 
-            if (model.btnSolveClick(prBarSolve) != 0)
+            if (controller.solve(prBarSolve) != 0)
                 lblError.Visible = true;
 
             enablePlotBtn();
@@ -86,7 +86,7 @@ namespace FHN_nonlocal_coupling
             clearPlot();
             setPlot();
 
-            model.plotLayer(trBarT.Value, chart);
+            controller.plot(trBarT.Value, chart);
 
             if (rdBtnTmr.Checked)
                 timerT.Enabled = true;
@@ -97,13 +97,13 @@ namespace FHN_nonlocal_coupling
         private void timerT_Tick(object sender, EventArgs e)
         {
             clearPlot();
-            model.plotTimerTick(trBarT, chart);
+            controller.plot(trBarT, chart);
         }
 
         private void trBarT_Scroll(object sender, EventArgs e)
         {
             clearPlot();
-            model.plotLayer(trBarT.Value, chart);
+            controller.plot(trBarT.Value, chart);
         }
 
         private void btnTune_Click(object sender, EventArgs e)
@@ -123,7 +123,7 @@ namespace FHN_nonlocal_coupling
 
         private void btnGetVelocity_Click(object sender, EventArgs e)
         {
-            lblVelocity.Text = model.getVelocity(trBarT.Value);
+            lblVelocity.Text = controller.getVelocity(trBarT.Value).ToString() + " x/t";
         }
 
         private void clearPlot()
@@ -134,8 +134,8 @@ namespace FHN_nonlocal_coupling
 
         private void setPlot()
         {
-            chart.ChartAreas[0].AxisX.Minimum = model.chartXMin();
-            chart.ChartAreas[0].AxisX.Maximum = model.chartXMax();
+            chart.ChartAreas[0].AxisX.Minimum = controller.chartXMin();
+            chart.ChartAreas[0].AxisX.Maximum = controller.chartXMax();
 
             chart.ChartAreas[0].AxisY.Maximum = Convert.ToDouble(txtBoxMaxUV.Text);
             chart.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(txtBoxMinUV.Text);
@@ -149,7 +149,7 @@ namespace FHN_nonlocal_coupling
 
         private void checkBox2ndEq_CheckedChanged(object sender, EventArgs e)
         {
-            model.loadEquations(checkBox2ndEq.Checked, propertyGrid1, propertyGrid2);
+            controller.load(checkBox2ndEq.Checked, propertyGrid1, propertyGrid2);
         }
 
         private void btnAbout_Click(object sender, EventArgs e)
