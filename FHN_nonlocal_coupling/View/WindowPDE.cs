@@ -13,12 +13,12 @@ namespace FHN_nonlocal_coupling.View
         public WindowPDE()
         {
             InitializeComponent();
-            controller = new PDEController();
+            controller = new PDEController(chart, propertyGrid1, propertyGrid2, prBarSolve, trBarT);
         }
 
         private void WindowPDE_Load(object sender, EventArgs e)
         {
-            controller.load(checkBox2ndEq.Checked, propertyGrid1, propertyGrid2);
+            controller.load(checkBox2ndEq.Checked);
         }
 
         private void WindowPDE_FormClosing(object sender, FormClosingEventArgs e)
@@ -30,25 +30,20 @@ namespace FHN_nonlocal_coupling.View
 
         private void checkBox2ndEq_CheckedChanged(object sender, EventArgs e)
         {
-            controller.load(checkBox2ndEq.Checked, propertyGrid1, propertyGrid2);
+            controller.load(checkBox2ndEq.Checked);
         }
 
         private void btnSolve_Click(object sender, EventArgs e)
         {
-            prBarSolve.Value = 0;
-            prBarSolve.Maximum = 3;
-            trBarT.Maximum = controller.trackBarMax();
-
-            if (controller.solve(prBarSolve) != 0)
+            if (controller.solve() != 0)
                 lblError.Visible = true;
-
             enablePlotBtn();
         }
 
         private void btnPlot_Click(object sender, EventArgs e)
         {
             setPlot();
-            controller.plot(trBarT.Value, chart);
+            controller.plot(trBarT.Value);
 
             if (rdBtnTmr.Checked)
                 timerT.Enabled = true;
@@ -58,12 +53,12 @@ namespace FHN_nonlocal_coupling.View
 
         private void timerT_Tick(object sender, EventArgs e)
         {
-            controller.plot(trBarT, chart);
+            controller.plot();
         }
 
         private void trBarT_Scroll(object sender, EventArgs e)
         {
-            controller.plot(trBarT.Value, chart);
+            controller.plot(trBarT.Value);
         }
 
         private void btnGetVelocity_Click(object sender, EventArgs e)

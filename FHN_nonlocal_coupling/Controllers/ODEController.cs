@@ -8,6 +8,18 @@ namespace FHN_nonlocal_coupling.Controllers
 {
     class ODEController : AbstractController<ODE>
     {
+        private Chart chartPhase;
+
+        public ODEController(
+            Chart chart,
+            Chart chartPhase, 
+            PropertyGrid pg1, 
+            PropertyGrid pg2, 
+            ProgressBar progressBar, 
+            TrackBar trackBar) 
+            : base(chart, pg1, pg2, progressBar, trackBar)
+        { this.chartPhase = chartPhase; }
+
         /// <summary>
         /// Returns chart's maximum X bound
         /// </summary>
@@ -24,50 +36,52 @@ namespace FHN_nonlocal_coupling.Controllers
         /// Plots all at once if 'chckd' == false,
         /// otherwise plots only nullclines
         /// </summary>
-        public void plot(bool chckd, Chart chart, Chart chartPhase)
+        public void plot(bool chckd)
         {
             if (chckd)
-                clearNullclines(chartPhase);
+                clearNullclines();
             else
             {
-                clearPlot(chart, chartPhase);
+                trackBar.Value = 0;
+
+                clearPlot();
 
                 for (int i = 0; i < fhn.Length; i++)
                     for (int j = 0; j < fhn[i].N; j++)
-                        plot(j, (ODE)fhn[i], i, chart, chartPhase);
+                        plot(j, (ODE)fhn[i], i);
             }
 
             for (int i = 0; i < fhn.Length; i++)
-                plotNullclines((ODE)fhn[i], i, chartPhase);
+                plotNullclines((ODE)fhn[i], i);
         }
 
         /// <summary>
         /// Plots all 'till the trackBarValue moment,
         /// useful with TrackBarScroll event
         /// </summary>
-        public void plot(int trackBarValue, Chart chart, Chart chartPhase)
+        public override void plot(int trackBarValue)
         {
-            clearAllButNullclines(chart, chartPhase);
+            clearAllButNullclines();
 
             for (int j = 0; j < trackBarValue; j++)
                 for (int i = 0; i < fhn.Length; i++)
-                    plot(j, (ODE)fhn[i], i, chart, chartPhase);
+                    plot(j, (ODE)fhn[i], i);
         }
 
         /// <summary>
         /// Plots single point according to trackBar,
         /// useful with TimerTick event
         /// </summary>
-        public void plot(TrackBar trackBar, Chart chart, Chart chartPhase)
+        public override void plot()
         {
             if (trackBar.Value == 0)
-                clearAllButNullclines(chart, chartPhase);
+                clearAllButNullclines();
 
             if (trackBar.Value < trackBarMax())
             {
                 trackBar.Value++;
                 for (int i = 0; i < fhn.Length; i++)
-                    plot(trackBar.Value, (ODE)fhn[i], i, chart, chartPhase);
+                    plot(trackBar.Value, (ODE)fhn[i], i);
             }
             else
                 trackBar.Value = 0;
@@ -76,7 +90,7 @@ namespace FHN_nonlocal_coupling.Controllers
         /// <summary>
         /// Plots single point on t plot and phase plane
         /// </summary>
-        private void plot(int j, ODE obj, int numEq, Chart chart, Chart chartPhase)
+        private void plot(int j, ODE obj, int numEq)
         {
             double t = obj.getT(j);
             double u = obj.getU(j);
@@ -91,7 +105,7 @@ namespace FHN_nonlocal_coupling.Controllers
         /// <summary>
         /// Plots nullclines
         /// </summary>
-        private void plotNullclines(ODE obj, int numEq, Chart chartPhase)
+        private void plotNullclines(ODE obj, int numEq)
         {
             for (int j = 0; j < obj.N; j++)
             {
@@ -105,7 +119,7 @@ namespace FHN_nonlocal_coupling.Controllers
         /// <summary>
         /// Clears all the plot data
         /// </summary>
-        public void clearPlot(Chart chart, Chart chartPhase)
+        public override void clearPlot()
         {
             for (int i = 0; i < chart.Series.Count(); i++)
                 chart.Series[i].Points.Clear();
@@ -117,7 +131,7 @@ namespace FHN_nonlocal_coupling.Controllers
         /// <summary>
         /// Clears all the plot data except nullclines
         /// </summary>
-        private void clearAllButNullclines(Chart chart, Chart chartPhase)
+        private void clearAllButNullclines()
         {
             for (int i = 0; i < chart.Series.Count(); i++)
                 chart.Series[i].Points.Clear();
@@ -129,7 +143,7 @@ namespace FHN_nonlocal_coupling.Controllers
         /// <summary>
         /// Clears nullclines
         /// </summary>
-        private void clearNullclines(Chart chartPhase)
+        private void clearNullclines()
         {
             for (int i = 0; i < 2; i++)
             {

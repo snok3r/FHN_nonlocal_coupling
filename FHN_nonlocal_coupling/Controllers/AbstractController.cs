@@ -8,9 +8,25 @@ namespace FHN_nonlocal_coupling.Controllers
     abstract class AbstractController<T>
     {
         protected AbstractFHN[] fhn;
+        protected Chart chart;
+        protected PropertyGrid pg1, pg2;
+        protected ProgressBar progressBar;
+        protected TrackBar trackBar;
 
         abstract public double chartXMax();
         abstract public int trackBarMax();
+        abstract public void plot();
+        abstract public void plot(int j);
+        abstract public void clearPlot();
+
+        protected AbstractController(Chart chart, PropertyGrid pg1, PropertyGrid pg2, ProgressBar progressBar, TrackBar trackBar)
+        {
+            this.chart = chart;
+            this.pg1 = pg1;
+            this.pg2 = pg2;
+            this.progressBar = progressBar;
+            this.trackBar = trackBar;
+        }
 
         /// <summary>
         /// Makes all the data point to null
@@ -29,24 +45,22 @@ namespace FHN_nonlocal_coupling.Controllers
         /// Call when you need to reload equations
         /// or to reassign them to property grid
         /// </summary>
-        public void load(bool chckd, PropertyGrid pg1, PropertyGrid pg2)
+        public void load(bool chckd)
         {
-            int count;
-            if (chckd) count = 2;
-            else count = 1;
+            int size;
+            if (chckd) size = 2;
+            else size = 1;
 
             if (typeof(T) == typeof(PDE))
-                fhn = PDE.allocArray(count);
+                fhn = PDE.allocArray(size);
             else if (typeof(T) == typeof(ODE))
-                fhn = ODE.allocArray(count);
+                fhn = ODE.allocArray(size);
             else throw new ArgumentException("must be ODE or PDE class");
             
             pg1.SelectedObject = fhn[0];
 
-            if (count == 2)
-                pg2.SelectedObject = fhn[1];
-            else
-                pg2.SelectedObject = null;
+            if (size == 2) pg2.SelectedObject = fhn[1];
+            else pg2.SelectedObject = null;
         }
 
         /// <summary>
@@ -54,8 +68,12 @@ namespace FHN_nonlocal_coupling.Controllers
         /// <para>Returns -1, if computation error occurred,
         /// 0 otherwise.</para>
         /// </summary>
-        public int solve(ProgressBar progressBar)
+        public int solve()
         {
+            progressBar.Value = 0;
+            progressBar.Maximum = 3;
+            trackBar.Maximum = trackBarMax();
+
             for (int i = 0; i < fhn.Length; i++)
                 fhn[i].load();
             progressBar.Value++;

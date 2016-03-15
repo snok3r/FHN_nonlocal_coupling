@@ -9,6 +9,15 @@ namespace FHN_nonlocal_coupling.Controllers
 {
     class PDEController : AbstractController<PDE>
     {
+        public PDEController(
+            Chart chart,
+            PropertyGrid pg1,
+            PropertyGrid pg2,
+            ProgressBar progressBar,
+            TrackBar trackBar)
+            : base(chart, pg1, pg2, progressBar, trackBar) 
+        { }
+
         /// <summary>
         /// Returns chart's maximum X bound
         /// </summary>
@@ -21,26 +30,25 @@ namespace FHN_nonlocal_coupling.Controllers
         public override int trackBarMax()
         { return ((PDE)fhn[0]).M - 1; }
 
-
         /// <summary>
         /// Plots layer 'tj'
         /// </summary>
-        public void plot(int tj, Chart chart)
+        public override void plot(int tj)
         {
-            clearPlot(chart);
+            clearPlot();
 
             for (int i = 0; i < fhn.Length; i++)
-                plot(tj, (PDE)fhn[i], i, chart);
+                plot(tj, (PDE)fhn[i], i);
         }
 
         /// <summary>
         /// Plots layer tj with variable trackbar value
         /// </summary>
-        public void plot(TrackBar trackBar, Chart chart)
+        public override void plot()
         {
             if (trackBar.Value < trackBarMax()){
                 trackBar.Value++;
-                plot(trackBar.Value, chart);
+                plot(trackBar.Value);
             }
             else trackBar.Value = 0;
         }
@@ -48,7 +56,7 @@ namespace FHN_nonlocal_coupling.Controllers
         /// <summary>
         /// Plots full j segment
         /// </summary>
-        private void plot(int j, PDE obj, int numEq, Chart chart)
+        private void plot(int j, PDE obj, int numEq)
         {
             for (int i = 0; i < obj.N; i++)
             {
@@ -62,7 +70,7 @@ namespace FHN_nonlocal_coupling.Controllers
         /// <summary>
         /// Clears all the plot data
         /// </summary>
-        public void clearPlot(Chart chart)
+        public override void clearPlot()
         {
             for (int i = 0; i < chart.Series.Count(); i++)
                 chart.Series[i].Points.Clear();
