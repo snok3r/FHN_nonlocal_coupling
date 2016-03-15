@@ -2,18 +2,19 @@
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using FHN_nonlocal_coupling;
+using FHN_nonlocal_coupling.View.Other;
+using FHN_nonlocal_coupling.Controllers;
 
 namespace FHN_nonlocal_coupling.View
 {
     partial class WindowODE : Form
     {
-        private Controllers.ODEController controller;
+        private ODEController controller;
 
         public WindowODE()
         {
             InitializeComponent();
-            controller = new Controllers.ODEController();
+            controller = new ODEController();
         }
 
         private void WindowODE_Load(object sender, EventArgs e)
@@ -196,7 +197,7 @@ namespace FHN_nonlocal_coupling.View
 
         private void btnAbout_Click(object sender, EventArgs e)
         {
-            View.Other.AboutODE o = new View.Other.AboutODE();
+            AboutODE o = new AboutODE();
             o.Show();
         }
     }
