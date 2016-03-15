@@ -25,19 +25,51 @@ namespace FHN_nonlocal_coupling.View
         {
             timerT.Enabled = false;
             chart.Series.Clear();
-            
             controller.dispose();
         }
 
-        private void propertyGrid1_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
+        private void checkBox2ndEq_CheckedChanged(object sender, EventArgs e)
         {
-            disablePlotBtn();
+            controller.load(checkBox2ndEq.Checked, propertyGrid1, propertyGrid2);
         }
 
-        private void propertyGrid2_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
+        private void btnSolve_Click(object sender, EventArgs e)
         {
-            disablePlotBtn();
+            prBarSolve.Value = 0;
+            prBarSolve.Maximum = 3;
+            trBarT.Maximum = controller.trackBarMax();
+
+            if (controller.solve(prBarSolve) != 0)
+                lblError.Visible = true;
+
+            enablePlotBtn();
         }
+
+        private void btnPlot_Click(object sender, EventArgs e)
+        {
+            setPlot();
+            controller.plot(trBarT.Value, chart);
+
+            if (rdBtnTmr.Checked)
+                timerT.Enabled = true;
+            else
+                timerT.Enabled = false;
+        }
+
+        private void timerT_Tick(object sender, EventArgs e)
+        {
+            controller.plot(trBarT, chart);
+        }
+
+        private void trBarT_Scroll(object sender, EventArgs e)
+        {
+            controller.plot(trBarT.Value, chart);
+        }
+
+        private void btnGetVelocity_Click(object sender, EventArgs e)
+        {
+            lblVelocity.Text = controller.getVelocity(trBarT.Value).ToString() + " x/t";
+        }        
 
         private void disablePlotBtn()
         {
@@ -69,38 +101,14 @@ namespace FHN_nonlocal_coupling.View
             }
         }
 
-        private void btnSolve_Click(object sender, EventArgs e)
+        private void propertyGrid1_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
         {
-            prBarSolve.Value = 0;
-            prBarSolve.Maximum = 3;
-            trBarT.Maximum = controller.trackBarMax();
-
-            if (controller.solve(prBarSolve) != 0)
-                lblError.Visible = true;
-
-            enablePlotBtn();
+            disablePlotBtn();
         }
 
-        private void btnPlot_Click(object sender, EventArgs e)
+        private void propertyGrid2_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
         {
-            setPlot();
-
-            controller.plot(trBarT.Value, chart);
-
-            if (rdBtnTmr.Checked)
-                timerT.Enabled = true;
-            else
-                timerT.Enabled = false;
-        }
-
-        private void timerT_Tick(object sender, EventArgs e)
-        {
-            controller.plot(trBarT, chart);
-        }
-
-        private void trBarT_Scroll(object sender, EventArgs e)
-        {
-            controller.plot(trBarT.Value, chart);
+            disablePlotBtn();
         }
 
         private void btnTune_Click(object sender, EventArgs e)
@@ -118,11 +126,6 @@ namespace FHN_nonlocal_coupling.View
             }
         }
 
-        private void btnGetVelocity_Click(object sender, EventArgs e)
-        {
-            lblVelocity.Text = controller.getVelocity(trBarT.Value).ToString() + " x/t";
-        }
-
         private void setPlot()
         {
             chart.ChartAreas[0].AxisX.Minimum = controller.chartXMin();
@@ -136,11 +139,6 @@ namespace FHN_nonlocal_coupling.View
 
             chart.Series[2].Color = Color.Blue;
             chart.Series[3].Color = Color.OrangeRed;
-        }
-
-        private void checkBox2ndEq_CheckedChanged(object sender, EventArgs e)
-        {
-            controller.load(checkBox2ndEq.Checked, propertyGrid1, propertyGrid2);
         }
 
         private void btnAbout_Click(object sender, EventArgs e)

@@ -20,50 +20,17 @@ namespace FHN_nonlocal_coupling.View
         {
             controller.load(checkBox2ndEq.Checked, propertyGrid1, propertyGrid2);
         }
-
+        
         private void WindowODE_FormClosing(object sender, FormClosingEventArgs e)
         {
             timerT.Enabled = false;
             chart.Series.Clear();
-
             controller.dispose();
         }
 
-        private void propertyGrid1_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
+        private void checkBox2ndEq_CheckedChanged(object sender, EventArgs e)
         {
-            disablePlotBtn();
-        }
-
-        private void propertyGrid2_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
-        {
-            disablePlotBtn();
-        }
-
-        private void disablePlotBtn()
-        {
-            if (btnPlot.Enabled)
-            {
-                btnPlot.Enabled = false;
-                btnSolve.Enabled = true;
-            }
-
-            lblError.Visible = false;
-
-            trBarT.Value = 0;
-            trBarT.Enabled = false;
-            timerT.Enabled = false;
-        }
-
-        private void enablePlotBtn()
-        {
-            if (!lblError.Visible)
-            {
-                btnSolve.Enabled = false;
-                btnPlot.Enabled = true;
-
-                trBarT.Value = 0;
-                trBarT.Enabled = true;
-            }
+            controller.load(checkBox2ndEq.Checked, propertyGrid1, propertyGrid2);
         }
 
         private void btnSolve_Click(object sender, EventArgs e)
@@ -100,6 +67,43 @@ namespace FHN_nonlocal_coupling.View
         private void trBarT_Scroll(object sender, EventArgs e)
         {
             controller.plot(trBarT.Value, chart, chartPhase);
+        }                
+
+        private void disablePlotBtn()
+        {
+            if (btnPlot.Enabled)
+            {
+                btnPlot.Enabled = false;
+                btnSolve.Enabled = true;
+            }
+
+            lblError.Visible = false;
+
+            trBarT.Value = 0;
+            trBarT.Enabled = false;
+            timerT.Enabled = false;
+        }
+
+        private void enablePlotBtn()
+        {
+            if (!lblError.Visible)
+            {
+                btnSolve.Enabled = false;
+                btnPlot.Enabled = true;
+
+                trBarT.Value = 0;
+                trBarT.Enabled = true;
+            }
+        }
+
+        private void propertyGrid1_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
+        {
+            disablePlotBtn();
+        }
+
+        private void propertyGrid2_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
+        {
+            disablePlotBtn();
         }
 
         private void btnTuneT_Click(object sender, EventArgs e)
@@ -144,11 +148,6 @@ namespace FHN_nonlocal_coupling.View
             chart.Series[3].Color = Color.OrangeRed;
 
             chartPhase.Series[3].Color = Color.Blue;
-        }
-
-        private void checkBox2ndEq_CheckedChanged(object sender, EventArgs e)
-        {
-            controller.load(checkBox2ndEq.Checked, propertyGrid1, propertyGrid2);
         }
 
         private void btnAbout_Click(object sender, EventArgs e)
