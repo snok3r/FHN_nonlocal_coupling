@@ -2,17 +2,18 @@
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using FHN_nonlocal_coupling;
 
-namespace FHN_nonlocal_coupling
+namespace FHN_nonlocal_coupling.View
 {
     partial class WindowPDE : Form
     {
-        private PDEController controller;
+        private Controllers.PDEController controller;
 
         public WindowPDE()
         {
             InitializeComponent();
-            controller = new PDEController();
+            controller = new Controllers.PDEController();
         }
 
         private void WindowPDE_Load(object sender, EventArgs e)
@@ -154,7 +155,7 @@ namespace FHN_nonlocal_coupling
 
         private void btnAbout_Click(object sender, EventArgs e)
         {
-            AboutPDE o = new AboutPDE();
+            View.Other.AboutPDE o = new View.Other.AboutPDE();
             o.Show();
         }
     }

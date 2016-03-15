@@ -13,7 +13,7 @@ namespace FHN_nonlocal_coupling
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Main());
+            Application.Run(new View.Other.Main());
         }
     }
 }

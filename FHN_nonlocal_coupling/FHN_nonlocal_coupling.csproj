@@ -45,16 +45,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="View\Main\AboutODE.cs">
+    <Compile Include="View\Other\AboutODE.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="View\Main\AboutODE.Designer.cs">
+    <Compile Include="View\Other\AboutODE.Designer.cs">
       <DependentUpon>AboutODE.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\Main\AboutPDE.cs">
+    <Compile Include="View\Other\AboutPDE.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="View\Main\AboutPDE.Designer.cs">
+    <Compile Include="View\Other\AboutPDE.Designer.cs">
       <DependentUpon>AboutPDE.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\AbstractFHN.cs" />
@@ -62,10 +62,10 @@
     <Compile Include="Controllers\AbstractController.cs" />
     <Compile Include="Controllers\ODEController.cs" />
     <Compile Include="Models\PDE.cs" />
-    <Compile Include="View\Main\Main.cs">
+    <Compile Include="View\Other\Main.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="View\Main\Main.Designer.cs">
+    <Compile Include="View\Other\Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
     <Compile Include="Controllers\PDEController.cs" />
@@ -83,13 +83,13 @@
     <Compile Include="View\WindowPDE.Designer.cs">
       <DependentUpon>WindowPDE.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="View\Main\AboutODE.resx">
+    <EmbeddedResource Include="View\Other\AboutODE.resx">
       <DependentUpon>AboutODE.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\Main\AboutPDE.resx">
+    <EmbeddedResource Include="View\Other\AboutPDE.resx">
       <DependentUpon>AboutPDE.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\Main\Main.resx">
+    <EmbeddedResource Include="View\Other\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

@@ -1,4 +1,4 @@
-﻿namespace FHN_nonlocal_coupling
+﻿namespace FHN_nonlocal_coupling.View.Other
 {
     partial class AboutPDE
     {
