@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+
 using FHN_nonlocal_coupling.Models;
 
 namespace FHN_nonlocal_coupling.Controllers
@@ -25,6 +27,8 @@ namespace FHN_nonlocal_coupling.Controllers
         /// </summary>
         public void plot(int tj, Chart chart)
         {
+            clearPlot(chart);
+
             for (int i = 0; i < fhn.Length; i++)
                 plot(tj, (PDE)fhn[i], i, chart);
         }
@@ -53,6 +57,15 @@ namespace FHN_nonlocal_coupling.Controllers
                 chart.Series[2 * numEq].Points.AddXY(x, obj.getU(j, i));
                 chart.Series[2 * numEq + 1].Points.AddXY(x, obj.getV(j, i));
             }
+        }
+
+        /// <summary>
+        /// Clears all the plot data
+        /// </summary>
+        public void clearPlot(Chart chart)
+        {
+            for (int i = 0; i < chart.Series.Count(); i++)
+                chart.Series[i].Points.Clear();
         }
 
         /// <summary>

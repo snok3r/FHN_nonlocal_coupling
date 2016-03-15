@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 using FHN_nonlocal_coupling.View.Other;
 using FHN_nonlocal_coupling.Controllers;
@@ -85,7 +84,6 @@ namespace FHN_nonlocal_coupling.View
 
         private void btnPlot_Click(object sender, EventArgs e)
         {
-            clearPlot();
             setPlot();
 
             controller.plot(trBarT.Value, chart);
@@ -98,13 +96,11 @@ namespace FHN_nonlocal_coupling.View
 
         private void timerT_Tick(object sender, EventArgs e)
         {
-            clearPlot();
             controller.plot(trBarT, chart);
         }
 
         private void trBarT_Scroll(object sender, EventArgs e)
         {
-            clearPlot();
             controller.plot(trBarT.Value, chart);
         }
 
@@ -126,12 +122,6 @@ namespace FHN_nonlocal_coupling.View
         private void btnGetVelocity_Click(object sender, EventArgs e)
         {
             lblVelocity.Text = controller.getVelocity(trBarT.Value).ToString() + " x/t";
-        }
-
-        private void clearPlot()
-        {
-            for (int i = 0; i < chart.Series.Count(); i++)
-                chart.Series[i].Points.Clear();
         }
 
         private void setPlot()
