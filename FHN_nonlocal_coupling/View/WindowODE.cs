@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 using FHN_nonlocal_coupling.View.Other;
 using FHN_nonlocal_coupling.Controllers;
@@ -25,7 +24,6 @@ namespace FHN_nonlocal_coupling.View
         private void WindowODE_FormClosing(object sender, FormClosingEventArgs e)
         {
             timerT.Enabled = false;
-            trBarT.Enabled = false;
             chart.Series.Clear();
 
             controller.dispose();
@@ -83,45 +81,24 @@ namespace FHN_nonlocal_coupling.View
         private void btnPlot_Click(object sender, EventArgs e)
         {
             setPlot();
-
-            // if 'Plot all' checked then need to clear plot.
-            if (rdBtnPlotAll.Checked)
-            {
-                //trBarT.Enabled = false;
-                trBarT.Value = 0;
-
-                clearPlot();
-
-                controller.plot(chart, chartPhase);
-            }
+            controller.plot(rdBtnTmr.Checked, chart, chartPhase);
 
             if (rdBtnTmr.Checked)
-            {
-                clearAllButNullclinesPlot();
-
-                trBarT.Enabled = true;
                 timerT.Enabled = true;
-            }
             else
             {
-                //trBarT.Enabled = false; 
                 timerT.Enabled = false;
+                trBarT.Value = 0;
             }
         }
 
         private void timerT_Tick(object sender, EventArgs e)
         {
-            if (trBarT.Value == controller.trackBarMax())
-                clearAllButNullclinesPlot();
-
             controller.plot(trBarT, chart, chartPhase);
         }
 
         private void trBarT_Scroll(object sender, EventArgs e)
         {
-            clearAllButNullclinesPlot();
-            timerT.Enabled = false;
-
             controller.plot(trBarT.Value, chart, chartPhase);
         }
 
@@ -143,28 +120,7 @@ namespace FHN_nonlocal_coupling.View
             {
                 rdBtnTmr.Checked = false;
                 timerT.Enabled = false;
-                //trBarT.Enabled = false;
-
-                rdBtnPlotAll.Checked = true;
             }
-        }
-
-        private void clearAllButNullclinesPlot()
-        {
-            for (int i = 0; i < chart.Series.Count(); i++)
-                chart.Series[i].Points.Clear();
-
-            for (int i = 0; i < 2; i++)
-                chartPhase.Series[3 * i].Points.Clear();
-        }
-
-        private void clearPlot()
-        {
-            for (int i = 0; i < chart.Series.Count(); i++)
-                chart.Series[i].Points.Clear();
-
-            for (int i = 0; i < chartPhase.Series.Count(); i++)
-                chartPhase.Series[i].Points.Clear();
         }
 
         private void setPlot()

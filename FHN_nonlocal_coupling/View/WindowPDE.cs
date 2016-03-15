@@ -24,7 +24,6 @@ namespace FHN_nonlocal_coupling.View
         private void WindowPDE_FormClosing(object sender, FormClosingEventArgs e)
         {
             timerT.Enabled = false;
-            trBarT.Enabled = false;
             chart.Series.Clear();
             
             controller.dispose();

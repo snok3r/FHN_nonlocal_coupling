@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using FHN_nonlocal_coupling.Models;
@@ -20,17 +21,24 @@ namespace FHN_nonlocal_coupling.Controllers
         { return fhn[0].N - 1; }
 
         /// <summary>
-        /// Plots all at once
+        /// Plots all at once if 'chckd' == false,
+        /// otherwise plots only nullclines
         /// </summary>
-        public void plot(Chart chart, Chart chartPhase)
+        public void plot(bool chckd, Chart chart, Chart chartPhase)
         {
-            for (int i = 0; i < fhn.Length; i++)
+            if (chckd)
+                clearNullclines(chartPhase);
+            else
             {
-                plotNullclines((ODE)fhn[i], i, chartPhase);
+                clearPlot(chart, chartPhase);
 
-                for (int j = 0; j < fhn[i].N; j++)
-                    plot(j, (ODE)fhn[i], i, chart, chartPhase);
+                for (int i = 0; i < fhn.Length; i++)
+                    for (int j = 0; j < fhn[i].N; j++)
+                        plot(j, (ODE)fhn[i], i, chart, chartPhase);
             }
+
+            for (int i = 0; i < fhn.Length; i++)
+                plotNullclines((ODE)fhn[i], i, chartPhase);
         }
 
         /// <summary>
@@ -39,6 +47,8 @@ namespace FHN_nonlocal_coupling.Controllers
         /// </summary>
         public void plot(int trackBarValue, Chart chart, Chart chartPhase)
         {
+            clearAllButNullclines(chart, chartPhase);
+
             for (int j = 0; j < trackBarValue; j++)
                 for (int i = 0; i < fhn.Length; i++)
                     plot(j, (ODE)fhn[i], i, chart, chartPhase);
@@ -50,13 +60,17 @@ namespace FHN_nonlocal_coupling.Controllers
         /// </summary>
         public void plot(TrackBar trackBar, Chart chart, Chart chartPhase)
         {
+            if (trackBar.Value == 0)
+                clearAllButNullclines(chart, chartPhase);
+
             if (trackBar.Value < trackBarMax())
             {
                 trackBar.Value++;
                 for (int i = 0; i < fhn.Length; i++)
                     plot(trackBar.Value, (ODE)fhn[i], i, chart, chartPhase);
             }
-            else trackBar.Value = 0;
+            else
+                trackBar.Value = 0;
         }
 
         /// <summary>
@@ -88,6 +102,42 @@ namespace FHN_nonlocal_coupling.Controllers
             }
         }
 
+        /// <summary>
+        /// Clears all the plot data
+        /// </summary>
+        public void clearPlot(Chart chart, Chart chartPhase)
+        {
+            for (int i = 0; i < chart.Series.Count(); i++)
+                chart.Series[i].Points.Clear();
+
+            for (int i = 0; i < chartPhase.Series.Count(); i++)
+                chartPhase.Series[i].Points.Clear();
+        }
+
+        /// <summary>
+        /// Clears all the plot data except nullclines
+        /// </summary>
+        private void clearAllButNullclines(Chart chart, Chart chartPhase)
+        {
+            for (int i = 0; i < chart.Series.Count(); i++)
+                chart.Series[i].Points.Clear();
+
+            for (int i = 0; i < 2; i++)
+                chartPhase.Series[3 * i].Points.Clear();
+        }
+
+        /// <summary>
+        /// Clears nullclines
+        /// </summary>
+        private void clearNullclines(Chart chartPhase)
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                chartPhase.Series[3 * i + 1].Points.Clear();
+                chartPhase.Series[3 * i + 2].Points.Clear();
+            }  
+        }
+        
         /// <summary>
         /// Returns phase's chart minimum X bound
         /// </summary>
