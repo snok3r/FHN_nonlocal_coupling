@@ -94,6 +94,12 @@ namespace FHN_nonlocal_coupling.Model
                 velocity[j] = new Velocity();
         }
 
+        public override void reload()
+        {
+            for (int j = 0; j < M; j++)
+                velocity[j].calculated = false;
+        }
+
         public override void initials()
         {   // Initialize initials
             for (int i = 0; i < N; i++)

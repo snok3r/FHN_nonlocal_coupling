@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using FHN_nonlocal_coupling.Model;
@@ -31,6 +32,20 @@ namespace FHN_nonlocal_coupling.Controller
         /// </summary>
         public override int trackBarMax()
         { return fhn[0].N - 1; }
+
+        /// <summary>
+        /// Checking whether arrays need to be
+        /// reallocated, if yes returns true
+        /// </summary>
+        public override void toReload(String label)
+        {
+            HashSet<String> hs = new HashSet<String>(new String[] { "N", "T", "L" });
+
+            if (hs.Contains(label))
+                reload = true;
+            else
+                reload = false;
+        }
 
         /// <summary>
         /// Plots all at once if 'chckd' == false,

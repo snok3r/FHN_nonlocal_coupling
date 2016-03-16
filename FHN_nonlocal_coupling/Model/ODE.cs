@@ -59,6 +59,8 @@ namespace FHN_nonlocal_coupling.Model
                 u_null[j] = - L + j * hx;
         }
 
+        public override void reload() { }
+
         public override void initials()
         {   // Initialize initials
             u[0] = U0;

@@ -31,6 +31,7 @@ namespace FHN_nonlocal_coupling.View
         private void checkBox2ndEq_CheckedChanged(object sender, EventArgs e)
         {
             controller.load(checkBox2ndEq.Checked);
+            disablePlotBtn();
         }
 
         private void btnSolve_Click(object sender, EventArgs e)
@@ -74,6 +75,8 @@ namespace FHN_nonlocal_coupling.View
             trBarT.Value = 0;
             trBarT.Enabled = false;
             timerT.Enabled = false;
+
+            controller.toReload();
         }
 
         private void enablePlotBtn()
@@ -88,14 +91,22 @@ namespace FHN_nonlocal_coupling.View
             }
         }
 
-        private void propertyGrid1_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
+        private void propertyGrid1_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
         {
+            if (e.OldValue == e.ChangedItem.Value)
+                return;
+
             disablePlotBtn();
+            controller.toReload(e.ChangedItem.Label);
         }
 
-        private void propertyGrid2_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
+        private void propertyGrid2_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
         {
+            if (e.OldValue == e.ChangedItem.Value)
+                return;
+
             disablePlotBtn();
+            controller.toReload(e.ChangedItem.Label);
         }
 
         private void btnTuneT_Click(object sender, EventArgs e)

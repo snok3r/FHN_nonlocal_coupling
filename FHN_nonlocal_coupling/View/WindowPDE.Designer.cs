@@ -259,7 +259,7 @@
             this.propertyGrid1.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
             this.propertyGrid1.Size = new System.Drawing.Size(171, 369);
             this.propertyGrid1.TabIndex = 85;
-            this.propertyGrid1.SelectedGridItemChanged += new System.Windows.Forms.SelectedGridItemChangedEventHandler(this.propertyGrid1_SelectedGridItemChanged);
+            this.propertyGrid1.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.propertyGrid1_PropertyValueChanged);
             // 
             // tabControl1
             // 
@@ -300,7 +300,7 @@
             this.propertyGrid2.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
             this.propertyGrid2.Size = new System.Drawing.Size(171, 369);
             this.propertyGrid2.TabIndex = 86;
-            this.propertyGrid2.SelectedGridItemChanged += new System.Windows.Forms.SelectedGridItemChangedEventHandler(this.propertyGrid2_SelectedGridItemChanged);
+            this.propertyGrid2.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.propertyGrid2_PropertyValueChanged);
             // 
             // btnGetVelocity
             // 

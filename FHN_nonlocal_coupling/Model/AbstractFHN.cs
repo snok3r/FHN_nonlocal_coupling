@@ -17,6 +17,7 @@ namespace FHN_nonlocal_coupling.Model
         private double varT;
 
         public abstract void load();
+        public abstract void reload();
         public abstract void initials();
         public abstract int solve();
 

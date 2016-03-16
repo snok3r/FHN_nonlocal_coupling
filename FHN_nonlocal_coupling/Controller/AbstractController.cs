@@ -7,6 +7,8 @@ namespace FHN_nonlocal_coupling.Controller
 {
     abstract class AbstractController<T>
     {
+        protected bool reload = true;
+
         protected AbstractFHN[] fhn;
         protected Chart chart;
         protected PropertyGrid pg1, pg2;
@@ -18,6 +20,7 @@ namespace FHN_nonlocal_coupling.Controller
         abstract public void plot();
         abstract public void plot(int j);
         abstract public void clearPlot();
+        abstract public void toReload(String lbl);
 
         protected AbstractController(Chart chart, PropertyGrid pg1, PropertyGrid pg2, ProgressBar progressBar, TrackBar trackBar)
         {
@@ -27,6 +30,9 @@ namespace FHN_nonlocal_coupling.Controller
             this.progressBar = progressBar;
             this.trackBar = trackBar;
         }
+
+        public void toReload()
+        { reload = true; }
 
         /// <summary>
         /// Makes all the data point to null
@@ -74,8 +80,12 @@ namespace FHN_nonlocal_coupling.Controller
             progressBar.Maximum = 3;
             trackBar.Maximum = trackBarMax();
 
-            for (int i = 0; i < fhn.Length; i++)
-                fhn[i].load();
+            if (reload)
+                for (int i = 0; i < fhn.Length; i++)
+                    fhn[i].load();
+            else
+                for (int i = 0; i < fhn.Length; i++)
+                    fhn[i].reload();
             progressBar.Value++;
 
             for (int i = 0; i < fhn.Length; i++)
