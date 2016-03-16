@@ -1,13 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace FHN_nonlocal_coupling
+namespace FHN_nonlocal_coupling.Model
 {
     class PDE : AbstractFHN
     {
         // variables and arrays
         private double[] x;
         private double[,] u, v;
+        private Velocity[] velocity;
 
         private int varM;
         private double varD;
@@ -23,6 +24,14 @@ namespace FHN_nonlocal_coupling
             D = 1.0;
             I = 0.0;
             DeltaCoupling = true;
+        }
+
+        public static PDE[] allocArray(int size)
+        {
+            PDE[] toRet = new PDE[size];
+            for (int i = 0; i < size; i++)
+                toRet[i] = new PDE();
+            return toRet;
         }
 
         // properties
@@ -79,6 +88,16 @@ namespace FHN_nonlocal_coupling
 
             u = new double[M, N];
             v = new double[M, N];
+
+            velocity = new Velocity[M];
+            for (int j = 0; j < M; j++)
+                velocity[j] = new Velocity();
+        }
+
+        public override void reload()
+        {
+            for (int j = 0; j < M; j++)
+                velocity[j].calculated = false;
         }
 
         public override void initials()
@@ -189,6 +208,9 @@ namespace FHN_nonlocal_coupling
 
         public double getVelocity(int j0)
         {
+            if (velocity[j0].calculated)
+                return velocity[j0].velocity;
+
             if (u != null)
             {
                 int deltaj = (int)(1 / ht);
@@ -210,7 +232,10 @@ namespace FHN_nonlocal_coupling
                 double x0 = i0 * hx; double x1 = i1 * hx;
                 double t0 = j0 * ht; double t1 = j1 * ht;
 
-                return (x1 - x0) / (t1 - t0);
+                velocity[j0].velocity = (x1 - x0) / (t1 - t0);
+                velocity[j0].calculated = true;
+
+                return velocity[j0].velocity;
             }
 
             return 0;
@@ -267,5 +292,14 @@ namespace FHN_nonlocal_coupling
         private double u_0_t(double t) { return 0.0; } // Neumann boundary condition at x = -l
 
         private double u_l_t(double t) { return 0.0; } // Neumann boundary condition at x = l
+
+        public override void dispose()
+        { base.dispose(); x = null; u = null; v = null; }
+
+        internal class Velocity
+        {
+            internal double velocity;
+            internal bool calculated;
+        }
     }
 }

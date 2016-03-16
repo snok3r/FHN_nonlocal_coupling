@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace FHN_nonlocal_coupling
+namespace FHN_nonlocal_coupling.Model
 {
     abstract class AbstractFHN
     {
@@ -17,6 +17,7 @@ namespace FHN_nonlocal_coupling
         private double varT;
 
         public abstract void load();
+        public abstract void reload();
         public abstract void initials();
         public abstract int solve();
 
@@ -93,5 +94,8 @@ namespace FHN_nonlocal_coupling
             else
                 return -u * (u - 1) * (u - A);
         }
+
+        public virtual void dispose()
+        { t = null; }
     }
 }

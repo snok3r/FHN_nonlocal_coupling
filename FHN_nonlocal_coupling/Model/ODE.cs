@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace FHN_nonlocal_coupling
+namespace FHN_nonlocal_coupling.Model
 {
     class ODE : AbstractFHN
     {
@@ -18,6 +18,14 @@ namespace FHN_nonlocal_coupling
             U0 = 1.0;
             V0 = 0.1;
             I = 0.5;
+        }
+
+        public static ODE[] allocArray(int size)
+        {
+            ODE[] toRet = new ODE[size];
+            for (int i = 0; i < size; i++)
+                toRet[i] = new ODE();
+            return toRet;
         }
 
         // properties
@@ -50,6 +58,8 @@ namespace FHN_nonlocal_coupling
             for (int j = 0; j < N; j++) 
                 u_null[j] = - L + j * hx;
         }
+
+        public override void reload() { }
 
         public override void initials()
         {   // Initialize initials
@@ -114,5 +124,12 @@ namespace FHN_nonlocal_coupling
 
         private double f2(double u, double v)
         { return Eps * u + Alpha - Beta * v; }
+
+        public override void dispose()
+        {
+            base.dispose();
+            u = null; v = null;
+            u_null = null; v1 = null; v2 = null;
+        }
     }
 }
