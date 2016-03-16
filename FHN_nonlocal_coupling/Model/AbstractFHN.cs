@@ -20,6 +20,7 @@ namespace FHN_nonlocal_coupling.Model
         public abstract void reload();
         public abstract void initials();
         public abstract int solve();
+        public abstract void initialsNext();
 
         public AbstractFHN()
         {

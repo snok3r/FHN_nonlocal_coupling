@@ -59,6 +59,7 @@
             this.btnGetVelocity = new System.Windows.Forms.Button();
             this.lblVelocity = new System.Windows.Forms.Label();
             this.checkBoxContiniousVelocity = new System.Windows.Forms.CheckBox();
+            this.btnSolveFurther = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trBarT)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -326,18 +327,30 @@
             // checkBoxContiniousVelocity
             // 
             this.checkBoxContiniousVelocity.AutoSize = true;
-            this.checkBoxContiniousVelocity.Location = new System.Drawing.Point(30, 547);
+            this.checkBoxContiniousVelocity.Location = new System.Drawing.Point(28, 547);
             this.checkBoxContiniousVelocity.Name = "checkBoxContiniousVelocity";
             this.checkBoxContiniousVelocity.Size = new System.Drawing.Size(126, 17);
             this.checkBoxContiniousVelocity.TabIndex = 91;
             this.checkBoxContiniousVelocity.Text = "Measure Continiously";
             this.checkBoxContiniousVelocity.UseVisualStyleBackColor = true;
             // 
+            // btnSolveFurther
+            // 
+            this.btnSolveFurther.Enabled = false;
+            this.btnSolveFurther.Location = new System.Drawing.Point(108, 579);
+            this.btnSolveFurther.Name = "btnSolveFurther";
+            this.btnSolveFurther.Size = new System.Drawing.Size(80, 23);
+            this.btnSolveFurther.TabIndex = 93;
+            this.btnSolveFurther.Text = "Solve Further";
+            this.btnSolveFurther.UseVisualStyleBackColor = true;
+            this.btnSolveFurther.Click += new System.EventHandler(this.btnSolveFurther_Click);
+            // 
             // WindowPDE
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1284, 711);
+            this.Controls.Add(this.btnSolveFurther);
             this.Controls.Add(this.checkBoxContiniousVelocity);
             this.Controls.Add(this.lblVelocity);
             this.Controls.Add(this.btnGetVelocity);
@@ -398,5 +411,6 @@
         private System.Windows.Forms.Button btnGetVelocity;
         private System.Windows.Forms.Label lblVelocity;
         private System.Windows.Forms.CheckBox checkBoxContiniousVelocity;
+        private System.Windows.Forms.Button btnSolveFurther;
     }
 }

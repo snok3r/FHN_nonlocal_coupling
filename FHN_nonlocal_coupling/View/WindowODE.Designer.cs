@@ -70,6 +70,7 @@
             this.propertyGrid2 = new System.Windows.Forms.PropertyGrid();
             this.checkBox2ndEq = new System.Windows.Forms.CheckBox();
             this.btnAbout = new System.Windows.Forms.Button();
+            this.btnSolveFurther = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trBarT)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartPhase)).BeginInit();
@@ -271,7 +272,7 @@
             // 
             // prBarSolve
             // 
-            this.prBarSolve.Location = new System.Drawing.Point(31, 661);
+            this.prBarSolve.Location = new System.Drawing.Point(27, 661);
             this.prBarSolve.Maximum = 3;
             this.prBarSolve.Name = "prBarSolve";
             this.prBarSolve.Size = new System.Drawing.Size(156, 23);
@@ -288,7 +289,7 @@
             // 
             // btnStopTimer
             // 
-            this.btnStopTimer.Location = new System.Drawing.Point(112, 632);
+            this.btnStopTimer.Location = new System.Drawing.Point(108, 632);
             this.btnStopTimer.Name = "btnStopTimer";
             this.btnStopTimer.Size = new System.Drawing.Size(75, 23);
             this.btnStopTimer.TabIndex = 68;
@@ -308,7 +309,7 @@
             // btnPlot
             // 
             this.btnPlot.Enabled = false;
-            this.btnPlot.Location = new System.Drawing.Point(31, 608);
+            this.btnPlot.Location = new System.Drawing.Point(27, 608);
             this.btnPlot.Name = "btnPlot";
             this.btnPlot.Size = new System.Drawing.Size(75, 23);
             this.btnPlot.TabIndex = 67;
@@ -318,7 +319,7 @@
             // 
             // btnSolve
             // 
-            this.btnSolve.Location = new System.Drawing.Point(31, 579);
+            this.btnSolve.Location = new System.Drawing.Point(27, 579);
             this.btnSolve.Name = "btnSolve";
             this.btnSolve.Size = new System.Drawing.Size(75, 23);
             this.btnSolve.TabIndex = 66;
@@ -402,11 +403,23 @@
             this.btnAbout.UseVisualStyleBackColor = true;
             this.btnAbout.Click += new System.EventHandler(this.btnAbout_Click);
             // 
+            // btnSolveFurther
+            // 
+            this.btnSolveFurther.Enabled = false;
+            this.btnSolveFurther.Location = new System.Drawing.Point(108, 579);
+            this.btnSolveFurther.Name = "btnSolveFurther";
+            this.btnSolveFurther.Size = new System.Drawing.Size(80, 23);
+            this.btnSolveFurther.TabIndex = 88;
+            this.btnSolveFurther.Text = "Solve Further";
+            this.btnSolveFurther.UseVisualStyleBackColor = true;
+            this.btnSolveFurther.Click += new System.EventHandler(this.btnSolveFurther_Click);
+            // 
             // WindowODE
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1284, 711);
+            this.Controls.Add(this.btnSolveFurther);
             this.Controls.Add(this.btnAbout);
             this.Controls.Add(this.rdBtnTmr);
             this.Controls.Add(this.checkBox2ndEq);
@@ -474,5 +487,6 @@
         private System.Windows.Forms.PropertyGrid propertyGrid2;
         private System.Windows.Forms.CheckBox checkBox2ndEq;
         private System.Windows.Forms.Button btnAbout;
+        private System.Windows.Forms.Button btnSolveFurther;
     }
 }

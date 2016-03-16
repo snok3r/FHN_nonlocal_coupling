@@ -41,6 +41,13 @@ namespace FHN_nonlocal_coupling.View
             enablePlotBtn();
         }
 
+        private void btnSolveFurther_Click(object sender, EventArgs e)
+        {
+            controller.toSolveNext(true);
+
+            btnSolve_Click(sender, e);
+        }
+
         private void btnPlot_Click(object sender, EventArgs e)
         {
             setPlot();
@@ -68,6 +75,7 @@ namespace FHN_nonlocal_coupling.View
             {
                 btnPlot.Enabled = false;
                 btnSolve.Enabled = true;
+                btnSolveFurther.Enabled = false;
             }
 
             lblError.Visible = false;
@@ -77,6 +85,7 @@ namespace FHN_nonlocal_coupling.View
             timerT.Enabled = false;
 
             controller.toReload();
+            controller.toSolveNext(false);
         }
 
         private void enablePlotBtn()
@@ -85,6 +94,7 @@ namespace FHN_nonlocal_coupling.View
             {
                 btnSolve.Enabled = false;
                 btnPlot.Enabled = true;
+                btnSolveFurther.Enabled = true;
 
                 trBarT.Value = 0;
                 trBarT.Enabled = true;

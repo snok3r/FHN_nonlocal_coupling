@@ -109,6 +109,16 @@ namespace FHN_nonlocal_coupling.Model
             }
         }
 
+        public override void initialsNext()
+        {
+            for (int i = 0; i < N; i++)
+            {	// setting an initial waves
+                // at t = T to solve next
+                u[0, i] = u[M - 1, i];
+                v[0, i] = v[M - 1, i];
+            }
+        }
+
         public override int solve()
         {
             // If we changed ONLY eps, beta, gamma, b, d, Kernel, f or Iext,

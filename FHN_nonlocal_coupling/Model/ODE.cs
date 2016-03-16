@@ -67,6 +67,12 @@ namespace FHN_nonlocal_coupling.Model
             v[0] = V0;
         }
 
+        public override void initialsNext()
+        {
+            u[0] = u[N - 1];
+            v[0] = v[N - 1];
+        }
+
         public override int solve()
         {   // If we changed ONLY alpha, beta, Iext, Kernel or f (either a),
             // then just recall this function.
