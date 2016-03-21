@@ -1,7 +1,6 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
-using System.Windows.Forms;
-using System.Windows.Forms.DataVisualization.Charting;
 using FHN_nonlocal_coupling.Model;
 
 namespace FHN_nonlocal_coupling.Controller
@@ -13,26 +12,16 @@ namespace FHN_nonlocal_coupling.Controller
         protected static HashSet<String> paramsNeedReload;
 
         protected AbstractFHN[] fhn;
-        protected Chart chart;
-        protected PropertyGrid pg1, pg2;
-        protected ProgressBar progressBar;
-        protected TrackBar trackBar;
+        protected ViewElements viewElements;
 
         abstract public double chartXMin();
         abstract public double chartXMax();
         abstract public int trackBarMax();
         abstract public void plot();
         abstract public void plot(int j);
-        abstract public void clearPlot();
 
-        protected AbstractController(Chart chart, PropertyGrid pg1, PropertyGrid pg2, ProgressBar progressBar, TrackBar trackBar)
-        {
-            this.chart = chart;
-            this.pg1 = pg1;
-            this.pg2 = pg2;
-            this.progressBar = progressBar;
-            this.trackBar = trackBar;
-        }
+        protected AbstractController(ViewElements viewElements)
+        { this.viewElements = viewElements; }
 
         /// <summary>
         /// if 'b' is true, then
@@ -76,11 +65,11 @@ namespace FHN_nonlocal_coupling.Controller
             else if (typeof(T) == typeof(ODE))
                 fhn = ODE.allocArray(size);
             else throw new ArgumentException("must be ODE or PDE class");
-            
-            pg1.SelectedObject = fhn[0];
 
-            if (size == 2) pg2.SelectedObject = fhn[1];
-            else pg2.SelectedObject = null;
+            viewElements.pg1.SelectedObject = fhn[0];
+
+            if (size == 2) viewElements.pg2.SelectedObject = fhn[1];
+            else viewElements.pg2.SelectedObject = null;
         }
 
         /// <summary>
@@ -102,29 +91,38 @@ namespace FHN_nonlocal_coupling.Controller
         /// </summary>
         public int solve()
         {
-            progressBar.Value = 0;
-            progressBar.Maximum = 3;
-            trackBar.Maximum = trackBarMax();
+            viewElements.progressBar.Value = 0;
+            viewElements.progressBar.Maximum = 3;
+            viewElements.trackBar.Maximum = trackBarMax();
 
                 for (int i = 0; i < fhn.Length; i++)
                     if (allocate && !solveFurther)
                         fhn[i].allocate();
                     else
                         fhn[i].reload();
-            progressBar.Value++;
+            viewElements.progressBar.Value++;
 
             for (int i = 0; i < fhn.Length; i++)
                 if (solveFurther)
                     fhn[i].initialsFurther();
                 else
                     fhn[i].initials();
-            progressBar.Value++;
+            viewElements.progressBar.Value++;
 
             for (int i = 0; i < fhn.Length; i++)
                 if (fhn[i].solve() != 0) return -1;
-            progressBar.Value++;
+            viewElements.progressBar.Value++;
 
             return 0;
+        }
+
+        /// <summary>
+        /// Clears all the plot data
+        /// </summary>
+        public virtual void clearPlot()
+        {
+            for (int i = 0; i < viewElements.chart.Series.Count(); i++)
+                viewElements.chart.Series[i].Points.Clear();
         }
     }
 }

@@ -13,7 +13,7 @@ namespace FHN_nonlocal_coupling.View
         public WindowODE()
         {
             InitializeComponent();
-            controller = new ODEController(chart, chartPhase, propertyGrid1, propertyGrid2, prBarSolve, trBarT);
+            controller = new ODEController(new ViewElements(chart, chartPhase, propertyGrid1, propertyGrid2, prBarSolve, trBarT));
         }
 
         private void WindowODE_Load(object sender, EventArgs e)

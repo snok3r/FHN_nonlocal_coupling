@@ -1,22 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
-using System.Windows.Forms.DataVisualization.Charting;
-
 using FHN_nonlocal_coupling.Model;
 
 namespace FHN_nonlocal_coupling.Controller
 {
     class PDEController : AbstractController<PDE>
     {
-        public PDEController(
-            Chart chart,
-            PropertyGrid pg1,
-            PropertyGrid pg2,
-            ProgressBar progressBar,
-            TrackBar trackBar)
-            : base(chart, pg1, pg2, progressBar, trackBar) 
+        public PDEController(ViewElements viewElements)
+            : base(viewElements) 
         {
             if (paramsNeedReload == null)
                 paramsNeedReload = new HashSet<String>(new String[] { "N", "M", "T", "L" });
@@ -56,11 +47,12 @@ namespace FHN_nonlocal_coupling.Controller
         /// </summary>
         public override void plot()
         {
-            if (trackBar.Value < trackBarMax()){
-                trackBar.Value++;
-                plot(trackBar.Value);
+            if (viewElements.trackBar.Value < trackBarMax())
+            {
+                viewElements.trackBar.Value++;
+                plot(viewElements.trackBar.Value);
             }
-            else trackBar.Value = 0;
+            else viewElements.trackBar.Value = 0;
         }
 
         /// <summary>
@@ -72,18 +64,9 @@ namespace FHN_nonlocal_coupling.Controller
             {
                 double x = obj.getX(i);
 
-                chart.Series[2 * numEq].Points.AddXY(x, obj.getU(j, i));
-                chart.Series[2 * numEq + 1].Points.AddXY(x, obj.getV(j, i));
+                viewElements.chart.Series[2 * numEq].Points.AddXY(x, obj.getU(j, i));
+                viewElements.chart.Series[2 * numEq + 1].Points.AddXY(x, obj.getV(j, i));
             }
-        }
-
-        /// <summary>
-        /// Clears all the plot data
-        /// </summary>
-        public override void clearPlot()
-        {
-            for (int i = 0; i < chart.Series.Count(); i++)
-                chart.Series[i].Points.Clear();
         }
 
         /// <summary>

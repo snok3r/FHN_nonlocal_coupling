@@ -1,26 +1,15 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Windows.Forms;
-using System.Windows.Forms.DataVisualization.Charting;
 using FHN_nonlocal_coupling.Model;
 
 namespace FHN_nonlocal_coupling.Controller
 {
     class ODEController : AbstractController<ODE>
     {
-        private Chart chartPhase;
-
-        public ODEController(
-            Chart chart,
-            Chart chartPhase, 
-            PropertyGrid pg1, 
-            PropertyGrid pg2, 
-            ProgressBar progressBar, 
-            TrackBar trackBar) 
-            : base(chart, pg1, pg2, progressBar, trackBar)
+        public ODEController(ViewElements viewElements)
+            : base(viewElements)
         { 
-            this.chartPhase = chartPhase;
             if (paramsNeedReload == null)
                 paramsNeedReload = new HashSet<String>(new String[] { "N", "T", "L" });
         }
@@ -53,7 +42,7 @@ namespace FHN_nonlocal_coupling.Controller
                 clearNullclines();
             else
             {
-                trackBar.Value = 0;
+                viewElements.trackBar.Value = 0;
 
                 clearPlot();
 
@@ -85,17 +74,17 @@ namespace FHN_nonlocal_coupling.Controller
         /// </summary>
         public override void plot()
         {
-            if (trackBar.Value == 0)
+            if (viewElements.trackBar.Value == 0)
                 clearAllButNullclines();
 
-            if (trackBar.Value < trackBarMax())
+            if (viewElements.trackBar.Value < trackBarMax())
             {
-                trackBar.Value++;
+                viewElements.trackBar.Value++;
                 for (int i = 0; i < fhn.Length; i++)
-                    plot(trackBar.Value, (ODE)fhn[i], i);
+                    plot(viewElements.trackBar.Value, (ODE)fhn[i], i);
             }
             else
-                trackBar.Value = 0;
+                viewElements.trackBar.Value = 0;
         }
 
         /// <summary>
@@ -107,10 +96,10 @@ namespace FHN_nonlocal_coupling.Controller
             double u = obj.getU(j);
             double v = obj.getV(j);
 
-            chart.Series[2 * numEq].Points.AddXY(t, u);
-            chart.Series[2 * numEq + 1].Points.AddXY(t, v);
+            viewElements.chart.Series[2 * numEq].Points.AddXY(t, u);
+            viewElements.chart.Series[2 * numEq + 1].Points.AddXY(t, v);
 
-            chartPhase.Series[3 * numEq].Points.AddXY(u, v);
+            viewElements.chartPhase.Series[3 * numEq].Points.AddXY(u, v);
         }
 
         /// <summary>
@@ -122,8 +111,8 @@ namespace FHN_nonlocal_coupling.Controller
             {
                 double un = obj.getUN(j);
 
-                chartPhase.Series[3 * numEq + 1].Points.AddXY(un, obj.getV1(j));
-                chartPhase.Series[3 * numEq + 2].Points.AddXY(un, obj.getV2(j));
+                viewElements.chartPhase.Series[3 * numEq + 1].Points.AddXY(un, obj.getV1(j));
+                viewElements.chartPhase.Series[3 * numEq + 2].Points.AddXY(un, obj.getV2(j));
             }
         }
 
@@ -132,11 +121,10 @@ namespace FHN_nonlocal_coupling.Controller
         /// </summary>
         public override void clearPlot()
         {
-            for (int i = 0; i < chart.Series.Count(); i++)
-                chart.Series[i].Points.Clear();
+            base.clearPlot();
 
-            for (int i = 0; i < chartPhase.Series.Count(); i++)
-                chartPhase.Series[i].Points.Clear();
+            for (int i = 0; i < viewElements.chartPhase.Series.Count(); i++)
+                viewElements.chartPhase.Series[i].Points.Clear();
         }
 
         /// <summary>
@@ -144,11 +132,10 @@ namespace FHN_nonlocal_coupling.Controller
         /// </summary>
         private void clearAllButNullclines()
         {
-            for (int i = 0; i < chart.Series.Count(); i++)
-                chart.Series[i].Points.Clear();
+            base.clearPlot();
 
             for (int i = 0; i < 2; i++)
-                chartPhase.Series[3 * i].Points.Clear();
+                viewElements.chartPhase.Series[3 * i].Points.Clear();
         }
 
         /// <summary>
@@ -158,8 +145,8 @@ namespace FHN_nonlocal_coupling.Controller
         {
             for (int i = 0; i < 2; i++)
             {
-                chartPhase.Series[3 * i + 1].Points.Clear();
-                chartPhase.Series[3 * i + 2].Points.Clear();
+                viewElements.chartPhase.Series[3 * i + 1].Points.Clear();
+                viewElements.chartPhase.Series[3 * i + 2].Points.Clear();
             }  
         }
         

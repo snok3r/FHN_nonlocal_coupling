@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\ViewElements.cs" />
     <Compile Include="View\Other\AboutODE.cs">
       <SubType>Form</SubType>
     </Compile>

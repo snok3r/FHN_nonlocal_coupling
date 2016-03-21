@@ -96,13 +96,11 @@ namespace FHN_nonlocal_coupling.Model
 
         public override void reload()
         {
-            try
-            {
+            if (u == null || v == null || velocity == null || x == null || t == null)
+                allocate();
+            else
                 for (int j = 0; j < M; j++)
                     velocity[j].calculated = false;
-            }
-            catch (NullReferenceException e)
-            { allocate(); }
         }
 
         public override void initials()

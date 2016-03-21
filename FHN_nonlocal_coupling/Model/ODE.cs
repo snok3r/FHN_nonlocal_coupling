@@ -59,7 +59,11 @@ namespace FHN_nonlocal_coupling.Model
                 u_null[j] = - L + j * hx;
         }
 
-        public override void reload() { }
+        public override void reload()
+        {
+            if (u == null || v == null || v1 == null || v2 == null || u_null == null || t == null)
+                allocate();
+        }
 
         public override void initials()
         {   // Initialize initials

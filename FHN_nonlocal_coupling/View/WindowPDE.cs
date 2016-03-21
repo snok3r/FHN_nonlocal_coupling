@@ -13,7 +13,7 @@ namespace FHN_nonlocal_coupling.View
         public WindowPDE()
         {
             InitializeComponent();
-            controller = new PDEController(chart, propertyGrid1, propertyGrid2, prBarSolve, trBarT);
+            controller = new PDEController(new ViewElements(chart, null, propertyGrid1, propertyGrid2, prBarSolve, trBarT));
         }
 
         private void WindowPDE_Load(object sender, EventArgs e)
