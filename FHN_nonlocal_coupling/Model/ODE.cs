@@ -36,7 +36,7 @@ namespace FHN_nonlocal_coupling.Model
         public double V0 { get; set; }
 
         // methods
-        public override void load()
+        public override void allocate()
         {   // initialize/declare arrays and steps
             // If we want to change one of the parameters: n or TB,
             // then it needs to call this (plus Intiials) functions again.
@@ -67,7 +67,7 @@ namespace FHN_nonlocal_coupling.Model
             v[0] = V0;
         }
 
-        public override void initialsNext()
+        public override void initialsFurther()
         {
             u[0] = u[N - 1];
             v[0] = v[N - 1];

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using FHN_nonlocal_coupling.Model;
@@ -7,8 +8,9 @@ namespace FHN_nonlocal_coupling.Controller
 {
     abstract class AbstractController<T>
     {
-        protected bool reload = true;
-        protected bool solveNext = false;
+        protected bool allocate = true;
+        protected bool solveFurther = false;
+        protected static HashSet<String> paramsNeedReload;
 
         protected AbstractFHN[] fhn;
         protected Chart chart;
@@ -16,12 +18,12 @@ namespace FHN_nonlocal_coupling.Controller
         protected ProgressBar progressBar;
         protected TrackBar trackBar;
 
+        abstract public double chartXMin();
         abstract public double chartXMax();
         abstract public int trackBarMax();
         abstract public void plot();
         abstract public void plot(int j);
         abstract public void clearPlot();
-        abstract public void toReload(String lbl);
 
         protected AbstractController(Chart chart, PropertyGrid pg1, PropertyGrid pg2, ProgressBar progressBar, TrackBar trackBar)
         {
@@ -32,11 +34,19 @@ namespace FHN_nonlocal_coupling.Controller
             this.trackBar = trackBar;
         }
 
-        public void toReload()
-        { reload = true; }
+        /// <summary>
+        /// if 'b' is true, then
+        /// arrays need to be reallocated
+        /// </summary>
+        public void toAllocate(bool b)
+        { allocate = b; }
 
-        public void toSolveNext(bool b)
-        { solveNext = b; }
+        /// <summary>
+        /// if 'b' is true, then
+        /// we're solving further
+        /// </summary>
+        public void toSolveFurther(bool b)
+        { solveFurther = b; }
 
         /// <summary>
         /// Makes all the data point to null
@@ -55,7 +65,7 @@ namespace FHN_nonlocal_coupling.Controller
         /// Call when you need to reload equations
         /// or to reassign them to property grid
         /// </summary>
-        public void load(bool chckd)
+        public void reallocate(bool chckd)
         {
             int size;
             if (chckd) size = 2;
@@ -74,6 +84,18 @@ namespace FHN_nonlocal_coupling.Controller
         }
 
         /// <summary>
+        /// Checks whether you need to reallocate
+        /// arrays or not
+        /// </summary>
+        public void checkToLoad(String label)
+        {
+            if (paramsNeedReload.Contains(label))
+                allocate = true;
+            else
+                allocate = false;
+        }
+
+        /// <summary>
         /// Call to solve equations
         /// <para>Returns -1, if computation error occurred,
         /// 0 otherwise.</para>
@@ -85,17 +107,17 @@ namespace FHN_nonlocal_coupling.Controller
             trackBar.Maximum = trackBarMax();
 
                 for (int i = 0; i < fhn.Length; i++)
-                    if (reload && !solveNext)
-                        fhn[i].load();
+                    if (allocate && !solveFurther)
+                        fhn[i].allocate();
                     else
                         fhn[i].reload();
             progressBar.Value++;
 
             for (int i = 0; i < fhn.Length; i++)
-                if (!solveNext)
-                    fhn[i].initials();
+                if (solveFurther)
+                    fhn[i].initialsFurther();
                 else
-                    fhn[i].initialsNext();
+                    fhn[i].initials();
             progressBar.Value++;
 
             for (int i = 0; i < fhn.Length; i++)

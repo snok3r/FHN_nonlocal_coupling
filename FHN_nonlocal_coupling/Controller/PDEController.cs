@@ -17,33 +17,28 @@ namespace FHN_nonlocal_coupling.Controller
             ProgressBar progressBar,
             TrackBar trackBar)
             : base(chart, pg1, pg2, progressBar, trackBar) 
-        { }
+        {
+            if (paramsNeedReload == null)
+                paramsNeedReload = new HashSet<String>(new String[] { "N", "M", "T", "L" });
+        }
+
+        /// <summary>
+        /// Returns chart's minimum X bound
+        /// </summary>
+        public override double chartXMin()
+        { return -fhn[0].L; }
 
         /// <summary>
         /// Returns chart's maximum X bound
         /// </summary>
         public override double chartXMax()
-        { return fhn[0].L + 0.1; }
+        { return fhn[0].L; }
 
         /// <summary>
         /// Returns maximum value for trackBar
         /// </summary>
         public override int trackBarMax()
         { return ((PDE)fhn[0]).M - 1; }
-
-        /// <summary>
-        /// Checking whether arrays need to be
-        /// reallocated
-        /// </summary>
-        public override void toReload(String label)
-        {
-            HashSet<String> hs = new HashSet<String>(new String[]{ "N", "M", "T", "L"});
-
-            if (hs.Contains(label))
-                reload = true;
-            else
-                reload = false;
-        }
 
         /// <summary>
         /// Plots layer 'tj'
@@ -98,11 +93,5 @@ namespace FHN_nonlocal_coupling.Controller
         {
             return Math.Round(((PDE)fhn[0]).getVelocity(trackBarValue), 3);
         }
-
-        /// <summary>
-        /// Returns chart's minimum X bound
-        /// </summary>
-        public double chartXMin()
-        { return -(fhn[0].L - 0.1); }
     }
 }

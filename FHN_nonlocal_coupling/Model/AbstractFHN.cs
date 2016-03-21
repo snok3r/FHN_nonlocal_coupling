@@ -5,7 +5,7 @@ namespace FHN_nonlocal_coupling.Model
 {
     abstract class AbstractFHN
     {
-        protected const int POINTS_THRESHOLD = 5;
+        protected const int POINTS_THRESHOLD = 10;
 
         protected double hx, ht; // steps
         protected double[] t; // time
@@ -16,12 +16,12 @@ namespace FHN_nonlocal_coupling.Model
         private double varA;
         private double varT;
 
-        public abstract void load();
+        public abstract void allocate();
         public abstract void reload();
         public abstract void initials();
+        public abstract void initialsFurther();
         public abstract int solve();
-        public abstract void initialsNext();
-
+        
         public AbstractFHN()
         {
             Eps = 0.08;

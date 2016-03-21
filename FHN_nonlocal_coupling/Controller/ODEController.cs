@@ -19,33 +19,29 @@ namespace FHN_nonlocal_coupling.Controller
             ProgressBar progressBar, 
             TrackBar trackBar) 
             : base(chart, pg1, pg2, progressBar, trackBar)
-        { this.chartPhase = chartPhase; }
+        { 
+            this.chartPhase = chartPhase;
+            if (paramsNeedReload == null)
+                paramsNeedReload = new HashSet<String>(new String[] { "N", "T", "L" });
+        }
+
+        /// <summary>
+        /// Returns chart's minimum X bound
+        /// </summary>
+        public override double chartXMin()
+        { return 0; }
 
         /// <summary>
         /// Returns chart's maximum X bound
         /// </summary>
         public override double chartXMax()
-        { return fhn[0].T + 1; }
+        { return fhn[0].T; }
 
         /// <summary>
         /// Returns maximum value for trackBar
         /// </summary>
         public override int trackBarMax()
         { return fhn[0].N - 1; }
-
-        /// <summary>
-        /// Checking whether arrays need to be
-        /// reallocated, if yes returns true
-        /// </summary>
-        public override void toReload(String label)
-        {
-            HashSet<String> hs = new HashSet<String>(new String[] { "N", "T", "L" });
-
-            if (hs.Contains(label))
-                reload = true;
-            else
-                reload = false;
-        }
 
         /// <summary>
         /// Plots all at once if 'chckd' == false,

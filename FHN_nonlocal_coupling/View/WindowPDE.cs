@@ -18,7 +18,7 @@ namespace FHN_nonlocal_coupling.View
 
         private void WindowPDE_Load(object sender, EventArgs e)
         {
-            controller.load(checkBox2ndEq.Checked);
+            controller.reallocate(checkBox2ndEq.Checked);
         }
 
         private void WindowPDE_FormClosing(object sender, FormClosingEventArgs e)
@@ -30,7 +30,7 @@ namespace FHN_nonlocal_coupling.View
 
         private void checkBox2ndEq_CheckedChanged(object sender, EventArgs e)
         {
-            controller.load(checkBox2ndEq.Checked);
+            controller.reallocate(checkBox2ndEq.Checked);
             disablePlotBtn();
         }
 
@@ -43,7 +43,7 @@ namespace FHN_nonlocal_coupling.View
 
         private void btnSolveFurther_Click(object sender, EventArgs e)
         {
-            controller.toSolveNext(true);
+            controller.toSolveFurther(true);
 
             btnSolve_Click(sender, e);
         }
@@ -97,8 +97,8 @@ namespace FHN_nonlocal_coupling.View
             trBarT.Enabled = false;
             timerT.Enabled = false;
 
-            controller.toReload();
-            controller.toSolveNext(false);
+            controller.toAllocate(true);
+            controller.toSolveFurther(false);
         }
 
         private void enablePlotBtn()
@@ -121,7 +121,7 @@ namespace FHN_nonlocal_coupling.View
                 return;
 
             disablePlotBtn();
-            controller.toReload(e.ChangedItem.Label);
+            controller.checkToLoad(e.ChangedItem.Label);
         }
 
         private void propertyGrid2_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
@@ -130,7 +130,7 @@ namespace FHN_nonlocal_coupling.View
                 return;
 
             disablePlotBtn();
-            controller.toReload(e.ChangedItem.Label);
+            controller.checkToLoad(e.ChangedItem.Label);
                 
         }
 
@@ -157,7 +157,7 @@ namespace FHN_nonlocal_coupling.View
             chart.ChartAreas[0].AxisY.Maximum = Convert.ToDouble(txtBoxMaxUV.Text);
             chart.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(txtBoxMinUV.Text);
 
-            chart.ChartAreas[0].AxisX.Interval = Convert.ToInt32((chart.ChartAreas[0].AxisX.Maximum + chart.ChartAreas[0].AxisX.Minimum) / 6.0);
+            chart.ChartAreas[0].AxisX.Interval = Convert.ToInt32((controller.chartXMax() + controller.chartXMin()) / 6.0);
             chart.ChartAreas[0].AxisY.Interval = Convert.ToInt32((chart.ChartAreas[0].AxisY.Maximum + chart.ChartAreas[0].AxisY.Minimum) / 6.0);
 
             chart.Series[2].Color = Color.Blue;

@@ -50,7 +50,7 @@ namespace FHN_nonlocal_coupling.Model
             get { return varL; }
             set
             {
-                if (value > 0) varL = value;
+                if (value >= 20) varL = value;
             }
         }
 
@@ -71,7 +71,7 @@ namespace FHN_nonlocal_coupling.Model
         public bool DeltaCoupling { get; set; }
 
         // methods
-        public override void load()
+        public override void allocate()
         {   // initialize/declare arrays and steps
             // If we want to change one of the parameters: n, m, l, TB,
             // then it needs to call this (plus Intiials) functions again.
@@ -96,8 +96,13 @@ namespace FHN_nonlocal_coupling.Model
 
         public override void reload()
         {
-            for (int j = 0; j < M; j++)
-                velocity[j].calculated = false;
+            try
+            {
+                for (int j = 0; j < M; j++)
+                    velocity[j].calculated = false;
+            }
+            catch (NullReferenceException e)
+            { allocate(); }
         }
 
         public override void initials()
@@ -109,7 +114,7 @@ namespace FHN_nonlocal_coupling.Model
             }
         }
 
-        public override void initialsNext()
+        public override void initialsFurther()
         {
             for (int i = 0; i < N; i++)
             {	// setting an initial waves
@@ -283,9 +288,12 @@ namespace FHN_nonlocal_coupling.Model
         private double u_x_0(double x)
         {	// initial u wave at t = 0
             double u0 = -1.199;
-            if (x < -40) return 1.0;
-            else if ((x >= -40) && (x <= -30))
-                return (u0 - 1) * (x + 30) / 10 + u0;
+            double lb = this.L - 10;
+            double rb = this.L - 20;
+
+            if (x < -lb) return 1.0;
+            else if ((x >= -lb) && (x <= -rb))
+                return (u0 - 1) * (x + rb) / (lb - rb) + u0;
             else
                 return u0;
             
