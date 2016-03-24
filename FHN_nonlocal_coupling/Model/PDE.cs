@@ -26,14 +26,6 @@ namespace FHN_nonlocal_coupling.Model
             DeltaCoupling = true;
         }
 
-        public static PDE[] allocArray(int size)
-        {
-            PDE[] toRet = new PDE[size];
-            for (int i = 0; i < size; i++)
-                toRet[i] = new PDE();
-            return toRet;
-        }
-
         // properties
         public int M
         {   // quantity of u,v t's

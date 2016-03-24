@@ -48,11 +48,11 @@ namespace FHN_nonlocal_coupling.Controller
 
                 for (int i = 0; i < fhn.Length; i++)
                     for (int j = 0; j < fhn[i].N; j++)
-                        plot(j, (ODE)fhn[i], i);
+                        plot(j, fhn[i], i);
             }
 
             for (int i = 0; i < fhn.Length; i++)
-                plotNullclines((ODE)fhn[i], i);
+                plotNullclines(fhn[i], i);
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace FHN_nonlocal_coupling.Controller
 
             for (int j = 0; j < trackBarValue; j++)
                 for (int i = 0; i < fhn.Length; i++)
-                    plot(j, (ODE)fhn[i], i);
+                    plot(j, fhn[i], i);
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace FHN_nonlocal_coupling.Controller
             {
                 viewElements.trackBar.Value++;
                 for (int i = 0; i < fhn.Length; i++)
-                    plot(viewElements.trackBar.Value, (ODE)fhn[i], i);
+                    plot(viewElements.trackBar.Value, fhn[i], i);
             }
             else
                 viewElements.trackBar.Value = 0;

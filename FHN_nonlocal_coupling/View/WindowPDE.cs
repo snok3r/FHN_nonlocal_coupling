@@ -26,6 +26,7 @@ namespace FHN_nonlocal_coupling.View
             timerT.Enabled = false;
             chart.Series.Clear();
             controller.dispose();
+            Dispose(true);
         }
 
         private void checkBox2ndEq_CheckedChanged(object sender, EventArgs e)

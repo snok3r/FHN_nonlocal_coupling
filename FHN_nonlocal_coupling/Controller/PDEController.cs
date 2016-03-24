@@ -29,7 +29,7 @@ namespace FHN_nonlocal_coupling.Controller
         /// Returns maximum value for trackBar
         /// </summary>
         public override int trackBarMax()
-        { return ((PDE)fhn[0]).M - 1; }
+        { return fhn[0].M - 1; }
 
         /// <summary>
         /// Plots layer 'tj'
@@ -39,7 +39,7 @@ namespace FHN_nonlocal_coupling.Controller
             clearPlot();
 
             for (int i = 0; i < fhn.Length; i++)
-                plot(tj, (PDE)fhn[i], i);
+                plot(tj, fhn[i], i);
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace FHN_nonlocal_coupling.Controller
         /// </summary>
         public double getVelocity(int trackBarValue)
         {
-            return Math.Round(((PDE)fhn[0]).getVelocity(trackBarValue), 3);
+            return Math.Round(fhn[0].getVelocity(trackBarValue), 3);
         }
     }
 }

@@ -5,13 +5,13 @@ using FHN_nonlocal_coupling.Model;
 
 namespace FHN_nonlocal_coupling.Controller
 {
-    abstract class AbstractController<T>
+    abstract class AbstractController<T> where T : AbstractFHN, new()
     {
         protected bool allocate = true;
         protected bool solveFurther = false;
         protected static HashSet<String> paramsNeedReload;
 
-        protected AbstractFHN[] fhn;
+        protected T[] fhn;
         protected ViewElements viewElements;
 
         abstract public double chartXMin();
@@ -60,11 +60,9 @@ namespace FHN_nonlocal_coupling.Controller
             if (chckd) size = 2;
             else size = 1;
 
-            if (typeof(T) == typeof(PDE))
-                fhn = PDE.allocArray(size);
-            else if (typeof(T) == typeof(ODE))
-                fhn = ODE.allocArray(size);
-            else throw new ArgumentException("must be ODE or PDE class");
+            fhn = new T[size];
+            for (int i = 0; i < size; i++)
+                fhn[i] = new T();
 
             viewElements.pg1.SelectedObject = fhn[0];
 

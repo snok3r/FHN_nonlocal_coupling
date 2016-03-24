@@ -20,14 +20,6 @@ namespace FHN_nonlocal_coupling.Model
             I = 0.5;
         }
 
-        public static ODE[] allocArray(int size)
-        {
-            ODE[] toRet = new ODE[size];
-            for (int i = 0; i < size; i++)
-                toRet[i] = new ODE();
-            return toRet;
-        }
-
         // properties
         [Description("Initial U(0)")]
         public double U0 { get; set; }
@@ -109,6 +101,14 @@ namespace FHN_nonlocal_coupling.Model
                 {
                     v1[j] = f(u_null[j]) + I;
                     v2[j] = (u_null[j] + Eps) / Beta;
+                }
+            }
+            else
+            {
+                for (int j = 0; j < N; j++)
+                {
+                    v1[j] = f(u_null[j]) + I;
+                    v2[j] = -100;
                 }
             }
         }
