@@ -213,37 +213,40 @@ namespace FHN_nonlocal_coupling.Model
 
         public double getVelocity(int j0)
         {
-            if (velocity[j0].calculated)
-                return velocity[j0].velocity;
+            if (!velocity[j0].calculated)
+                calculateVelocity(j0);
 
-            if (u != null)
+            return velocity[j0].velocity;
+        }
+
+        private void calculateVelocity(int j0)
+        {
+            int deltaj = (int)(1 / ht);
+
+            int i0 = 0; // X0 max = u[j0, i0]
+            for (int i = 1; i < N; i++)
+                if (u[j0, i] > u[j0, i0])
+                    i0 = i;
+
+            int j1 = (j0 + deltaj);
+            if (j1 > M - 1) // we're out of frame
             {
-                int deltaj = (int)(1 / ht);
-
-                int i0 = 0; // X0 max = u[j0, i0]
-                for (int i = 1; i < N; i++)
-                    if (u[j0, i] > u[j0, i0])
-                        i0 = i;
-
-                int j1 = (j0 + deltaj);
-                if (j1 > M - 1) return 0; // we're out of frame
-
-                int i1 = 0; // X1 max = u[j1, i0]
-
-                for (int i = 1; i < N; i++)
-                    if (u[j1, i] > u[j1, i1])
-                        i1 = i;
-
-                double x0 = i0 * hx; double x1 = i1 * hx;
-                double t0 = j0 * ht; double t1 = j1 * ht;
-
-                velocity[j0].velocity = (x1 - x0) / (t1 - t0);
+                velocity[j0].velocity = 0;
                 velocity[j0].calculated = true;
-
-                return velocity[j0].velocity;
+                return;
             }
 
-            return 0;
+            int i1 = 0; // X1 max = u[j1, i0]
+
+            for (int i = 1; i < N; i++)
+                if (u[j1, i] > u[j1, i1])
+                    i1 = i;
+
+            double x0 = i0 * hx; double x1 = i1 * hx;
+            double t0 = j0 * ht; double t1 = j1 * ht;
+
+            velocity[j0].velocity = (x1 - x0) / (t1 - t0);
+            velocity[j0].calculated = true;
         }
 
         public double getX(int i)
