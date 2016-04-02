@@ -213,6 +213,7 @@
             // 
             // trBarT
             // 
+            this.trBarT.Enabled = false;
             this.trBarT.Location = new System.Drawing.Point(328, 658);
             this.trBarT.Name = "trBarT";
             this.trBarT.Size = new System.Drawing.Size(788, 45);
