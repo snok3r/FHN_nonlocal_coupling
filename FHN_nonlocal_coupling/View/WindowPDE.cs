@@ -17,7 +17,7 @@ namespace FHN_nonlocal_coupling.View
 
         private void WindowPDE_Load(object sender, EventArgs e)
         {
-            controller = new PDEController(new ViewElements(chart, null, propertyGrid1, propertyGrid2, prBarSolve, trBarT));
+            controller = new PDEController(new ViewElements(chart, propertyGrid1, propertyGrid2, prBarSolve, trBarT));
             controller.reallocate(checkBox2ndEq.Checked);
         }
 

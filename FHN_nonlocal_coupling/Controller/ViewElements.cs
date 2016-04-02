@@ -21,5 +21,8 @@ namespace FHN_nonlocal_coupling.Controller
             this.progressBar = progressBar;
             this.trackBar = trackBar;
         }
+
+        public ViewElements(Chart chart, PropertyGrid pg1, PropertyGrid pg2, ProgressBar progressBar, TrackBar trackBar) 
+            : this(chart, null, pg1, pg2, progressBar, trackBar) { }
     }
 }
