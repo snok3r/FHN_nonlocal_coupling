@@ -27,12 +27,8 @@ namespace FHN_nonlocal_coupling.View
         protected override void btnPlot_Click(object sender, EventArgs e)
         {
             ((ODEController)controller).plot(rdBtnTmr.Checked);
-            base.btnPlot_Click(this, e);
-        }
 
-        protected override void trBarT_Scroll(object sender, EventArgs e)
-        {
-            base.trBarT_Scroll(sender, e);
+            base.btnPlot_Click(sender, e);
         }
 
         private void btnTunePhase_Click(object sender, EventArgs e)

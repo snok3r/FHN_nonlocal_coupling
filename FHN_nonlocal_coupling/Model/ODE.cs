@@ -65,8 +65,9 @@ namespace FHN_nonlocal_coupling.Model
 
         public override void initialsFurther()
         {
-            u[0] = u[N - 1];
-            v[0] = v[N - 1];
+            U0 = u[N - 1];
+            V0 = v[N - 1];
+            initials();
         }
 
         public override bool solve()

@@ -18,10 +18,8 @@ namespace FHN_nonlocal_coupling.View.Other
         {
             setPlot();
 
-            if (rdBtnTmr.Checked)
-                timerT.Enabled = true;
-            else
-                timerT.Enabled = false;
+            // start timer, if radio button is checked
+            timerT.Enabled = rdBtnTmr.Checked;
         }
         
         protected virtual void timerT_Tick(object sender, EventArgs e)

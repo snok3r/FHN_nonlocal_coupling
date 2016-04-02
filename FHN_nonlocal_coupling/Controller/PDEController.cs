@@ -48,11 +48,9 @@ namespace FHN_nonlocal_coupling.Controller
         public override void plot()
         {
             if (viewElements.trackBar.Value < trackBarMax())
-            {
-                viewElements.trackBar.Value++;
-                plot(viewElements.trackBar.Value);
-            }
-            else viewElements.trackBar.Value = 0;
+                plot(viewElements.trackBar.Value++);
+            else 
+                viewElements.trackBar.Value = 0;
         }
 
         /// <summary>

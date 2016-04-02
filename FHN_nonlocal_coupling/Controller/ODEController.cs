@@ -78,11 +78,8 @@ namespace FHN_nonlocal_coupling.Controller
                 clearAllButNullclines();
 
             if (viewElements.trackBar.Value < trackBarMax())
-            {
-                viewElements.trackBar.Value++;
                 for (int i = 0; i < fhn.Length; i++)
-                    plot(viewElements.trackBar.Value, fhn[i], i);
-            }
+                    plot(viewElements.trackBar.Value++, fhn[i], i);
             else
                 viewElements.trackBar.Value = 0;
         }

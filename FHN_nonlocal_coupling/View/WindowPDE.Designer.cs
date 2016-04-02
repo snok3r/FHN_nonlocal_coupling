@@ -39,14 +39,6 @@
             // 
             this.btnAbout.Click += new System.EventHandler(this.btnAbout_Click);
             // 
-            // btnPlot
-            // 
-            this.btnPlot.Click += new System.EventHandler(this.btnPlot_Click);
-            // 
-            // trBarT
-            // 
-            this.trBarT.Scroll += new System.EventHandler(this.trBarT_Scroll);
-            // 
             // checkBoxContiniousVelocity
             // 
             this.checkBoxContiniousVelocity.AutoSize = true;
