@@ -37,9 +37,10 @@ namespace FHN_nonlocal_coupling.View
 
         private void btnSolve_Click(object sender, EventArgs e)
         {
-            if (controller.solve() != 0)
+            if (controller.solve())
+                enablePlotBtn();
+            else
                 lblError.Visible = true;
-            enablePlotBtn();
         }
 
         private void btnSolveFurther_Click(object sender, EventArgs e)
@@ -83,14 +84,11 @@ namespace FHN_nonlocal_coupling.View
 
         private void disablePlotBtn()
         {
-            if (btnPlot.Enabled)
-            {
-                lblVelocity.Text = "--- x/t";
-                btnGetVelocity.Enabled = false;
-                btnPlot.Enabled = false;
-                btnSolve.Enabled = true;
-                btnSolveFurther.Enabled = false;
-            }
+            lblVelocity.Text = "--- x/t";
+            btnGetVelocity.Enabled = false;
+            btnPlot.Enabled = false;
+            btnSolve.Enabled = true;
+            btnSolveFurther.Enabled = false;
 
             lblError.Visible = false;
 
@@ -104,16 +102,13 @@ namespace FHN_nonlocal_coupling.View
 
         private void enablePlotBtn()
         {
-            if (!lblError.Visible)
-            {
-                btnGetVelocity.Enabled = true;
-                btnSolve.Enabled = false;
-                btnSolveFurther.Enabled = true;
-                btnPlot.Enabled = true;
-                
-                trBarT.Value = 0;
-                trBarT.Enabled = true;
-            }
+            btnGetVelocity.Enabled = true;
+            btnSolve.Enabled = false;
+            btnSolveFurther.Enabled = true;
+            btnPlot.Enabled = true;
+
+            trBarT.Value = 0;
+            trBarT.Enabled = true;
         }
 
         private void propertyGrid1_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)

@@ -114,7 +114,7 @@ namespace FHN_nonlocal_coupling.Model
             }
         }
 
-        public override int solve()
+        public override bool solve()
         {
             // If we changed ONLY eps, beta, gamma, b, d, Kernel, f or Iext,
             // then just recall this function.
@@ -135,16 +135,13 @@ namespace FHN_nonlocal_coupling.Model
             P[N - 1] = ci[2] / (bi[2] - ai[2] * P[N - 2]);
 
             for (int j = 0; j < M - 1; j++)
-            {
-                int extCode = progonkaJLayer(Q, P, ai, bi, di, j);
-                if (extCode != 0)
-                    return -1;
-            }
+                if (!progonkaJLayer(Q, P, ai, bi, di, j))
+                    return false;
 
-            return 0;
+            return true;
         }
 
-        private int progonkaJLayer(double[] Q, double[] P, double[] ai, double[] bi, double[] di, int j)
+        private bool progonkaJLayer(double[] Q, double[] P, double[] ai, double[] bi, double[] di, int j)
         {
             int k = Convert.ToInt32(D / hx);
             D = hx * k;
@@ -159,7 +156,7 @@ namespace FHN_nonlocal_coupling.Model
 
                 // catching Q is NaN
                 if (Double.IsNaN(Q[i]))
-                    return -1;
+                    return false;
             }
             //di[n] = ht * u_l_t(t[j]); // if Neumann condition is not a zero
             Q[N - 1] = (ai[2] * Q[N - 2] - di[N - 1]) / (bi[2] - ai[2] * P[N - 2]);
@@ -173,12 +170,12 @@ namespace FHN_nonlocal_coupling.Model
 
                 // catching V is NaN
                 if (Double.IsNaN(nextV))
-                    return -1;
+                    return false;
                 else
                     v[j + 1, i] = nextV;
             }
 
-            return 0;
+            return true;
         }
 
         private void calculateDCoeff(double[] di, int i, int j, int k)

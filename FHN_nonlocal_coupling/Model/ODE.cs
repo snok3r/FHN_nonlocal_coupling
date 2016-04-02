@@ -69,7 +69,7 @@ namespace FHN_nonlocal_coupling.Model
             v[0] = v[N - 1];
         }
 
-        public override int solve()
+        public override bool solve()
         {   // If we changed ONLY alpha, beta, Iext, Kernel or f (either a),
             // then just recall this function.
 
@@ -82,7 +82,7 @@ namespace FHN_nonlocal_coupling.Model
                 double vtemp = v[j] + ht * v_j;
 
                 if (Double.IsNaN(utemp) || Double.IsNaN(vtemp))
-                    return -1;
+                    return false;
 
                 u[j + 1] = u[j] + ht * 0.5 * (u_j + f1(utemp, vtemp));
                 v[j + 1] = v[j] + ht * 0.5 * (v_j + f2(utemp, vtemp));
@@ -90,7 +90,7 @@ namespace FHN_nonlocal_coupling.Model
             
             nullclines();
 
-            return 0;
+            return true;
         }
 
         public void nullclines()

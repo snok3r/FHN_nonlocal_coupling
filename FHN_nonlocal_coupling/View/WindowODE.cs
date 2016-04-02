@@ -37,9 +37,10 @@ namespace FHN_nonlocal_coupling.View
 
         private void btnSolve_Click(object sender, EventArgs e)
         {
-            if (controller.solve() != 0)
+            if (controller.solve())
+                enablePlotBtn();
+            else
                 lblError.Visible = true;
-            enablePlotBtn();
         }
 
         private void btnSolveFurther_Click(object sender, EventArgs e)
@@ -68,16 +69,13 @@ namespace FHN_nonlocal_coupling.View
         private void trBarT_Scroll(object sender, EventArgs e)
         {
             controller.plot(trBarT.Value);
-        }                
+        }
 
         private void disablePlotBtn()
         {
-            if (btnPlot.Enabled)
-            {
-                btnPlot.Enabled = false;
-                btnSolve.Enabled = true;
-                btnSolveFurther.Enabled = false;
-            }
+            btnPlot.Enabled = false;
+            btnSolve.Enabled = true;
+            btnSolveFurther.Enabled = false;
 
             lblError.Visible = false;
 
@@ -91,15 +89,12 @@ namespace FHN_nonlocal_coupling.View
 
         private void enablePlotBtn()
         {
-            if (!lblError.Visible)
-            {
-                btnSolve.Enabled = false;
-                btnPlot.Enabled = true;
-                btnSolveFurther.Enabled = true;
+            btnSolve.Enabled = false;
+            btnPlot.Enabled = true;
+            btnSolveFurther.Enabled = true;
 
-                trBarT.Value = 0;
-                trBarT.Enabled = true;
-            }
+            trBarT.Value = 0;
+            trBarT.Enabled = true;
         }
 
         private void propertyGrid1_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)

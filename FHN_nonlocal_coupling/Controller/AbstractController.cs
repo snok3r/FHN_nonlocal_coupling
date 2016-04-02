@@ -84,10 +84,10 @@ namespace FHN_nonlocal_coupling.Controller
 
         /// <summary>
         /// Call to solve equations
-        /// <para>Returns -1, if computation error occurred,
-        /// 0 otherwise.</para>
+        /// <para>Returns false, if computation error occurred,
+        /// true otherwise.</para>
         /// </summary>
-        public int solve()
+        public bool solve()
         {
             viewElements.progressBar.Value = 0;
             viewElements.progressBar.Maximum = 3;
@@ -108,10 +108,10 @@ namespace FHN_nonlocal_coupling.Controller
             viewElements.progressBar.Value++;
 
             for (int i = 0; i < fhn.Length; i++)
-                if (fhn[i].solve() != 0) return -1;
+                if (!fhn[i].solve()) return false;
             viewElements.progressBar.Value++;
 
-            return 0;
+            return true;
         }
 
         /// <summary>
