@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace FHN_nonlocal_coupling.Model
 {
-    class PDE : AbstractFHN
+    public class PDE : AbstractFHN
     {
         // variables and arrays
         private double[] x;
@@ -24,14 +24,6 @@ namespace FHN_nonlocal_coupling.Model
             D = 1.0;
             I = 0.0;
             DeltaCoupling = true;
-        }
-
-        public static PDE[] allocArray(int size)
-        {
-            PDE[] toRet = new PDE[size];
-            for (int i = 0; i < size; i++)
-                toRet[i] = new PDE();
-            return toRet;
         }
 
         // properties
@@ -122,7 +114,7 @@ namespace FHN_nonlocal_coupling.Model
             }
         }
 
-        public override int solve()
+        public override bool solve()
         {
             // If we changed ONLY eps, beta, gamma, b, d, Kernel, f or Iext,
             // then just recall this function.
@@ -143,16 +135,13 @@ namespace FHN_nonlocal_coupling.Model
             P[N - 1] = ci[2] / (bi[2] - ai[2] * P[N - 2]);
 
             for (int j = 0; j < M - 1; j++)
-            {
-                int extCode = progonkaJLayer(Q, P, ai, bi, di, j);
-                if (extCode != 0)
-                    return -1;
-            }
+                if (!progonkaJLayer(Q, P, ai, bi, di, j))
+                    return false;
 
-            return 0;
+            return true;
         }
 
-        private int progonkaJLayer(double[] Q, double[] P, double[] ai, double[] bi, double[] di, int j)
+        private bool progonkaJLayer(double[] Q, double[] P, double[] ai, double[] bi, double[] di, int j)
         {
             int k = Convert.ToInt32(D / hx);
             D = hx * k;
@@ -167,7 +156,7 @@ namespace FHN_nonlocal_coupling.Model
 
                 // catching Q is NaN
                 if (Double.IsNaN(Q[i]))
-                    return -1;
+                    return false;
             }
             //di[n] = ht * u_l_t(t[j]); // if Neumann condition is not a zero
             Q[N - 1] = (ai[2] * Q[N - 2] - di[N - 1]) / (bi[2] - ai[2] * P[N - 2]);
@@ -181,12 +170,12 @@ namespace FHN_nonlocal_coupling.Model
 
                 // catching V is NaN
                 if (Double.IsNaN(nextV))
-                    return -1;
+                    return false;
                 else
                     v[j + 1, i] = nextV;
             }
 
-            return 0;
+            return true;
         }
 
         private void calculateDCoeff(double[] di, int i, int j, int k)
@@ -221,37 +210,40 @@ namespace FHN_nonlocal_coupling.Model
 
         public double getVelocity(int j0)
         {
-            if (velocity[j0].calculated)
-                return velocity[j0].velocity;
+            if (!velocity[j0].calculated)
+                calculateVelocity(j0);
 
-            if (u != null)
+            return velocity[j0].velocity;
+        }
+
+        private void calculateVelocity(int j0)
+        {
+            int deltaj = (int)(1 / ht);
+
+            int i0 = 0; // X0 max = u[j0, i0]
+            for (int i = 1; i < N; i++)
+                if (u[j0, i] > u[j0, i0])
+                    i0 = i;
+
+            int j1 = (j0 + deltaj);
+            if (j1 > M - 1) // we're out of frame
             {
-                int deltaj = (int)(1 / ht);
-
-                int i0 = 0; // X0 max = u[j0, i0]
-                for (int i = 1; i < N; i++)
-                    if (u[j0, i] > u[j0, i0])
-                        i0 = i;
-
-                int j1 = (j0 + deltaj);
-                if (j1 > M - 1) return 0; // we're out of frame
-
-                int i1 = 0; // X1 max = u[j1, i0]
-
-                for (int i = 1; i < N; i++)
-                    if (u[j1, i] > u[j1, i1])
-                        i1 = i;
-
-                double x0 = i0 * hx; double x1 = i1 * hx;
-                double t0 = j0 * ht; double t1 = j1 * ht;
-
-                velocity[j0].velocity = (x1 - x0) / (t1 - t0);
+                velocity[j0].velocity = 0;
                 velocity[j0].calculated = true;
-
-                return velocity[j0].velocity;
+                return;
             }
 
-            return 0;
+            int i1 = 0; // X1 max = u[j1, i0]
+
+            for (int i = 1; i < N; i++)
+                if (u[j1, i] > u[j1, i1])
+                    i1 = i;
+
+            double x0 = i0 * hx; double x1 = i1 * hx;
+            double t0 = j0 * ht; double t1 = j1 * ht;
+
+            velocity[j0].velocity = (x1 - x0) / (t1 - t0);
+            velocity[j0].calculated = true;
         }
 
         public double getX(int i)

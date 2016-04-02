@@ -5,20 +5,20 @@ using FHN_nonlocal_coupling.Model;
 
 namespace FHN_nonlocal_coupling.Controller
 {
-    abstract class AbstractController<T>
+    public abstract class AbstractController<T> : IControllable where T : AbstractFHN, new()
     {
         protected bool allocate = true;
         protected bool solveFurther = false;
         protected static HashSet<String> paramsNeedReload;
 
-        protected AbstractFHN[] fhn;
+        protected T[] fhn;
         protected ViewElements viewElements;
 
         abstract public double chartXMin();
         abstract public double chartXMax();
-        abstract public int trackBarMax();
         abstract public void plot();
         abstract public void plot(int j);
+        abstract public int trackBarMax();
 
         protected AbstractController(ViewElements viewElements)
         { this.viewElements = viewElements; }
@@ -60,11 +60,9 @@ namespace FHN_nonlocal_coupling.Controller
             if (chckd) size = 2;
             else size = 1;
 
-            if (typeof(T) == typeof(PDE))
-                fhn = PDE.allocArray(size);
-            else if (typeof(T) == typeof(ODE))
-                fhn = ODE.allocArray(size);
-            else throw new ArgumentException("must be ODE or PDE class");
+            fhn = new T[size];
+            for (int i = 0; i < size; i++)
+                fhn[i] = new T();
 
             viewElements.pg1.SelectedObject = fhn[0];
 
@@ -86,20 +84,20 @@ namespace FHN_nonlocal_coupling.Controller
 
         /// <summary>
         /// Call to solve equations
-        /// <para>Returns -1, if computation error occurred,
-        /// 0 otherwise.</para>
+        /// <para>Returns false, if computation error occurred,
+        /// true otherwise.</para>
         /// </summary>
-        public int solve()
+        public bool solve()
         {
             viewElements.progressBar.Value = 0;
             viewElements.progressBar.Maximum = 3;
             viewElements.trackBar.Maximum = trackBarMax();
 
-                for (int i = 0; i < fhn.Length; i++)
-                    if (allocate && !solveFurther)
-                        fhn[i].allocate();
-                    else
-                        fhn[i].reload();
+            for (int i = 0; i < fhn.Length; i++)
+                if (allocate && !solveFurther)
+                    fhn[i].allocate();
+                else
+                    fhn[i].reload();
             viewElements.progressBar.Value++;
 
             for (int i = 0; i < fhn.Length; i++)
@@ -110,10 +108,10 @@ namespace FHN_nonlocal_coupling.Controller
             viewElements.progressBar.Value++;
 
             for (int i = 0; i < fhn.Length; i++)
-                if (fhn[i].solve() != 0) return -1;
+                if (!fhn[i].solve()) return false;
             viewElements.progressBar.Value++;
 
-            return 0;
+            return true;
         }
 
         /// <summary>

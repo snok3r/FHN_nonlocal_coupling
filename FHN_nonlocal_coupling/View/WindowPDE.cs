@@ -1,75 +1,46 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
+﻿using FHN_nonlocal_coupling.Controller;
 using FHN_nonlocal_coupling.View.Other;
-using FHN_nonlocal_coupling.Controller;
+using System;
+using System.Windows.Forms;
 
 namespace FHN_nonlocal_coupling.View
 {
-    partial class WindowPDE : Form
+    public partial class WindowPDE : WindowTemplate
     {
-        private PDEController controller;
-
         public WindowPDE()
         {
             InitializeComponent();
-            controller = new PDEController(new ViewElements(chart, null, propertyGrid1, propertyGrid2, prBarSolve, trBarT));
         }
 
         private void WindowPDE_Load(object sender, EventArgs e)
         {
+            controller = new PDEController(new ViewElements(chart, propertyGrid1, propertyGrid2, prBarSolve, trBarT));
             controller.reallocate(checkBox2ndEq.Checked);
         }
 
         private void WindowPDE_FormClosing(object sender, FormClosingEventArgs e)
         {
-            timerT.Enabled = false;
-            chart.Series.Clear();
             controller.dispose();
         }
 
-        private void checkBox2ndEq_CheckedChanged(object sender, EventArgs e)
+        protected override void btnPlot_Click(object sender, EventArgs e)
         {
-            controller.reallocate(checkBox2ndEq.Checked);
-            disablePlotBtn();
-        }
-
-        private void btnSolve_Click(object sender, EventArgs e)
-        {
-            if (controller.solve() != 0)
-                lblError.Visible = true;
-            enablePlotBtn();
-        }
-
-        private void btnSolveFurther_Click(object sender, EventArgs e)
-        {
-            controller.toSolveFurther(true);
-
-            btnSolve_Click(sender, e);
-        }
-
-        private void btnPlot_Click(object sender, EventArgs e)
-        {
-            setPlot();
             controller.plot(trBarT.Value);
 
-            if (rdBtnTmr.Checked)
-                timerT.Enabled = true;
-            else
-                timerT.Enabled = false;
+            base.btnPlot_Click(this, e);
         }
 
-        private void timerT_Tick(object sender, EventArgs e)
+        protected override void timerT_Tick(object sender, EventArgs e)
         {
-            controller.plot();
+            base.timerT_Tick(sender, e);
 
             if (checkBoxContiniousVelocity.Checked)
                 btnGetVelocity_Click(sender, e);
         }
 
-        private void trBarT_Scroll(object sender, EventArgs e)
+        protected override void trBarT_Scroll(object sender, EventArgs e)
         {
-            controller.plot(trBarT.Value);
+            base.trBarT_Scroll(sender, e);
 
             if (checkBoxContiniousVelocity.Checked)
                 btnGetVelocity_Click(sender, e);
@@ -77,91 +48,22 @@ namespace FHN_nonlocal_coupling.View
 
         private void btnGetVelocity_Click(object sender, EventArgs e)
         {
-            lblVelocity.Text = controller.getVelocity(trBarT.Value).ToString() + " x/t";
+            lblVelocity.Text = ((PDEController)controller).getVelocity(trBarT.Value).ToString() + " x/t";
         }
 
-        private void disablePlotBtn()
+        protected override void disablePlotBtn()
         {
-            if (btnPlot.Enabled)
-            {
-                lblVelocity.Text = "--- x/t";
-                btnGetVelocity.Enabled = false;
-                btnPlot.Enabled = false;
-                btnSolve.Enabled = true;
-                btnSolveFurther.Enabled = false;
-            }
+            base.disablePlotBtn();
 
-            lblError.Visible = false;
-
-            trBarT.Value = 0;
-            trBarT.Enabled = false;
-            timerT.Enabled = false;
-
-            controller.toAllocate(true);
-            controller.toSolveFurther(false);
+            lblVelocity.Text = "--- x/t";
+            btnGetVelocity.Enabled = false;
         }
 
-        private void enablePlotBtn()
+        protected override void enablePlotBtn()
         {
-            if (!lblError.Visible)
-            {
-                btnGetVelocity.Enabled = true;
-                btnSolve.Enabled = false;
-                btnSolveFurther.Enabled = true;
-                btnPlot.Enabled = true;
-                
-                trBarT.Value = 0;
-                trBarT.Enabled = true;
-            }
-        }
+            base.enablePlotBtn();
 
-        private void propertyGrid1_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
-        {
-            if (e.OldValue == e.ChangedItem.Value)
-                return;
-
-            disablePlotBtn();
-            controller.checkToLoad(e.ChangedItem.Label);
-        }
-
-        private void propertyGrid2_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
-        {
-            if (e.OldValue == e.ChangedItem.Value)
-                return;
-
-            disablePlotBtn();
-            controller.checkToLoad(e.ChangedItem.Label);
-                
-        }
-
-        private void btnTune_Click(object sender, EventArgs e)
-        {
-            chart.ChartAreas[0].AxisY.Maximum = Convert.ToDouble(txtBoxMaxUV.Text);
-            chart.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(txtBoxMinUV.Text);
-        }
-
-        private void btnStopTimer_Click(object sender, EventArgs e)
-        {
-            if (timerT.Enabled)
-            {
-                rdBtnTmr.Checked = false;
-                timerT.Enabled = false;
-            }
-        }
-
-        private void setPlot()
-        {
-            chart.ChartAreas[0].AxisX.Minimum = controller.chartXMin();
-            chart.ChartAreas[0].AxisX.Maximum = controller.chartXMax();
-
-            chart.ChartAreas[0].AxisY.Maximum = Convert.ToDouble(txtBoxMaxUV.Text);
-            chart.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(txtBoxMinUV.Text);
-
-            chart.ChartAreas[0].AxisX.Interval = Convert.ToInt32((controller.chartXMax() + controller.chartXMin()) / 6.0);
-            chart.ChartAreas[0].AxisY.Interval = Convert.ToInt32((chart.ChartAreas[0].AxisY.Maximum + chart.ChartAreas[0].AxisY.Minimum) / 6.0);
-
-            chart.Series[2].Color = Color.Blue;
-            chart.Series[3].Color = Color.OrangeRed;
+            btnGetVelocity.Enabled = true;
         }
 
         private void btnAbout_Click(object sender, EventArgs e)

@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\IControllable.cs" />
     <Compile Include="Controller\ViewElements.cs" />
     <Compile Include="View\Other\AboutODE.cs">
       <SubType>Form</SubType>
@@ -84,6 +85,12 @@
     <Compile Include="View\WindowPDE.Designer.cs">
       <DependentUpon>WindowPDE.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\Other\WindowTemplate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\Other\WindowTemplate.Designer.cs">
+      <DependentUpon>WindowTemplate.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="View\Other\AboutODE.resx">
       <DependentUpon>AboutODE.cs</DependentUpon>
     </EmbeddedResource>
@@ -107,6 +114,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\WindowPDE.resx">
       <DependentUpon>WindowPDE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Other\WindowTemplate.resx">
+      <DependentUpon>WindowTemplate.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

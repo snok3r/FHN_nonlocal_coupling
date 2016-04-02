@@ -5,7 +5,7 @@ using FHN_nonlocal_coupling.Model;
 
 namespace FHN_nonlocal_coupling.Controller
 {
-    class ODEController : AbstractController<ODE>
+    public class ODEController : AbstractController<ODE>
     {
         public ODEController(ViewElements viewElements)
             : base(viewElements)
@@ -48,11 +48,11 @@ namespace FHN_nonlocal_coupling.Controller
 
                 for (int i = 0; i < fhn.Length; i++)
                     for (int j = 0; j < fhn[i].N; j++)
-                        plot(j, (ODE)fhn[i], i);
+                        plot(j, fhn[i], i);
             }
 
             for (int i = 0; i < fhn.Length; i++)
-                plotNullclines((ODE)fhn[i], i);
+                plotNullclines(fhn[i], i);
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace FHN_nonlocal_coupling.Controller
 
             for (int j = 0; j < trackBarValue; j++)
                 for (int i = 0; i < fhn.Length; i++)
-                    plot(j, (ODE)fhn[i], i);
+                    plot(j, fhn[i], i);
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace FHN_nonlocal_coupling.Controller
             {
                 viewElements.trackBar.Value++;
                 for (int i = 0; i < fhn.Length; i++)
-                    plot(viewElements.trackBar.Value, (ODE)fhn[i], i);
+                    plot(viewElements.trackBar.Value, fhn[i], i);
             }
             else
                 viewElements.trackBar.Value = 0;
@@ -161,11 +161,5 @@ namespace FHN_nonlocal_coupling.Controller
         /// </summary>
         public double chartPhaseXMax()
         { return fhn[0].L; }
-
-        /// <summary>
-        /// Returns phase's chart maximum Y bound
-        /// </summary>
-        public double chartPhaseYMax()
-        { return 1.5 + fhn[0].I; }
     }
 }

@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace FHN_nonlocal_coupling.Model
 {
-    class ODE : AbstractFHN
+    public class ODE : AbstractFHN
     {
         // variables and arrays
         private double[] u, v;
@@ -18,14 +18,6 @@ namespace FHN_nonlocal_coupling.Model
             U0 = 1.0;
             V0 = 0.1;
             I = 0.5;
-        }
-
-        public static ODE[] allocArray(int size)
-        {
-            ODE[] toRet = new ODE[size];
-            for (int i = 0; i < size; i++)
-                toRet[i] = new ODE();
-            return toRet;
         }
 
         // properties
@@ -77,7 +69,7 @@ namespace FHN_nonlocal_coupling.Model
             v[0] = v[N - 1];
         }
 
-        public override int solve()
+        public override bool solve()
         {   // If we changed ONLY alpha, beta, Iext, Kernel or f (either a),
             // then just recall this function.
 
@@ -90,7 +82,7 @@ namespace FHN_nonlocal_coupling.Model
                 double vtemp = v[j] + ht * v_j;
 
                 if (Double.IsNaN(utemp) || Double.IsNaN(vtemp))
-                    return -1;
+                    return false;
 
                 u[j + 1] = u[j] + ht * 0.5 * (u_j + f1(utemp, vtemp));
                 v[j + 1] = v[j] + ht * 0.5 * (v_j + f2(utemp, vtemp));
@@ -98,7 +90,7 @@ namespace FHN_nonlocal_coupling.Model
             
             nullclines();
 
-            return 0;
+            return true;
         }
 
         public void nullclines()
@@ -109,6 +101,14 @@ namespace FHN_nonlocal_coupling.Model
                 {
                     v1[j] = f(u_null[j]) + I;
                     v2[j] = (u_null[j] + Eps) / Beta;
+                }
+            }
+            else
+            {
+                for (int j = 0; j < N; j++)
+                {
+                    v1[j] = f(u_null[j]) + I;
+                    v2[j] = -100;
                 }
             }
         }
