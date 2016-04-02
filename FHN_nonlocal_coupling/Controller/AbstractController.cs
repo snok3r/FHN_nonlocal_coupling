@@ -76,10 +76,8 @@ namespace FHN_nonlocal_coupling.Controller
         /// </summary>
         public void checkToLoad(String label)
         {
-            if (paramsNeedReload.Contains(label))
-                allocate = true;
-            else
-                allocate = false;
+            // need to reallocate, if paramsNeedReload contains given label
+            allocate = paramsNeedReload.Contains(label);
         }
 
         /// <summary>

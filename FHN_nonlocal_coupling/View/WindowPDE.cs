@@ -27,7 +27,7 @@ namespace FHN_nonlocal_coupling.View
         {
             controller.plot(trBarT.Value);
 
-            base.btnPlot_Click(this, e);
+            base.btnPlot_Click(sender, e);
         }
 
         protected override void timerT_Tick(object sender, EventArgs e)
