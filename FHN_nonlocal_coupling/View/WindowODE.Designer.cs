@@ -51,10 +51,6 @@
             // 
             this.chart.Size = new System.Drawing.Size(1030, 325);
             // 
-            // btnAbout
-            // 
-            this.btnAbout.Click += new System.EventHandler(this.btnAbout_Click);
-            // 
             // lblMinUV
             // 
             this.lblMinUV.Location = new System.Drawing.Point(198, 279);
@@ -185,8 +181,6 @@
             this.Controls.Add(this.chartPhase);
             this.Name = "WindowODE";
             this.Text = "Window ODE";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.WindowODE_FormClosing);
-            this.Load += new System.EventHandler(this.WindowODE_Load);
             this.Controls.SetChildIndex(this.btnStopTimer, 0);
             this.Controls.SetChildIndex(this.rdBtnTmr, 0);
             this.Controls.SetChildIndex(this.prBarSolve, 0);

@@ -14,6 +14,19 @@ namespace FHN_nonlocal_coupling.View.Other
             InitializeComponent();
         }
 
+        private void WindowTemplate_Load(object sender, EventArgs e)
+        {
+            if (controller != null) controller.reallocate(checkBox2ndEq.Checked);
+        }
+
+        private void WindowTemplate_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            controller.dispose();
+            timerT.Enabled = false;
+            chart.Series.Clear();
+            Dispose(true);
+        }
+
         protected virtual void btnPlot_Click(object sender, EventArgs e)
         {
             setPlot();
@@ -73,13 +86,6 @@ namespace FHN_nonlocal_coupling.View.Other
             chart.Series[3].Color = Color.OrangeRed;
         }
 
-        private void WindowTemplate_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            timerT.Enabled = false;
-            chart.Series.Clear();
-            Dispose(true);
-        }
-
         private void checkBox2ndEq_CheckedChanged(object sender, EventArgs e)
         {
             controller.reallocate(checkBox2ndEq.Checked);
@@ -123,5 +129,7 @@ namespace FHN_nonlocal_coupling.View.Other
                 timerT.Enabled = false;
             }
         }
+
+        protected virtual void btnAbout_Click(object sender, EventArgs e) { }
     }
 }
