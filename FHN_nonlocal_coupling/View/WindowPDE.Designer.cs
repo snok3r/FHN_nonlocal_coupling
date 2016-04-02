@@ -35,10 +35,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.trBarT)).BeginInit();
             this.SuspendLayout();
             // 
-            // btnAbout
-            // 
-            this.btnAbout.Click += new System.EventHandler(this.btnAbout_Click);
-            // 
             // checkBoxContiniousVelocity
             // 
             this.checkBoxContiniousVelocity.AutoSize = true;
@@ -80,8 +76,6 @@
             this.Controls.Add(this.btnGetVelocity);
             this.Name = "WindowPDE";
             this.Text = "Window PDE";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.WindowPDE_FormClosing);
-            this.Load += new System.EventHandler(this.WindowPDE_Load);
             this.Controls.SetChildIndex(this.btnStopTimer, 0);
             this.Controls.SetChildIndex(this.rdBtnTmr, 0);
             this.Controls.SetChildIndex(this.prBarSolve, 0);

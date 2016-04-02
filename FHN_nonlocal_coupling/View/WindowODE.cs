@@ -11,17 +11,7 @@ namespace FHN_nonlocal_coupling.View
         public WindowODE()
         {
             InitializeComponent();
-        }
-
-        private void WindowODE_Load(object sender, EventArgs e)
-        {
             controller = new ODEController(new ViewElements(chart, chartPhase, propertyGrid1, propertyGrid2, prBarSolve, trBarT));
-            controller.reallocate(checkBox2ndEq.Checked);
-        }
-
-        private void WindowODE_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            controller.dispose();
         }
 
         protected override void btnPlot_Click(object sender, EventArgs e)
@@ -50,7 +40,7 @@ namespace FHN_nonlocal_coupling.View
             chartPhase.Series[3].Color = Color.Blue;
         }
 
-        private void btnAbout_Click(object sender, EventArgs e)
+        protected override void btnAbout_Click(object sender, EventArgs e)
         {
             AboutODE o = new AboutODE();
             o.Show();

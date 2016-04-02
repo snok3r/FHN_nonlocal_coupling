@@ -10,17 +10,7 @@ namespace FHN_nonlocal_coupling.View
         public WindowPDE()
         {
             InitializeComponent();
-        }
-
-        private void WindowPDE_Load(object sender, EventArgs e)
-        {
             controller = new PDEController(new ViewElements(chart, propertyGrid1, propertyGrid2, prBarSolve, trBarT));
-            controller.reallocate(checkBox2ndEq.Checked);
-        }
-
-        private void WindowPDE_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            controller.dispose();
         }
 
         protected override void btnPlot_Click(object sender, EventArgs e)
@@ -66,7 +56,7 @@ namespace FHN_nonlocal_coupling.View
             btnGetVelocity.Enabled = true;
         }
 
-        private void btnAbout_Click(object sender, EventArgs e)
+        protected override void btnAbout_Click(object sender, EventArgs e)
         {
             AboutPDE o = new AboutPDE();
             o.Show();
