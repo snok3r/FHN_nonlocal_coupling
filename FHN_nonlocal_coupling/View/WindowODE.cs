@@ -13,13 +13,13 @@ namespace FHN_nonlocal_coupling.View
             InitializeComponent();
         }
 
-        private void WindowODE1_Load(object sender, EventArgs e)
+        private void WindowODE_Load(object sender, EventArgs e)
         {
             controller = new ODEController(new ViewElements(chart, chartPhase, propertyGrid1, propertyGrid2, prBarSolve, trBarT));
             controller.reallocate(checkBox2ndEq.Checked);
         }
 
-        private void WindowODE1_FormClosing(object sender, FormClosingEventArgs e)
+        private void WindowODE_FormClosing(object sender, FormClosingEventArgs e)
         {
             controller.dispose();
         }
