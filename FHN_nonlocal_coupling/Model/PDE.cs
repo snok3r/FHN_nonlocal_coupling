@@ -220,21 +220,20 @@ namespace FHN_nonlocal_coupling.Model
         {
             int deltaj = (int)(1 / ht);
 
-            int i0 = 0; // X0 max = u[j0, i0]
-            for (int i = 1; i < N; i++)
-                if (u[j0, i] > u[j0, i0])
-                    i0 = i;
-
             int j1 = (j0 + deltaj);
-            if (j1 > M - 1) // we're out of frame
+            if (j1 > M - 1) // we're out of frame and no need to find X0 max
             {
                 velocity[j0].velocity = 0;
                 velocity[j0].calculated = true;
                 return;
             }
 
-            int i1 = 0; // X1 max = u[j1, i0]
+            int i0 = 0; // X0 max = u[j0, i0]
+            for (int i = 1; i < N; i++)
+                if (u[j0, i] > u[j0, i0])
+                    i0 = i;
 
+            int i1 = 0; // X1 max = u[j1, i0]
             for (int i = 1; i < N; i++)
                 if (u[j1, i] > u[j1, i1])
                     i1 = i;
