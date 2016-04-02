@@ -5,7 +5,7 @@ using FHN_nonlocal_coupling.Model;
 
 namespace FHN_nonlocal_coupling.Controller
 {
-    class ODEController : AbstractController<ODE>
+    public class ODEController : AbstractController<ODE>
     {
         public ODEController(ViewElements viewElements)
             : base(viewElements)
@@ -161,11 +161,5 @@ namespace FHN_nonlocal_coupling.Controller
         /// </summary>
         public double chartPhaseXMax()
         { return fhn[0].L; }
-
-        /// <summary>
-        /// Returns phase's chart maximum Y bound
-        /// </summary>
-        public double chartPhaseYMax()
-        { return 1.5 + fhn[0].I; }
     }
 }

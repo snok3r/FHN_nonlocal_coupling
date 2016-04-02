@@ -1,10 +1,9 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
 namespace FHN_nonlocal_coupling.Controller
 {
-    class ViewElements
+    public class ViewElements
     {
         public Chart chart;
         public Chart chartPhase;

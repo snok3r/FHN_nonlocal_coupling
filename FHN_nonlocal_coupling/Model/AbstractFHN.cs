@@ -1,9 +1,8 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace FHN_nonlocal_coupling.Model
 {
-    abstract class AbstractFHN
+    public abstract class AbstractFHN
     {
         protected const int POINTS_THRESHOLD = 10;
 

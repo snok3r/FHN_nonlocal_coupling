@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace FHN_nonlocal_coupling.Model
 {
-    class ODE : AbstractFHN
+    public class ODE : AbstractFHN
     {
         // variables and arrays
         private double[] u, v;

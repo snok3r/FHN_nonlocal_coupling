@@ -4,7 +4,7 @@ using FHN_nonlocal_coupling.Model;
 
 namespace FHN_nonlocal_coupling.Controller
 {
-    class PDEController : AbstractController<PDE>
+    public class PDEController : AbstractController<PDE>
     {
         public PDEController(ViewElements viewElements)
             : base(viewElements) 

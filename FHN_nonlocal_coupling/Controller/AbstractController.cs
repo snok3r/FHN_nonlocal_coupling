@@ -5,7 +5,7 @@ using FHN_nonlocal_coupling.Model;
 
 namespace FHN_nonlocal_coupling.Controller
 {
-    abstract class AbstractController<T> where T : AbstractFHN, new()
+    public abstract class AbstractController<T> : IControllable where T : AbstractFHN, new()
     {
         protected bool allocate = true;
         protected bool solveFurther = false;
@@ -16,9 +16,9 @@ namespace FHN_nonlocal_coupling.Controller
 
         abstract public double chartXMin();
         abstract public double chartXMax();
-        abstract public int trackBarMax();
         abstract public void plot();
         abstract public void plot(int j);
+        abstract public int trackBarMax();
 
         protected AbstractController(ViewElements viewElements)
         { this.viewElements = viewElements; }
@@ -93,11 +93,11 @@ namespace FHN_nonlocal_coupling.Controller
             viewElements.progressBar.Maximum = 3;
             viewElements.trackBar.Maximum = trackBarMax();
 
-                for (int i = 0; i < fhn.Length; i++)
-                    if (allocate && !solveFurther)
-                        fhn[i].allocate();
-                    else
-                        fhn[i].reload();
+            for (int i = 0; i < fhn.Length; i++)
+                if (allocate && !solveFurther)
+                    fhn[i].allocate();
+                else
+                    fhn[i].reload();
             viewElements.progressBar.Value++;
 
             for (int i = 0; i < fhn.Length; i++)
