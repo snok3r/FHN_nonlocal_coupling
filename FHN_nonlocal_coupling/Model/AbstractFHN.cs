@@ -24,8 +24,8 @@ namespace FHN_nonlocal_coupling.Model
         public AbstractFHN()
         {
             Eps = 0.08;
-            Beta = 0.064;
-            Alpha = 0.056;
+            Gamma = 0.8;
+            Beta = 0.7;
             A = 0.1;
             Classical = true;
         }
@@ -63,10 +63,10 @@ namespace FHN_nonlocal_coupling.Model
         public double Eps { get; set; }
 
         [Description("v's equation constant")]
-        public double Alpha { get; set; }
+        public double Beta { get; set; }
 
         [Description("v's equation constant")]
-        public double Beta { get; set; }
+        public double Gamma { get; set; }
 
         [Description("Current I excitatory")]
         public double I { get; set; }

@@ -105,18 +105,18 @@ namespace FHN_nonlocal_coupling.Model
 
         public void nullclines()
         {
-            if (Beta != 0.0)
+            if (Gamma != 0.0)
             {
                 Parallel.Invoke(
                     () =>
                     {
                         for (int j = 0; j < N; j++)
-                            if (v1 !=null) v1[j] = f(u_null[j]) + I;
+                            if (v1 != null) v1[j] = f(u_null[j]) + I;
                     },
                     () =>
                     {
                         for (int j = 0; j < N; j++)
-                            if(v2 != null) v2[j] = (u_null[j] + Eps) / Beta;
+                            if (v2 != null) v2[j] = (u_null[j] + Beta) / Gamma;
                     }
                 );
             }
@@ -150,7 +150,7 @@ namespace FHN_nonlocal_coupling.Model
         { return f(u) - v + I; }
 
         private double f2(double u, double v)
-        { return Eps * u + Alpha - Beta * v; }
+        { return Eps * (u + Beta - Gamma * v); }
 
         public override void dispose()
         {

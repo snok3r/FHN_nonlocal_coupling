@@ -193,7 +193,7 @@ namespace FHN_nonlocal_coupling.Model
 
             for (int i = 0; i < N; i++)
             {
-                double nextV = (v[j, i] + ht * (Eps * u[j + 1, i] + Alpha)) / (1 + Beta * ht);
+                double nextV = (v[j, i] + ht * Eps * (u[j + 1, i] + Beta)) / (1 + Eps * Gamma * ht);
 
                 // catching V is NaN
                 if (Double.IsNaN(nextV))
