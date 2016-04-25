@@ -45,6 +45,7 @@ namespace FHN_nonlocal_coupling.View
         {
             base.disablePlotBtn();
 
+            ((PDEController)controller).interruptThread();
             lblVelocity.Text = "--- x/t";
             btnGetVelocity.Enabled = false;
         }

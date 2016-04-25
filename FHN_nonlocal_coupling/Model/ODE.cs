@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace FHN_nonlocal_coupling.Model
 {
@@ -36,19 +37,27 @@ namespace FHN_nonlocal_coupling.Model
             hx = 2 * L / (N - 1); //
             ht = T / (N - 1);  // step for t
 
-            t = new double[N]; // arrange t's
-            for (int j = 0; j < N; j++) 
-                t[j] = j * ht;
+            t = new double[N];
+            u_null = new double[N];
+            Parallel.Invoke(
+                () =>
+                {
+                    for (int j = 0; j < N; j++)
+                        if (t != null) t[j] = j * ht;
+                },
+
+                () =>
+                {
+                    for (int j = 0; j < N; j++)
+                        if (u_null != null) u_null[j] = -L + j * hx;
+                }
+            );
 
             u = new double[N];
             v = new double[N];
 
             v1 = new double[N];
             v2 = new double[N];
-            
-            u_null = new double[N];
-            for (int j = 0; j < N; j++) 
-                u_null[j] = - L + j * hx;
         }
 
         public override void reload()
@@ -98,11 +107,18 @@ namespace FHN_nonlocal_coupling.Model
         {
             if (Beta != 0.0)
             {
-                for (int j = 0; j < N; j++)
-                {
-                    v1[j] = f(u_null[j]) + I;
-                    v2[j] = (u_null[j] + Eps) / Beta;
-                }
+                Parallel.Invoke(
+                    () =>
+                    {
+                        for (int j = 0; j < N; j++)
+                            if (v1 !=null) v1[j] = f(u_null[j]) + I;
+                    },
+                    () =>
+                    {
+                        for (int j = 0; j < N; j++)
+                            if(v2 != null) v2[j] = (u_null[j] + Eps) / Beta;
+                    }
+                );
             }
             else
             {

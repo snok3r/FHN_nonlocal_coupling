@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using FHN_nonlocal_coupling.Model;
+using System.Diagnostics;
 
 namespace FHN_nonlocal_coupling.Controller
 {
@@ -40,7 +41,7 @@ namespace FHN_nonlocal_coupling.Controller
         /// <summary>
         /// Makes all the data point to null
         /// </summary>
-        public void dispose()
+        public virtual void dispose()
         {
             for (int i = 0; i < fhn.Length; i++)
             {
@@ -91,6 +92,7 @@ namespace FHN_nonlocal_coupling.Controller
             viewElements.progressBar.Maximum = 3;
             viewElements.trackBar.Maximum = trackBarMax();
 
+            Stopwatch stopwatch = Stopwatch.StartNew(); //creates and start the instance of Stopwatch
             for (int i = 0; i < fhn.Length; i++)
                 if (allocate && !solveFurther)
                     fhn[i].allocate();
@@ -108,7 +110,8 @@ namespace FHN_nonlocal_coupling.Controller
             for (int i = 0; i < fhn.Length; i++)
                 if (!fhn[i].solve()) return false;
             viewElements.progressBar.Value++;
-
+            stopwatch.Stop();
+            Debug.WriteLine("Solved in " + stopwatch.ElapsedMilliseconds / 1000.0 + "sec");
             return true;
         }
 

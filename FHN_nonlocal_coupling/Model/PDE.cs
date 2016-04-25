@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace FHN_nonlocal_coupling.Model
 {
@@ -71,19 +72,29 @@ namespace FHN_nonlocal_coupling.Model
             ht = T / (M - 1);  // step for t
 
             x = new double[N]; // arrange x's
-            for (int i = 0; i < N; i++) 
-                x[i] = - L + i * hx;
-
             t = new double[M]; // arrange t's
-            for (int j = 0; j < M; j++) 
-                t[j] = j * ht;
+            velocity = new Velocity[M];
+
+            Parallel.Invoke(
+                () =>
+                {
+                    for (int i = 0; i < N; i++)
+                        if (x != null) x[i] = -L + i * hx;
+                },
+                () =>
+                {
+                    for (int j = 0; j < M; j++)
+                        if (t != null) t[j] = j * ht;
+                },
+                () =>
+                {
+                    for (int j = 0; j < M; j++)
+                        if (velocity != null) velocity[j] = new Velocity();
+                }
+            );
 
             u = new double[M, N];
             v = new double[M, N];
-
-            velocity = new Velocity[M];
-            for (int j = 0; j < M; j++)
-                velocity[j] = new Velocity();
         }
 
         public override void reload()
@@ -97,28 +108,44 @@ namespace FHN_nonlocal_coupling.Model
 
         public override void initials()
         {   // Initialize initials
-            for (int i = 0; i < N; i++)
-            {	// setting an initial waves at t = 0
-                u[0, i] = u_x_0(x[i]);
-                v[0, i] = v_x_0(x[i]);
-            }
+            // setting an initial waves at t = 0
+            Parallel.Invoke(
+                () =>
+                {
+                    for (int i = 0; i < N; i++)
+                        if (u != null) u[0, i] = u_x_0(x[i]);
+                },
+                () =>
+                {
+                    for (int i = 0; i < N; i++)
+                        if (v != null) v[0, i] = v_x_0(x[i]);
+                }
+            );
         }
 
         public override void initialsFurther()
         {
-            for (int i = 0; i < N; i++)
-            {	// setting an initial waves
-                // at t = T to solve next
-                u[0, i] = u[M - 1, i];
-                v[0, i] = v[M - 1, i];
-            }
+            // setting an initial waves
+            // at t = T to solve next
+            Parallel.Invoke(
+                () =>
+                {
+                    for (int i = 0; i < N; i++)
+                        if (u != null) u[0, i] = u[M - 1, i];
+                },
+                () =>
+                {
+                    for (int i = 0; i < N; i++)
+                        if (v != null) v[0, i] = v[M - 1, i];
+                }
+            );
         }
 
         public override bool solve()
         {
             // If we changed ONLY eps, beta, gamma, b, d, Kernel, f or Iext,
             // then just recall this function.
-            
+
             double step = ht / (hx * hx);
 
             double[] P = new double[N];
@@ -218,6 +245,9 @@ namespace FHN_nonlocal_coupling.Model
 
         private void calculateVelocity(int j0)
         {
+            if (j0 > M - 1)
+                return;
+
             int deltaj = (int)(1 / ht);
 
             int j1 = (j0 + deltaj);
@@ -229,14 +259,22 @@ namespace FHN_nonlocal_coupling.Model
             }
 
             int i0 = 0; // X0 max = u[j0, i0]
-            for (int i = 1; i < N; i++)
-                if (u[j0, i] > u[j0, i0])
-                    i0 = i;
-
             int i1 = 0; // X1 max = u[j1, i0]
-            for (int i = 1; i < N; i++)
-                if (u[j1, i] > u[j1, i1])
-                    i1 = i;
+
+            Parallel.Invoke(
+                () =>
+                {
+                    for (int i = 1; i < N; i++)
+                        if (u != null && u[j0, i] > u[j0, i0])
+                            i0 = i;
+                },
+                () =>
+                {
+                    for (int i = 1; i < N; i++)
+                        if (u != null && u[j1, i] > u[j1, i1])
+                            i1 = i;
+                }
+            );
 
             double x0 = i0 * hx; double x1 = i1 * hx;
             double t0 = j0 * ht; double t1 = j1 * ht;
@@ -307,6 +345,11 @@ namespace FHN_nonlocal_coupling.Model
         {
             internal double velocity;
             internal bool calculated;
+
+            public override string ToString()
+            {
+                return String.Format("{0}", velocity);
+            }
         }
     }
 }

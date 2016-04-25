@@ -1,7 +1,7 @@
-﻿using System;
-using System.Linq;
+﻿using FHN_nonlocal_coupling.Model;
+using System;
 using System.Collections.Generic;
-using FHN_nonlocal_coupling.Model;
+using System.Linq;
 
 namespace FHN_nonlocal_coupling.Controller
 {

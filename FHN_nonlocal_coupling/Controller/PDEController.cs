@@ -1,11 +1,15 @@
-﻿using System;
+﻿using FHN_nonlocal_coupling.Model;
+using System;
 using System.Collections.Generic;
-using FHN_nonlocal_coupling.Model;
+using System.Diagnostics;
+using System.Threading;
 
 namespace FHN_nonlocal_coupling.Controller
 {
     public class PDEController : AbstractController<PDE>
     {
+        private bool threadStarted = false;
+
         public PDEController(ViewElements viewElements)
             : base(viewElements) 
         {
@@ -72,7 +76,58 @@ namespace FHN_nonlocal_coupling.Controller
         /// </summary>
         public double getVelocity(int trackBarValue)
         {
+            if (!threadStarted)
+                calculateVelocityInThread(trackBarValue);
+
             return Math.Round(fhn[0].getVelocity(trackBarValue), 3);
+        }
+
+        private void calculateVelocityInThread(int startingJ)
+        {
+            int M = fhn[0].M;
+
+            threadStarted = true;
+            // (max - start) calculates around 90% (if startingJ = 0) of left velocities in concurrent thread
+            int start = startingJ + (M - 1) / 10;
+            int max = M - 1;
+
+            if (max - start > 100) // if there's a sense to calculate it concurrently
+            {
+                ThreadPool.QueueUserWorkItem(delegate
+                {
+                    try
+                    {
+                        while (Thread.CurrentThread.IsAlive)
+                        {
+                            for (int j = start; j < max; j++)
+                            {
+                                if (!threadStarted)
+                                {
+                                    Debug.WriteLine("Interrupted velocity calculation on j = " + j);
+                                    throw new ThreadInterruptedException();
+                                }
+                                fhn[0].getVelocity(j);
+                            }
+                            Debug.WriteLine("Velocity calculation finished");
+                            throw new ThreadInterruptedException();
+                        }
+                    }
+                    catch (ThreadInterruptedException)
+                    {
+                        Thread.CurrentThread.Interrupt();
+                    }
+                });
+            }
+        }
+
+        public void interruptThread()
+        {
+            threadStarted = false;
+        }
+
+        public override void dispose(){
+            interruptThread();
+            base.dispose();
         }
     }
 }

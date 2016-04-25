@@ -21,8 +21,8 @@ namespace FHN_nonlocal_coupling.View.Other
 
         private void WindowTemplate_FormClosing(object sender, FormClosingEventArgs e)
         {
-            controller.dispose();
             timerT.Enabled = false;
+            controller.dispose();
             chart.Series.Clear();
             Dispose(true);
         }
