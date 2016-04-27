@@ -11,7 +11,7 @@ namespace FHN_nonlocal_coupling.Controller
         private bool threadStarted = false;
 
         public PDEController(ViewElements viewElements)
-            : base(viewElements) 
+            : base(viewElements)
         {
             if (paramsNeedReload == null)
                 paramsNeedReload = new HashSet<String>(new String[] { "N", "M", "T", "L" });
@@ -53,7 +53,7 @@ namespace FHN_nonlocal_coupling.Controller
         {
             if (viewElements.trackBar.Value < trackBarMax())
                 plot(viewElements.trackBar.Value++);
-            else 
+            else
                 viewElements.trackBar.Value = 0;
         }
 
@@ -125,7 +125,8 @@ namespace FHN_nonlocal_coupling.Controller
             threadStarted = false;
         }
 
-        public override void dispose(){
+        public override void dispose()
+        {
             interruptThread();
             base.dispose();
         }

@@ -11,7 +11,8 @@ namespace FHN_nonlocal_coupling.Model
         private double[] u_null, v1, v2; // nullclines
 
         // Constructor with default parameters
-        public ODE() : base()
+        public ODE()
+            : base()
         {
             N = 1000;
             L = 2.5;
@@ -97,7 +98,7 @@ namespace FHN_nonlocal_coupling.Model
                 u[j + 1] = u[j] + ht * 0.5 * (u_j + f1(utemp, vtemp));
                 v[j + 1] = v[j] + ht * 0.5 * (v_j + f2(utemp, vtemp));
             }
-            
+
             nullclines();
 
             return true;

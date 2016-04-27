@@ -20,7 +20,7 @@ namespace FHN_nonlocal_coupling.Model
         public abstract void initials();
         public abstract void initialsFurther();
         public abstract bool solve();
-        
+
         public AbstractFHN()
         {
             Eps = 0.08;
@@ -39,11 +39,11 @@ namespace FHN_nonlocal_coupling.Model
                 if (value > POINTS_THRESHOLD) varN = value;
             }
         }
-        
+
         public virtual double L
         {
             get { return varL; }
-            set 
+            set
             {
                 if (value > 0) varL = value;
             }

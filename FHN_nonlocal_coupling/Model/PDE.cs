@@ -13,15 +13,18 @@ namespace FHN_nonlocal_coupling.Model
 
         private int varM;
         private double varD;
+        private double varDiff;
 
         // Constructor with default values
-        public PDE() : base()
+        public PDE()
+            : base()
         {
             N = 1000;
             M = 1000;
             L = 50.0;
             T = 100.0;
             B = 0.0;
+            d = 1.0;
             D = 1.0;
             I = 0.0;
             DeltaCoupling = true;
@@ -31,7 +34,7 @@ namespace FHN_nonlocal_coupling.Model
         public int M
         {   // quantity of u,v t's
             get { return varM; }
-            set 
+            set
             {
                 if (value > POINTS_THRESHOLD) varM = value;
             }
@@ -48,12 +51,22 @@ namespace FHN_nonlocal_coupling.Model
         }
 
         [Description("Delay in Delta-Kernel")]
-        public double D
-        {   // a delay in delta Kernel
+        public double d
+        {
             get { return varD; }
             set
             {
                 if (value > 0) varD = value;
+            }
+        }
+
+        [Description("Diffusion Coefficient")]
+        public double D
+        {
+            get { return varDiff; }
+            set
+            {
+                if (value > 0) varDiff = value;
             }
         }
 
@@ -146,7 +159,7 @@ namespace FHN_nonlocal_coupling.Model
             // If we changed ONLY eps, beta, gamma, b, d, Kernel, f or Iext,
             // then just recall this function.
 
-            double step = ht / (hx * hx);
+            double step = D * ht / (hx * hx);
 
             double[] P = new double[N];
             double[] Q = new double[N];
@@ -170,8 +183,8 @@ namespace FHN_nonlocal_coupling.Model
 
         private bool progonkaJLayer(double[] Q, double[] P, double[] ai, double[] bi, double[] di, int j)
         {
-            int k = Convert.ToInt32(D / hx);
-            D = hx * k;
+            int k = Convert.ToInt32(d / hx);
+            d = hx * k;
 
             //di[0] = ht * u_0_t(t[j]); // if Neumann condition is not a zero
             Q[0] = -di[0] / bi[0];
@@ -285,10 +298,10 @@ namespace FHN_nonlocal_coupling.Model
 
         public double getX(int i)
         { return x[i]; }
-        
+
         public double getU(int j, int i)
         { return u[j, i]; }
-        
+
         public double getV(int j, int i)
         { return v[j, i]; }
 
@@ -310,7 +323,7 @@ namespace FHN_nonlocal_coupling.Model
         {
             //return Math.Exp(-z * z / 2) / Math.Sqrt(2 * Math.PI);
             return 1.0 / 2 * Math.Exp(-Math.Abs(z + 2));
-        }            
+        }
 
         private double u_x_0(double x)
         {	// initial u wave at t = 0
@@ -323,16 +336,16 @@ namespace FHN_nonlocal_coupling.Model
                 return (u0 - 1) * (x + rb) / (lb - rb) + u0;
             else
                 return u0;
-            
+
             //return Math.Exp(-x * x / 2) / (2 * Math.PI);
-            
+
             //return 1.0 / 2 * Math.Exp(-Math.Abs(x + 2));
         }
 
         private double v_x_0(double x)
         {   // initial v wave at t = 0
-            return -0.624; 
-        } 
+            return -0.624;
+        }
 
         private double u_0_t(double t) { return 0.0; } // Neumann boundary condition at x = -l
 

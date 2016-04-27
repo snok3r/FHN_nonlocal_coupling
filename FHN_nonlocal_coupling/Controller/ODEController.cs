@@ -9,7 +9,7 @@ namespace FHN_nonlocal_coupling.Controller
     {
         public ODEController(ViewElements viewElements)
             : base(viewElements)
-        { 
+        {
             if (paramsNeedReload == null)
                 paramsNeedReload = new HashSet<String>(new String[] { "N", "T", "L" });
         }
@@ -144,9 +144,9 @@ namespace FHN_nonlocal_coupling.Controller
             {
                 viewElements.chartPhase.Series[3 * i + 1].Points.Clear();
                 viewElements.chartPhase.Series[3 * i + 2].Points.Clear();
-            }  
+            }
         }
-        
+
         /// <summary>
         /// Returns phase's chart minimum X bound
         /// </summary>

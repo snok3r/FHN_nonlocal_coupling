@@ -34,7 +34,7 @@ namespace FHN_nonlocal_coupling.View.Other
             // start timer, if radio button is checked
             timerT.Enabled = rdBtnTmr.Checked;
         }
-        
+
         protected virtual void timerT_Tick(object sender, EventArgs e)
         {
             controller.plot();
