@@ -43,14 +43,16 @@ namespace FHN_nonlocal_coupling.Model
             Parallel.Invoke(
                 () =>
                 {
-                    for (int j = 0; j < N; j++)
-                        if (t != null) t[j] = j * ht;
+                    if (t != null)
+                        for (int j = 0; j < N; j++)
+                            t[j] = j * ht;
                 },
 
                 () =>
                 {
-                    for (int j = 0; j < N; j++)
-                        if (u_null != null) u_null[j] = -L + j * hx;
+                    if (u_null != null)
+                        for (int j = 0; j < N; j++)
+                            u_null[j] = -L + j * hx;
                 }
             );
 
@@ -111,13 +113,15 @@ namespace FHN_nonlocal_coupling.Model
                 Parallel.Invoke(
                     () =>
                     {
-                        for (int j = 0; j < N; j++)
-                            if (v1 != null) v1[j] = f(u_null[j]) + I;
+                        if (v1 != null)
+                            for (int j = 0; j < N; j++)
+                                v1[j] = f(u_null[j]) + I;
                     },
                     () =>
                     {
-                        for (int j = 0; j < N; j++)
-                            if (v2 != null) v2[j] = (u_null[j] + Beta) / Gamma;
+                        if (v2 != null)
+                            for (int j = 0; j < N; j++)
+                                v2[j] = (u_null[j] + Beta) / Gamma;
                     }
                 );
             }

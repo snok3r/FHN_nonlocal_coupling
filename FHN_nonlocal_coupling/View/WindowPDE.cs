@@ -10,7 +10,7 @@ namespace FHN_nonlocal_coupling.View
         public WindowPDE()
         {
             InitializeComponent();
-            controller = new PDEController(new ViewElements(chart, propertyGrid1, propertyGrid2, prBarSolve, trBarT));
+            controller = new PDEController(new ViewElements(chart, propertyGrid1, propertyGrid2, prBarSolve, trBarT, txtBoxUX0, txtBoxVX0, checkBoxInitials));
         }
 
         protected override void btnPlot_Click(object sender, EventArgs e)
@@ -57,10 +57,24 @@ namespace FHN_nonlocal_coupling.View
             btnGetVelocity.Enabled = true;
         }
 
+        private void checkBoxInitials_CheckedChanged(object sender, EventArgs e)
+        {
+            disablePlotBtn();
+            lblUX0.Enabled = checkBoxInitials.Checked;
+            lblVX0.Enabled = checkBoxInitials.Checked;
+            txtBoxUX0.Enabled = checkBoxInitials.Checked;
+            txtBoxVX0.Enabled = checkBoxInitials.Checked;
+        }
+
         protected override void btnAbout_Click(object sender, EventArgs e)
         {
             AboutPDE o = new AboutPDE();
             o.Show();
+        }
+
+        private void txtBoxInit_Validated(object sender, EventArgs e)
+        {
+            disablePlotBtn();
         }
     }
 }

@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea8 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend8 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series29 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series30 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series31 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series32 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.btnSolveFurther = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -82,7 +82,7 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 41);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(171, 395);
+            this.tabControl1.Size = new System.Drawing.Size(171, 341);
             this.tabControl1.TabIndex = 103;
             // 
             // tabPage1
@@ -91,7 +91,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(163, 369);
+            this.tabPage1.Size = new System.Drawing.Size(163, 315);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "First eq";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -101,7 +101,7 @@
             this.propertyGrid1.Location = new System.Drawing.Point(-4, 0);
             this.propertyGrid1.Name = "propertyGrid1";
             this.propertyGrid1.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
-            this.propertyGrid1.Size = new System.Drawing.Size(171, 369);
+            this.propertyGrid1.Size = new System.Drawing.Size(171, 315);
             this.propertyGrid1.TabIndex = 85;
             this.propertyGrid1.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.propertyGrid_PropertyValueChanged);
             // 
@@ -111,7 +111,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(163, 369);
+            this.tabPage2.Size = new System.Drawing.Size(163, 315);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Second eq";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -121,7 +121,7 @@
             this.propertyGrid2.Location = new System.Drawing.Point(-4, 0);
             this.propertyGrid2.Name = "propertyGrid2";
             this.propertyGrid2.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
-            this.propertyGrid2.Size = new System.Drawing.Size(171, 369);
+            this.propertyGrid2.Size = new System.Drawing.Size(171, 315);
             this.propertyGrid2.TabIndex = 86;
             this.propertyGrid2.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.propertyGrid_PropertyValueChanged);
             // 
@@ -149,42 +149,42 @@
             // 
             // chart
             // 
-            chartArea1.Name = "ChartArea1";
-            this.chart.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chart.Legends.Add(legend1);
+            chartArea8.Name = "ChartArea1";
+            this.chart.ChartAreas.Add(chartArea8);
+            legend8.Name = "Legend1";
+            this.chart.Legends.Add(legend8);
             this.chart.Location = new System.Drawing.Point(242, 8);
             this.chart.Name = "chart";
-            series1.BorderWidth = 3;
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series1.Legend = "Legend1";
-            series1.MarkerSize = 7;
-            series1.Name = "U";
-            series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            series1.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            series2.BorderWidth = 3;
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series2.Legend = "Legend1";
-            series2.MarkerSize = 7;
-            series2.Name = "V";
-            series2.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            series2.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            series3.BorderWidth = 2;
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series3.Legend = "Legend1";
-            series3.Name = "U2";
-            series4.BorderWidth = 2;
-            series4.ChartArea = "ChartArea1";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series4.Legend = "Legend1";
-            series4.Name = "V2";
-            this.chart.Series.Add(series1);
-            this.chart.Series.Add(series2);
-            this.chart.Series.Add(series3);
-            this.chart.Series.Add(series4);
+            series29.BorderWidth = 3;
+            series29.ChartArea = "ChartArea1";
+            series29.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series29.Legend = "Legend1";
+            series29.MarkerSize = 7;
+            series29.Name = "U";
+            series29.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            series29.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            series30.BorderWidth = 3;
+            series30.ChartArea = "ChartArea1";
+            series30.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series30.Legend = "Legend1";
+            series30.MarkerSize = 7;
+            series30.Name = "V";
+            series30.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            series30.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            series31.BorderWidth = 2;
+            series31.ChartArea = "ChartArea1";
+            series31.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series31.Legend = "Legend1";
+            series31.Name = "U2";
+            series32.BorderWidth = 2;
+            series32.ChartArea = "ChartArea1";
+            series32.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series32.Legend = "Legend1";
+            series32.Name = "V2";
+            this.chart.Series.Add(series29);
+            this.chart.Series.Add(series30);
+            this.chart.Series.Add(series31);
+            this.chart.Series.Add(series32);
             this.chart.Size = new System.Drawing.Size(1030, 650);
             this.chart.TabIndex = 94;
             this.chart.Text = "chart1";
@@ -257,7 +257,7 @@
             // checkBox2ndEq
             // 
             this.checkBox2ndEq.AutoSize = true;
-            this.checkBox2ndEq.Location = new System.Drawing.Point(16, 442);
+            this.checkBox2ndEq.Location = new System.Drawing.Point(12, 384);
             this.checkBox2ndEq.Name = "checkBox2ndEq";
             this.checkBox2ndEq.Size = new System.Drawing.Size(59, 17);
             this.checkBox2ndEq.TabIndex = 105;
@@ -349,14 +349,11 @@
 
         #endregion
 
-        private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Timer timerT;
         protected System.Windows.Forms.DataVisualization.Charting.Chart chart;
         protected System.Windows.Forms.Button btnSolveFurther;
-        protected System.Windows.Forms.PropertyGrid propertyGrid1;
-        protected System.Windows.Forms.PropertyGrid propertyGrid2;
         protected System.Windows.Forms.Button btnAbout;
         protected System.Windows.Forms.Label lblError;
         protected System.Windows.Forms.Button btnSolve;
@@ -371,5 +368,8 @@
         protected System.Windows.Forms.Button btnTune;
         protected System.Windows.Forms.TextBox txtBoxMinUV;
         protected System.Windows.Forms.TextBox txtBoxMaxUV;
+        private System.Windows.Forms.TabControl tabControl1;
+        protected System.Windows.Forms.PropertyGrid propertyGrid1;
+        protected System.Windows.Forms.PropertyGrid propertyGrid2;
     }
 }

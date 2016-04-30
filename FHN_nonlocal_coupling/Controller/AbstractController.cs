@@ -1,8 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using FHN_nonlocal_coupling.Model;
+using System;
 using System.Collections.Generic;
-using FHN_nonlocal_coupling.Model;
 using System.Diagnostics;
+using System.Linq;
 
 namespace FHN_nonlocal_coupling.Controller
 {
@@ -104,7 +104,17 @@ namespace FHN_nonlocal_coupling.Controller
                 if (solveFurther)
                     fhn[i].initialsFurther();
                 else
-                    fhn[i].initials();
+                {
+                    if (viewElements.ux0 != null && viewElements.vx0 != null && viewElements.customInitials != null)
+                    {
+                        if (viewElements.customInitials.Checked)
+                            fhn[i].initials(viewElements.ux0.Text, viewElements.vx0.Text);
+                        else
+                            fhn[i].initials();
+                    }
+                    else
+                        fhn[i].initials();
+                }
             viewElements.progressBar.Value++;
 
             for (int i = 0; i < fhn.Length; i++)

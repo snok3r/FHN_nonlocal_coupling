@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MathParser;
+using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 
@@ -91,18 +92,21 @@ namespace FHN_nonlocal_coupling.Model
             Parallel.Invoke(
                 () =>
                 {
-                    for (int i = 0; i < N; i++)
-                        if (x != null) x[i] = -L + i * hx;
+                    if (x != null)
+                        for (int i = 0; i < N; i++)
+                            x[i] = -L + i * hx;
                 },
                 () =>
                 {
-                    for (int j = 0; j < M; j++)
-                        if (t != null) t[j] = j * ht;
+                    if (t != null)
+                        for (int j = 0; j < M; j++)
+                            t[j] = j * ht;
                 },
                 () =>
                 {
-                    for (int j = 0; j < M; j++)
-                        if (velocity != null) velocity[j] = new Velocity();
+                    if (velocity != null)
+                        for (int j = 0; j < M; j++)
+                            velocity[j] = new Velocity();
                 }
             );
 
@@ -122,16 +126,55 @@ namespace FHN_nonlocal_coupling.Model
         public override void initials()
         {   // Initialize initials
             // setting an initial waves at t = 0
+            initials("", "");
+        }
+
+        public override void initials(String UX0, String VX0)
+        {   // Initialize initials
+            // setting an initial waves at t = 0
             Parallel.Invoke(
                 () =>
                 {
-                    for (int i = 0; i < N; i++)
-                        if (u != null) u[0, i] = u_x_0(x[i]);
+                    if (u != null)
+                    {
+                        if (UX0.Equals(""))
+                        {
+                            for (int i = 0; i < N; i++)
+                                u[0, i] = u_x_0(x[i]);
+                        }
+                        else
+                        {
+                            Parser pUX0 = new Parser();
+                            for (int i = 0; i < N; i++)
+                            {
+                                pUX0.Evaluate(UX0.Replace("x", x[i].ToString()));
+                                u[0, i] = pUX0.Result;
+                            }
+                        }
+                    }
                 },
                 () =>
                 {
-                    for (int i = 0; i < N; i++)
-                        if (v != null) v[0, i] = v_x_0(x[i]);
+                    if (v != null)
+                    {
+                        if (VX0.Equals(""))
+                        {
+                            for (int i = 0; i < N; i++)
+                                v[0, i] = v_x_0(x[i]);
+                        }
+                        else
+                        {
+                            if (v != null)
+                            {
+                                Parser pVX0 = new Parser();
+                                for (int i = 0; i < N; i++)
+                                {
+                                    pVX0.Evaluate(VX0.Replace("x", x[i].ToString()));
+                                    v[0, i] = pVX0.Result;
+                                }
+                            }
+                        }
+                    }
                 }
             );
         }
@@ -139,17 +182,19 @@ namespace FHN_nonlocal_coupling.Model
         public override void initialsFurther()
         {
             // setting an initial waves
-            // at t = T to solve next
+            // at t = T to solve further
             Parallel.Invoke(
                 () =>
                 {
-                    for (int i = 0; i < N; i++)
-                        if (u != null) u[0, i] = u[M - 1, i];
+                    if (u != null)
+                        for (int i = 0; i < N; i++)
+                            u[0, i] = u[M - 1, i];
                 },
                 () =>
                 {
-                    for (int i = 0; i < N; i++)
-                        if (v != null) v[0, i] = v[M - 1, i];
+                    if (v != null)
+                        for (int i = 0; i < N; i++)
+                            v[0, i] = v[M - 1, i];
                 }
             );
         }

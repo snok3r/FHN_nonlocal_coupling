@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 
 namespace FHN_nonlocal_coupling.Model
 {
@@ -94,6 +95,8 @@ namespace FHN_nonlocal_coupling.Model
             else
                 return -u * (u - 1) * (u - A);
         }
+
+        public virtual void initials(String UX0, String VX0) { }
 
         public virtual void dispose()
         { t = null; }
