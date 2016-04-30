@@ -220,13 +220,13 @@ namespace FHN_nonlocal_coupling.Model
             P[N - 1] = ci[2] / (bi[2] - ai[2] * P[N - 2]);
 
             for (int j = 0; j < M - 1; j++)
-                if (!progonkaJLayer(Q, P, ai, bi, di, j))
+                if (!calculateLayerJ(Q, P, ai, bi, di, j))
                     return false;
 
             return true;
         }
 
-        private bool progonkaJLayer(double[] Q, double[] P, double[] ai, double[] bi, double[] di, int j)
+        private bool calculateLayerJ(double[] Q, double[] P, double[] ai, double[] bi, double[] di, int j)
         {
             int k = Convert.ToInt32(d / hx);
             d = hx * k;
@@ -243,9 +243,10 @@ namespace FHN_nonlocal_coupling.Model
                 if (Double.IsNaN(Q[i]))
                     return false;
             }
-            //di[n] = ht * u_l_t(t[j]); // if Neumann condition is not a zero
+            //di[N - 1] = ht * u_l_t(t[j]); // if Neumann condition is not a zero
             Q[N - 1] = (ai[2] * Q[N - 2] - di[N - 1]) / (bi[2] - ai[2] * P[N - 2]);
 
+            // starting back substitution
             u[j + 1, N - 1] = Q[N - 1];
             for (int i = N - 2; i > -1; i--) u[j + 1, i] = P[i] * u[j + 1, i + 1] + Q[i];
 
@@ -265,32 +266,28 @@ namespace FHN_nonlocal_coupling.Model
 
         private void calculateDCoeff(double[] di, int i, int j, int k)
         {
-            if (DeltaCoupling)
+            if (B == 0)
+                di[i] = u[j, i] + ht * (f(u[j, i]) - v[j, i] + I);
+            else
             {
-                if (B != 0)
+                if (DeltaCoupling)
                 {
-                    if (i - k <= 1) // if x - d <= -l
-                    {
-                        if (i + k <= N - 2) // if x - d <= -l and x + d <= l
-                            di[i] = u[j, i] + ht * (B * (u[j, 1] + u[j, i + k] - 2 * u[j, i]) + f(u[j, i]) - v[j, i] + I);
-                        else if (i + k > N - 2) // if x - d <= -l and x + d > l
-                            di[i] = u[j, i] + ht * (B * (u[j, 1] + u[j, N - 2] - 2 * u[j, i]) + f(u[j, i]) - v[j, i] + I);
-                    }
-                    else if (i - k > 1) // if x - d > -l
-                    {
-                        if (i + k <= N - 2) // if x - d > -l and x + d <= l
-                            di[i] = u[j, i] + ht * (B * (u[j, i - k] + u[j, i + k] - 2 * u[j, i]) + f(u[j, i]) - v[j, i] + I);
-                        else if (i + k > N - 2)  // if x - d > -l and x + d > l
-                            di[i] = u[j, i] + ht * (B * (u[j, i - k] + u[j, N - 2] - 2 * u[j, i]) + f(u[j, i]) - v[j, i] + I);
-                    }
+                    double uxminusd = 0, uxplusd = 0;
+                    if (i - k <= 0) // if x - d <= -L
+                        uxminusd = u[j, 0];
+                    else // if x - d > -L
+                        uxminusd = u[j, i - k];
+
+                    if (i + k >= N - 1) // x + d >= L
+                        uxplusd = u[j, N - 1];
+                    else // if x + d < L
+                        uxplusd = u[j, i + k];
+
+                    di[i] = u[j, i] + ht * (B * (uxminusd + uxplusd - 2 * u[j, i]) + f(u[j, i]) - v[j, i] + I);
                 }
                 else
-                    di[i] = u[j, i] + ht * (f(u[j, i]) - v[j, i] + I);
+                    di[i] = u[j, i] + ht * (B * (integral(j, i) - u[j, i]) + f(u[j, i]) - v[j, i] + I);
             }
-            else if (B != 0)
-                di[i] = u[j, i] + ht * (B * (integral(j, i) - u[j, i]) + f(u[j, i]) - v[j, i] + I);
-            else
-                di[i] = u[j, i] + ht * (f(u[j, i]) - v[j, i] + I);
         }
 
         public double getVelocity(int j0)
