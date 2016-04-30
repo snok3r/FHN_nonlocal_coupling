@@ -322,15 +322,17 @@ namespace FHN_nonlocal_coupling.Model
             Parallel.Invoke(
                 () =>
                 {
-                    for (int i = 1; i < N; i++)
-                        if (u != null && u[j0, i] > u[j0, i0])
-                            i0 = i;
+                    if (u != null)
+                        for (int i = 1; i < N; i++)
+                            if (u[j0, i] > u[j0, i0])
+                                i0 = i;
                 },
                 () =>
                 {
-                    for (int i = 1; i < N; i++)
-                        if (u != null && u[j1, i] > u[j1, i1])
-                            i1 = i;
+                    if (u != null)
+                        for (int i = 1; i < N; i++)
+                            if (u[j1, i] > u[j1, i1])
+                                i1 = i;
                 }
             );
 
