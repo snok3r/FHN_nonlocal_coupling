@@ -71,14 +71,20 @@ namespace FHN_nonlocal_coupling.Controller
             }
         }
 
+        public override bool solve()
+        {
+            if (!base.solve())
+                return false;
+
+            calculatePropertiesInThread(0);
+            return true;
+        }
+
         /// <summary>
         /// Returns height at trackBarValue point
         /// </summary>
         public double getHeight(int trackBarValue)
         {
-            if (!threadStarted)
-                calculatePropertiesInThread(trackBarValue);
-
             return Math.Round(fhn[0].getHeight(trackBarValue), 3);
         }
 
@@ -87,52 +93,45 @@ namespace FHN_nonlocal_coupling.Controller
         /// </summary>
         public double getVelocity(int trackBarValue)
         {
-            if (!threadStarted)
-                calculatePropertiesInThread(trackBarValue);
-
             return Math.Round(fhn[0].getVelocity(trackBarValue), 3);
         }
 
-        private void calculatePropertiesInThread(int startingJ)
+        /// <summary>
+        /// calculates 100% (if start = 0) of velocities in concurrent thread
+        /// </summary>
+        private void calculatePropertiesInThread(int start)
         {
-            int M = fhn[0].M;
-
+            int max = fhn[0].M;
             threadStarted = true;
-            // (max - start) calculates around 90% (if startingJ = 0) of left velocities in concurrent thread
-            int start = startingJ + (M - 1) / 10;
-            int max = M - 1;
 
-            if (max - start > 50) // if there's a sense to calculate it concurrently
+            ThreadPool.QueueUserWorkItem(arg =>
             {
-                ThreadPool.QueueUserWorkItem(arg =>
+                try
                 {
-                    try
+                    while (Thread.CurrentThread.IsAlive)
                     {
-                        while (Thread.CurrentThread.IsAlive)
+                        Stopwatch stopwatch = Stopwatch.StartNew(); //creates and start the instance of Stopwatch
+                        for (int j = start; j < max; j++)
                         {
-                            Stopwatch stopwatch = Stopwatch.StartNew(); //creates and start the instance of Stopwatch
-                            for (int j = start; j < max; j++)
+                            if (!threadStarted)
                             {
-                                if (!threadStarted)
-                                {
-                                    Debug.WriteLine("Interrupted properties calculation on j = " + j);
-                                    break;
-                                }
-                                fhn[0].getHeight(j);
-                                fhn[0].getVelocity(j);
+                                Debug.WriteLine("Interrupted properties calculation on j = " + j);
+                                break;
                             }
-                            stopwatch.Stop();
-                            if (threadStarted)
-                                Debug.WriteLine("Properties calculated in " + stopwatch.ElapsedMilliseconds / 1000.0 + "sec");
-                            throw new ThreadInterruptedException();
+                            fhn[0].getHeight(j);
+                            fhn[0].getVelocity(j);
                         }
+                        stopwatch.Stop();
+                        if (threadStarted)
+                            Debug.WriteLine("Properties calculated in " + stopwatch.ElapsedMilliseconds / 1000.0 + "sec");
+                        throw new ThreadInterruptedException();
                     }
-                    catch (ThreadInterruptedException)
-                    {
-                        Thread.CurrentThread.Interrupt();
-                    }
-                });
-            }
+                }
+                catch (ThreadInterruptedException)
+                {
+                    Thread.CurrentThread.Interrupt();
+                }
+            });
         }
 
         public void interruptThread()

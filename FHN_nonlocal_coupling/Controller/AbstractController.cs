@@ -86,7 +86,7 @@ namespace FHN_nonlocal_coupling.Controller
         /// <para>Returns false, if computation error occurred,
         /// true otherwise.</para>
         /// </summary>
-        public bool solve()
+        public virtual bool solve()
         {
             viewElements.progressBar.Value = 0;
             viewElements.progressBar.Maximum = 3;

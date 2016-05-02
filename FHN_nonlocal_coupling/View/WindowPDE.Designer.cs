@@ -45,6 +45,8 @@
             // checkBoxContiniousVelocity
             // 
             this.checkBoxContiniousVelocity.AutoSize = true;
+            this.checkBoxContiniousVelocity.Checked = true;
+            this.checkBoxContiniousVelocity.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxContiniousVelocity.Location = new System.Drawing.Point(28, 547);
             this.checkBoxContiniousVelocity.Name = "checkBoxContiniousVelocity";
             this.checkBoxContiniousVelocity.Size = new System.Drawing.Size(126, 17);
