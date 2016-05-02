@@ -10,7 +10,8 @@ namespace FHN_nonlocal_coupling.Model
         // variables and arrays
         private double[] x;
         private double[,] u, v;
-        private Velocity[] velocity;
+        private Velocity[] velocities;
+        private Height[] heights;
 
         private int varM;
         private double varD;
@@ -87,7 +88,8 @@ namespace FHN_nonlocal_coupling.Model
 
             x = new double[N]; // arrange x's
             t = new double[M]; // arrange t's
-            velocity = new Velocity[M];
+            velocities = new Velocity[M];
+            heights = new Height[M];
 
             Parallel.Invoke(
                 () =>
@@ -98,15 +100,13 @@ namespace FHN_nonlocal_coupling.Model
                 },
                 () =>
                 {
-                    if (t != null)
+                    if (t != null && velocities != null && heights != null)
                         for (int j = 0; j < M; j++)
+                        {
                             t[j] = j * ht;
-                },
-                () =>
-                {
-                    if (velocity != null)
-                        for (int j = 0; j < M; j++)
-                            velocity[j] = new Velocity();
+                            velocities[j] = new Velocity();
+                            heights[j] = new Height();
+                        }
                 }
             );
 
@@ -116,11 +116,14 @@ namespace FHN_nonlocal_coupling.Model
 
         public override void reload()
         {
-            if (u == null || v == null || velocity == null || x == null || t == null)
+            if (u == null || v == null || velocities == null || heights == null || x == null || t == null)
                 allocate();
             else
                 for (int j = 0; j < M; j++)
-                    velocity[j].calculated = false;
+                {
+                    velocities[j].calculated = false;
+                    heights[j].calculated = false;
+                }
         }
 
         public override void initials()
@@ -183,20 +186,12 @@ namespace FHN_nonlocal_coupling.Model
         {
             // setting an initial waves
             // at t = T to solve further
-            Parallel.Invoke(
-                () =>
+            if (u != null && v != null)
+                for (int i = 0; i < N; i++)
                 {
-                    if (u != null)
-                        for (int i = 0; i < N; i++)
-                            u[0, i] = u[M - 1, i];
-                },
-                () =>
-                {
-                    if (v != null)
-                        for (int i = 0; i < N; i++)
-                            v[0, i] = v[M - 1, i];
+                    u[0, i] = u[M - 1, i];
+                    v[0, i] = v[M - 1, i];
                 }
-            );
         }
 
         public override bool solve()
@@ -292,10 +287,10 @@ namespace FHN_nonlocal_coupling.Model
 
         public double getVelocity(int j0)
         {
-            if (!velocity[j0].calculated)
+            if (!velocities[j0].calculated)
                 calculateVelocity(j0);
 
-            return velocity[j0].velocity;
+            return velocities[j0].velocity;
         }
 
         private void calculateVelocity(int j0)
@@ -308,36 +303,53 @@ namespace FHN_nonlocal_coupling.Model
             int j1 = (j0 + deltaj);
             if (j1 > M - 1) // we're out of frame and no need to find X0 max
             {
-                velocity[j0].velocity = 0;
-                velocity[j0].calculated = true;
+                velocities[j0].velocity = 0;
+                velocities[j0].calculated = true;
                 return;
             }
 
             int i0 = 0; // X0 max = u[j0, i0]
             int i1 = 0; // X1 max = u[j1, i0]
 
-            Parallel.Invoke(
-                () =>
+            if (u != null)
+                for (int i = 1; i < N; i++)
                 {
-                    if (u != null)
-                        for (int i = 1; i < N; i++)
-                            if (u[j0, i] > u[j0, i0])
-                                i0 = i;
-                },
-                () =>
-                {
-                    if (u != null)
-                        for (int i = 1; i < N; i++)
-                            if (u[j1, i] > u[j1, i1])
-                                i1 = i;
+                    if (u[j0, i] > u[j0, i0])
+                        i0 = i;
+
+                    if (u[j1, i] > u[j1, i1])
+                        i1 = i;
                 }
-            );
 
             double x0 = i0 * hx; double x1 = i1 * hx;
             double t0 = j0 * ht; double t1 = j1 * ht;
 
-            velocity[j0].velocity = (x1 - x0) / (t1 - t0);
-            velocity[j0].calculated = true;
+            velocities[j0].velocity = (x1 - x0) / (t1 - t0);
+            velocities[j0].calculated = true;
+        }
+
+        public double getHeight(int j0)
+        {
+            if (!heights[j0].calculated)
+                calculateHeight(j0);
+
+            return heights[j0].height;
+        }
+
+        private void calculateHeight(int j0)
+        {
+            if (j0 > M - 1)
+                return;
+
+            double max = Double.NegativeInfinity;
+
+            if (u != null)
+                for (int i = 1; i < N; i++)
+                    if (u[j0, i] > max)
+                        max = u[j0, i];
+
+            heights[j0].height = Math.Abs(max - getUStat());
+            heights[j0].calculated = true;
         }
 
         public double getX(int i)
@@ -406,6 +418,17 @@ namespace FHN_nonlocal_coupling.Model
             public override string ToString()
             {
                 return String.Format("{0}", velocity);
+            }
+        }
+
+        internal class Height
+        {
+            internal double height;
+            internal bool calculated;
+
+            public override string ToString()
+            {
+                return String.Format("{0}", height);
             }
         }
     }

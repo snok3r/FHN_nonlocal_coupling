@@ -124,6 +124,15 @@ namespace FHN_nonlocal_coupling.Controller
             Debug.WriteLine("Solved in " + stopwatch.ElapsedMilliseconds / 1000.0 + "sec");
             return true;
         }
+        /// <summary>
+        /// Caclulates and then returns two stationary
+        /// point in double array: [u_stationary, v_stationary]
+        /// </summary>
+        public double[] getStat()
+        {
+            fhn[0].calculateStationary();
+            return new double[] { fhn[0].getUStat(), fhn[0].getVStat() };
+        }
 
         /// <summary>
         /// Clears all the plot data

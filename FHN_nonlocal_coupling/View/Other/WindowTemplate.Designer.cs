@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea8 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend8 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series29 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series30 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series31 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series32 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.btnSolveFurther = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -57,6 +57,9 @@
             this.btnTune = new System.Windows.Forms.Button();
             this.txtBoxMinUV = new System.Windows.Forms.TextBox();
             this.txtBoxMaxUV = new System.Windows.Forms.TextBox();
+            this.lblUStat = new System.Windows.Forms.Label();
+            this.lblVStat = new System.Windows.Forms.Label();
+            this.btnStat = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -149,42 +152,42 @@
             // 
             // chart
             // 
-            chartArea8.Name = "ChartArea1";
-            this.chart.ChartAreas.Add(chartArea8);
-            legend8.Name = "Legend1";
-            this.chart.Legends.Add(legend8);
+            chartArea2.Name = "ChartArea1";
+            this.chart.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chart.Legends.Add(legend2);
             this.chart.Location = new System.Drawing.Point(242, 8);
             this.chart.Name = "chart";
-            series29.BorderWidth = 3;
-            series29.ChartArea = "ChartArea1";
-            series29.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series29.Legend = "Legend1";
-            series29.MarkerSize = 7;
-            series29.Name = "U";
-            series29.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            series29.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            series30.BorderWidth = 3;
-            series30.ChartArea = "ChartArea1";
-            series30.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series30.Legend = "Legend1";
-            series30.MarkerSize = 7;
-            series30.Name = "V";
-            series30.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            series30.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            series31.BorderWidth = 2;
-            series31.ChartArea = "ChartArea1";
-            series31.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series31.Legend = "Legend1";
-            series31.Name = "U2";
-            series32.BorderWidth = 2;
-            series32.ChartArea = "ChartArea1";
-            series32.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series32.Legend = "Legend1";
-            series32.Name = "V2";
-            this.chart.Series.Add(series29);
-            this.chart.Series.Add(series30);
-            this.chart.Series.Add(series31);
-            this.chart.Series.Add(series32);
+            series5.BorderWidth = 3;
+            series5.ChartArea = "ChartArea1";
+            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series5.Legend = "Legend1";
+            series5.MarkerSize = 7;
+            series5.Name = "U";
+            series5.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            series5.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            series6.BorderWidth = 3;
+            series6.ChartArea = "ChartArea1";
+            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series6.Legend = "Legend1";
+            series6.MarkerSize = 7;
+            series6.Name = "V";
+            series6.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            series6.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            series7.BorderWidth = 2;
+            series7.ChartArea = "ChartArea1";
+            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series7.Legend = "Legend1";
+            series7.Name = "U2";
+            series8.BorderWidth = 2;
+            series8.ChartArea = "ChartArea1";
+            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series8.Legend = "Legend1";
+            series8.Name = "V2";
+            this.chart.Series.Add(series5);
+            this.chart.Series.Add(series6);
+            this.chart.Series.Add(series7);
+            this.chart.Series.Add(series8);
             this.chart.Size = new System.Drawing.Size(1030, 650);
             this.chart.TabIndex = 94;
             this.chart.Text = "chart1";
@@ -311,11 +314,42 @@
             this.txtBoxMaxUV.Text = "2,0";
             this.txtBoxMaxUV.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // lblUStat
+            // 
+            this.lblUStat.AutoSize = true;
+            this.lblUStat.Location = new System.Drawing.Point(105, 461);
+            this.lblUStat.Name = "lblUStat";
+            this.lblUStat.Size = new System.Drawing.Size(26, 13);
+            this.lblUStat.TabIndex = 111;
+            this.lblUStat.Text = "u* =";
+            // 
+            // lblVStat
+            // 
+            this.lblVStat.AutoSize = true;
+            this.lblVStat.Location = new System.Drawing.Point(105, 477);
+            this.lblVStat.Name = "lblVStat";
+            this.lblVStat.Size = new System.Drawing.Size(26, 13);
+            this.lblVStat.TabIndex = 112;
+            this.lblVStat.Text = "v* =";
+            // 
+            // btnStat
+            // 
+            this.btnStat.Location = new System.Drawing.Point(27, 467);
+            this.btnStat.Name = "btnStat";
+            this.btnStat.Size = new System.Drawing.Size(75, 23);
+            this.btnStat.TabIndex = 113;
+            this.btnStat.Text = "Stationary";
+            this.btnStat.UseVisualStyleBackColor = true;
+            this.btnStat.Click += new System.EventHandler(this.btnStat_Click);
+            // 
             // WindowTemplate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1284, 711);
+            this.Controls.Add(this.btnStat);
+            this.Controls.Add(this.lblVStat);
+            this.Controls.Add(this.lblUStat);
             this.Controls.Add(this.lblMinUV);
             this.Controls.Add(this.lblMaxUV);
             this.Controls.Add(this.btnTune);
@@ -371,5 +405,8 @@
         private System.Windows.Forms.TabControl tabControl1;
         protected System.Windows.Forms.PropertyGrid propertyGrid1;
         protected System.Windows.Forms.PropertyGrid propertyGrid2;
+        private System.Windows.Forms.Label lblUStat;
+        private System.Windows.Forms.Label lblVStat;
+        private System.Windows.Forms.Button btnStat;
     }
 }

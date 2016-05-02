@@ -10,6 +10,8 @@ namespace FHN_nonlocal_coupling.Model
         protected double hx, ht; // steps
         protected double[] t; // time
 
+        private double ustat, vstat;
+
         // variables for properties
         protected double varL;
         private int varN;
@@ -87,6 +89,36 @@ namespace FHN_nonlocal_coupling.Model
 
         public double getT(int j)
         { return t[j]; }
+
+        public double getUStat()
+        {
+            return ustat;
+        }
+
+        public double getVStat()
+        {
+            return vstat;
+        }
+
+        public virtual void calculateStationary()
+        {
+            if (Classical)
+            {
+                Eps = 0.08;
+                Gamma = 0.8;
+                Beta = 0.7;
+
+                double root = Math.Pow(Math.Sqrt(576 * I * I - 1008 * I + 445) + 24 * I - 21, 1.0 / 3.0);
+
+                ustat = (Math.Pow(2, 1.0 / 3.0) * Math.Pow(root, 2) - 2) / (Math.Pow(2, 5.0 / 3.0) * root);
+                vstat = ustat - Math.Pow(ustat, 3) / 3 + I;
+            }
+            else
+            {
+                ustat = 0;
+                vstat = 0;
+            }
+        }
 
         protected double f(double u)
         {

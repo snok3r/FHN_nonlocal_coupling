@@ -95,9 +95,19 @@ namespace FHN_nonlocal_coupling.View.Other
         private void btnSolve_Click(object sender, EventArgs e)
         {
             if (controller.solve())
+            {
                 enablePlotBtn();
+                btnStat_Click(sender, e);
+            }
             else
                 lblError.Visible = true;
+        }
+
+        private void btnStat_Click(object sender, EventArgs e)
+        {
+            double[] result = controller.getStat();
+            lblUStat.Text = "u* = " + Math.Round(result[0], 6).ToString();
+            lblVStat.Text = "v* = " + Math.Round(result[1], 6).ToString();
         }
 
         private void btnSolveFurther_Click(object sender, EventArgs e)

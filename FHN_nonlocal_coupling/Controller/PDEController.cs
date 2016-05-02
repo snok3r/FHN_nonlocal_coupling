@@ -72,17 +72,28 @@ namespace FHN_nonlocal_coupling.Controller
         }
 
         /// <summary>
+        /// Returns height at trackBarValue point
+        /// </summary>
+        public double getHeight(int trackBarValue)
+        {
+            if (!threadStarted)
+                calculatePropertiesInThread(trackBarValue);
+
+            return Math.Round(fhn[0].getHeight(trackBarValue), 3);
+        }
+
+        /// <summary>
         /// Returns velocity at trackBarValue point
         /// </summary>
         public double getVelocity(int trackBarValue)
         {
             if (!threadStarted)
-                calculateVelocityInThread(trackBarValue);
+                calculatePropertiesInThread(trackBarValue);
 
             return Math.Round(fhn[0].getVelocity(trackBarValue), 3);
         }
 
-        private void calculateVelocityInThread(int startingJ)
+        private void calculatePropertiesInThread(int startingJ)
         {
             int M = fhn[0].M;
 
@@ -91,24 +102,28 @@ namespace FHN_nonlocal_coupling.Controller
             int start = startingJ + (M - 1) / 10;
             int max = M - 1;
 
-            if (max - start > 100) // if there's a sense to calculate it concurrently
+            if (max - start > 50) // if there's a sense to calculate it concurrently
             {
-                ThreadPool.QueueUserWorkItem(delegate
+                ThreadPool.QueueUserWorkItem(arg =>
                 {
                     try
                     {
                         while (Thread.CurrentThread.IsAlive)
                         {
+                            Stopwatch stopwatch = Stopwatch.StartNew(); //creates and start the instance of Stopwatch
                             for (int j = start; j < max; j++)
                             {
                                 if (!threadStarted)
                                 {
-                                    Debug.WriteLine("Interrupted velocity calculation on j = " + j);
-                                    throw new ThreadInterruptedException();
+                                    Debug.WriteLine("Interrupted properties calculation on j = " + j);
+                                    break;
                                 }
+                                fhn[0].getHeight(j);
                                 fhn[0].getVelocity(j);
                             }
-                            Debug.WriteLine("Velocity calculation finished");
+                            stopwatch.Stop();
+                            if (threadStarted)
+                                Debug.WriteLine("Properties calculated in " + stopwatch.ElapsedMilliseconds / 1000.0 + "sec");
                             throw new ThreadInterruptedException();
                         }
                     }

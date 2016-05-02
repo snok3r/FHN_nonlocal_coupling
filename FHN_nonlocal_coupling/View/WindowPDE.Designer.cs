@@ -36,6 +36,8 @@
             this.txtBoxVX0 = new System.Windows.Forms.TextBox();
             this.lblUX0 = new System.Windows.Forms.Label();
             this.lblVX0 = new System.Windows.Forms.Label();
+            this.lblHeight = new System.Windows.Forms.Label();
+            this.btnGetHeight = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trBarT)).BeginInit();
             this.SuspendLayout();
@@ -56,16 +58,16 @@
             this.lblVelocity.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lblVelocity.Location = new System.Drawing.Point(108, 524);
             this.lblVelocity.Name = "lblVelocity";
-            this.lblVelocity.Size = new System.Drawing.Size(36, 16);
+            this.lblVelocity.Size = new System.Drawing.Size(20, 16);
             this.lblVelocity.TabIndex = 112;
-            this.lblVelocity.Text = "--- x/t";
+            this.lblVelocity.Text = "---";
             // 
             // btnGetVelocity
             // 
             this.btnGetVelocity.Enabled = false;
-            this.btnGetVelocity.Location = new System.Drawing.Point(27, 519);
+            this.btnGetVelocity.Location = new System.Drawing.Point(27, 524);
             this.btnGetVelocity.Name = "btnGetVelocity";
-            this.btnGetVelocity.Size = new System.Drawing.Size(75, 26);
+            this.btnGetVelocity.Size = new System.Drawing.Size(75, 21);
             this.btnGetVelocity.TabIndex = 111;
             this.btnGetVelocity.Text = "Get Velocity";
             this.btnGetVelocity.UseVisualStyleBackColor = true;
@@ -120,11 +122,34 @@
             this.lblVX0.TabIndex = 118;
             this.lblVX0.Text = "v(x,0)";
             // 
+            // lblHeight
+            // 
+            this.lblHeight.AutoSize = true;
+            this.lblHeight.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblHeight.Location = new System.Drawing.Point(108, 503);
+            this.lblHeight.Name = "lblHeight";
+            this.lblHeight.Size = new System.Drawing.Size(20, 16);
+            this.lblHeight.TabIndex = 120;
+            this.lblHeight.Text = "---";
+            // 
+            // btnGetHeight
+            // 
+            this.btnGetHeight.Enabled = false;
+            this.btnGetHeight.Location = new System.Drawing.Point(27, 501);
+            this.btnGetHeight.Name = "btnGetHeight";
+            this.btnGetHeight.Size = new System.Drawing.Size(75, 21);
+            this.btnGetHeight.TabIndex = 119;
+            this.btnGetHeight.Text = "Get Height";
+            this.btnGetHeight.UseVisualStyleBackColor = true;
+            this.btnGetHeight.Click += new System.EventHandler(this.btnGetHeight_Click);
+            // 
             // WindowPDE
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1284, 711);
+            this.Controls.Add(this.lblHeight);
+            this.Controls.Add(this.btnGetHeight);
             this.Controls.Add(this.lblVX0);
             this.Controls.Add(this.lblUX0);
             this.Controls.Add(this.txtBoxVX0);
@@ -159,6 +184,8 @@
             this.Controls.SetChildIndex(this.txtBoxVX0, 0);
             this.Controls.SetChildIndex(this.lblUX0, 0);
             this.Controls.SetChildIndex(this.lblVX0, 0);
+            this.Controls.SetChildIndex(this.btnGetHeight, 0);
+            this.Controls.SetChildIndex(this.lblHeight, 0);
             ((System.ComponentModel.ISupportInitialize)(this.chart)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trBarT)).EndInit();
             this.ResumeLayout(false);
@@ -176,5 +203,7 @@
         private System.Windows.Forms.TextBox txtBoxVX0;
         private System.Windows.Forms.Label lblUX0;
         private System.Windows.Forms.Label lblVX0;
+        private System.Windows.Forms.Label lblHeight;
+        private System.Windows.Forms.Button btnGetHeight;
     }
 }

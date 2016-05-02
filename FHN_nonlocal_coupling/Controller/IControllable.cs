@@ -17,5 +17,7 @@ namespace FHN_nonlocal_coupling.Controller
         double chartXMax();
         void plot();
         void plot(int j);
+
+        double[] getStat();
     }
 }

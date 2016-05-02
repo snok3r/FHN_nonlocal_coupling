@@ -38,7 +38,10 @@ namespace FHN_nonlocal_coupling.View
             base.timerT_Tick(sender, e);
 
             if (checkBoxContiniousVelocity.Checked)
+            {
+                btnGetHeight_Click(sender, e);
                 btnGetVelocity_Click(sender, e);
+            }
         }
 
         protected override void trBarT_Scroll(object sender, EventArgs e)
@@ -46,12 +49,20 @@ namespace FHN_nonlocal_coupling.View
             base.trBarT_Scroll(sender, e);
 
             if (checkBoxContiniousVelocity.Checked)
+            {
+                btnGetHeight_Click(sender, e);
                 btnGetVelocity_Click(sender, e);
+            }
+        }
+
+        private void btnGetHeight_Click(object sender, EventArgs e)
+        {
+            lblHeight.Text = ((PDEController)controller).getHeight(trBarT.Value).ToString();
         }
 
         private void btnGetVelocity_Click(object sender, EventArgs e)
         {
-            lblVelocity.Text = ((PDEController)controller).getVelocity(trBarT.Value).ToString() + " x/t";
+            lblVelocity.Text = ((PDEController)controller).getVelocity(trBarT.Value).ToString();
         }
 
         protected override void disablePlotBtn()
@@ -59,8 +70,10 @@ namespace FHN_nonlocal_coupling.View
             base.disablePlotBtn();
 
             ((PDEController)controller).interruptThread();
-            lblVelocity.Text = "--- x/t";
+            lblVelocity.Text = "---";
+            lblHeight.Text = "---";
             btnGetVelocity.Enabled = false;
+            btnGetHeight.Enabled = false;
         }
 
         protected override void enablePlotBtn()
@@ -68,6 +81,7 @@ namespace FHN_nonlocal_coupling.View
             base.enablePlotBtn();
 
             btnGetVelocity.Enabled = true;
+            btnGetHeight.Enabled = true;
         }
 
         private void checkBoxInitials_CheckedChanged(object sender, EventArgs e)
