@@ -3,12 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace FHN_nonlocal_coupling.Controller
 {
     public class PDEController : AbstractController<PDE>
     {
-        private bool threadStarted = false;
+        private Thread t;
 
         public PDEController(ViewElements viewElements)
             : base(viewElements)
@@ -102,41 +103,26 @@ namespace FHN_nonlocal_coupling.Controller
         private void calculatePropertiesInThread(int start)
         {
             int max = fhn[0].M;
-            threadStarted = true;
 
-            ThreadPool.QueueUserWorkItem(arg =>
+            Task.Run(() =>
             {
-                try
+                t = Thread.CurrentThread;
+                Stopwatch stopwatch = Stopwatch.StartNew();
+                for (int j = start; j < max; j++)
                 {
-                    while (Thread.CurrentThread.IsAlive)
-                    {
-                        Stopwatch stopwatch = Stopwatch.StartNew(); //creates and start the instance of Stopwatch
-                        for (int j = start; j < max; j++)
-                        {
-                            if (!threadStarted)
-                            {
-                                Debug.WriteLine("Interrupted properties calculation on j = " + j);
-                                break;
-                            }
-                            fhn[0].getHeight(j);
-                            fhn[0].getVelocity(j);
-                        }
-                        stopwatch.Stop();
-                        if (threadStarted)
-                            Debug.WriteLine("Properties calculated in " + stopwatch.ElapsedMilliseconds / 1000.0 + "sec");
-                        throw new ThreadInterruptedException();
-                    }
+                    fhn[0].getHeight(j);
+                    fhn[0].getVelocity(j);
                 }
-                catch (ThreadInterruptedException)
-                {
-                    Thread.CurrentThread.Interrupt();
-                }
+                stopwatch.Stop();
+                Debug.WriteLine("Properties calculated in " + stopwatch.ElapsedMilliseconds / 1000.0 + "sec");
             });
+
         }
 
         public void interruptThread()
         {
-            threadStarted = false;
+            if (t != null && t.IsAlive)
+                t.Abort();
         }
 
         public override void dispose()

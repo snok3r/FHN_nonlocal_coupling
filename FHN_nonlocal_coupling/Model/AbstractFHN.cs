@@ -104,9 +104,8 @@ namespace FHN_nonlocal_coupling.Model
         {
             if (Classical)
             {
-                Eps = 0.08;
-                Gamma = 0.8;
-                Beta = 0.7;
+                //Gamma = 0.8;
+                //Beta = 0.7;
 
                 double root = Math.Pow(Math.Sqrt(576 * I * I - 1008 * I + 445) + 24 * I - 21, 1.0 / 3.0);
 
