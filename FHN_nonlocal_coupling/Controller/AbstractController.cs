@@ -86,21 +86,18 @@ namespace FHN_nonlocal_coupling.Controller
         /// <para>Returns false, if computation error occurred,
         /// true otherwise.</para>
         /// </summary>
-        public virtual bool solve()
+        public virtual bool solve(IProgress<int> progress)
         {
-            viewElements.progressBar.Value = 0;
-            viewElements.progressBar.Maximum = 3;
-            viewElements.trackBar.Maximum = trackBarMax();
-
             Stopwatch stopwatch = Stopwatch.StartNew(); //creates and start the instance of Stopwatch
             for (int i = 0; i < fhn.Length; i++)
                 if (allocate && !solveFurther)
                     fhn[i].allocate();
                 else
                     fhn[i].reload();
-            viewElements.progressBar.Value++;
+            progress.Report(1);
 
             for (int i = 0; i < fhn.Length; i++)
+            {
                 if (solveFurther)
                     fhn[i].initialsFurther();
                 else
@@ -115,15 +112,19 @@ namespace FHN_nonlocal_coupling.Controller
                     else
                         fhn[i].initials();
                 }
-            viewElements.progressBar.Value++;
+            }
+            progress.Report(2);
 
             for (int i = 0; i < fhn.Length; i++)
-                if (!fhn[i].solve()) return false;
-            viewElements.progressBar.Value++;
+                if (!fhn[i].solve())
+                    return false;
+            progress.Report(3);
+
             stopwatch.Stop();
             Debug.WriteLine("Solved in " + stopwatch.ElapsedMilliseconds / 1000.0 + "sec");
             return true;
         }
+
         /// <summary>
         /// Caclulates and then returns two stationary
         /// point in double array: [u_stationary, v_stationary]

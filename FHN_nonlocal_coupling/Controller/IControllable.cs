@@ -9,7 +9,7 @@ namespace FHN_nonlocal_coupling.Controller
         void dispose();
         void reallocate(bool chckd);
         void checkToLoad(String label);
-        bool solve();
+        bool solve(IProgress<int> progress);
         void clearPlot();
 
         int trackBarMax();

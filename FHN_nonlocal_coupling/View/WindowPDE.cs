@@ -24,6 +24,7 @@ namespace FHN_nonlocal_coupling.View
 
             InitializeComponent();
             controller = new PDEController(new ViewElements(chart, propertyGrid1, propertyGrid2, prBarSolve, trBarT, txtBoxUX0, txtBoxVX0, checkBoxInitials));
+            prBarSolve.Maximum = 4;
         }
 
         protected override void btnPlot_Click(object sender, EventArgs e)

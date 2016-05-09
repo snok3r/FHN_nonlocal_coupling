@@ -130,7 +130,7 @@ namespace FHN_nonlocal_coupling.Model
                 for (int j = 0; j < N; j++)
                 {
                     v1[j] = f(u_null[j]) + I;
-                    v2[j] = -100;
+                    v2[j] = (u_null[j] + Beta) / 0.000001;
                 }
             }
         }

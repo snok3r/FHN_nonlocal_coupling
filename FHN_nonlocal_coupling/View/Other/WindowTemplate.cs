@@ -1,6 +1,8 @@
 ﻿using FHN_nonlocal_coupling.Controller;
 using System;
 using System.Drawing;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FHN_nonlocal_coupling.View.Other
@@ -8,10 +10,12 @@ namespace FHN_nonlocal_coupling.View.Other
     public partial class WindowTemplate : Form
     {
         protected IControllable controller;
+        private Object monitor = new Object();
 
         protected WindowTemplate()
         {
             InitializeComponent();
+            prBarSolve.Maximum = 3;
         }
 
         private void WindowTemplate_Load(object sender, EventArgs e)
@@ -57,6 +61,8 @@ namespace FHN_nonlocal_coupling.View.Other
             trBarT.Enabled = false;
             timerT.Enabled = false;
 
+            prBarSolve.Value = 0;
+
             controller.toAllocate(true);
             controller.toSolveFurther(false);
         }
@@ -67,6 +73,7 @@ namespace FHN_nonlocal_coupling.View.Other
             btnPlot.Enabled = true;
             btnSolveFurther.Enabled = true;
 
+            trBarT.Maximum = controller.trackBarMax();
             trBarT.Value = 0;
             trBarT.Enabled = true;
         }
@@ -92,15 +99,32 @@ namespace FHN_nonlocal_coupling.View.Other
             disablePlotBtn();
         }
 
-        private void btnSolve_Click(object sender, EventArgs e)
+        private async void btnSolve_Click(object sender, EventArgs e)
         {
-            if (controller.solve())
+            if (!Monitor.IsEntered(monitor))
             {
-                enablePlotBtn();
-                btnStat_Click(sender, e);
+                try
+                {
+                    Monitor.Enter(monitor);
+                    bool result = false;
+                    var progress = new Progress<int>(percent => prBarSolve.Value = percent);
+
+                    result = await Task.Factory.StartNew(() => controller.solve(progress));
+
+                    if (result)
+                    {
+                        enablePlotBtn();
+                        btnStat_Click(sender, e);
+                    }
+                    else
+                        lblError.Visible = true;
+                }
+                catch (NullReferenceException) { }
+                finally
+                {
+                    Monitor.Exit(monitor);
+                }
             }
-            else
-                lblError.Visible = true;
         }
 
         private void btnStat_Click(object sender, EventArgs e)

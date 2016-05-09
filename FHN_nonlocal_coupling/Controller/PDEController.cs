@@ -9,7 +9,7 @@ namespace FHN_nonlocal_coupling.Controller
 {
     public class PDEController : AbstractController<PDE>
     {
-        private Thread t;
+        private bool abort;
 
         public PDEController(ViewElements viewElements)
             : base(viewElements)
@@ -72,12 +72,13 @@ namespace FHN_nonlocal_coupling.Controller
             }
         }
 
-        public override bool solve()
+        public override bool solve(IProgress<int> progress)
         {
-            if (!base.solve())
+            if (!base.solve(progress))
                 return false;
 
-            calculatePropertiesInThread(0);
+            calculateProperties(0);
+            progress.Report(4);
             return true;
         }
 
@@ -100,29 +101,26 @@ namespace FHN_nonlocal_coupling.Controller
         /// <summary>
         /// calculates 100% (if start = 0) of velocities in concurrent thread
         /// </summary>
-        private void calculatePropertiesInThread(int start)
+        private void calculateProperties(int start)
         {
+            abort = false;
             int max = fhn[0].M;
-
-            Task.Run(() =>
+            
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            for (int j = start; j < max; j++)
             {
-                t = Thread.CurrentThread;
-                Stopwatch stopwatch = Stopwatch.StartNew();
-                for (int j = start; j < max; j++)
-                {
-                    fhn[0].getHeight(j);
-                    fhn[0].getVelocity(j);
-                }
-                stopwatch.Stop();
-                Debug.WriteLine("Properties calculated in " + stopwatch.ElapsedMilliseconds / 1000.0 + "sec");
-            });
-
+                if (abort)
+                    break;
+                fhn[0].getHeight(j);
+                fhn[0].getVelocity(j);
+            }
+            stopwatch.Stop();
+            Debug.WriteLineIf(!abort, "Properties calculated in " + stopwatch.ElapsedMilliseconds / 1000.0 + "sec");
         }
 
         public void interruptThread()
         {
-            if (t != null && t.IsAlive)
-                t.Abort();
+            abort = true;
         }
 
         public override void dispose()
