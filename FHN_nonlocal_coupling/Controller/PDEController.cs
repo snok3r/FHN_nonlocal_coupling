@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace FHN_nonlocal_coupling.Controller
 {
@@ -78,24 +76,34 @@ namespace FHN_nonlocal_coupling.Controller
                 return false;
 
             calculateProperties(0);
-            progress.Report(4);
+            progress.Report(100);
             return true;
         }
 
         /// <summary>
         /// Returns height at trackBarValue point
         /// </summary>
-        public double getHeight(int trackBarValue)
+        public List<double> getHeight(int trackBarValue)
         {
-            return Math.Round(fhn[0].getHeight(trackBarValue), 3);
+            List<double> result = new List<double>();
+
+            for (int i = 0; i < fhn.Length; i++)
+                result.Add(fhn[i].getHeight(trackBarValue));
+
+            return result;
         }
 
         /// <summary>
         /// Returns velocity at trackBarValue point
         /// </summary>
-        public double getVelocity(int trackBarValue)
+        public List<double> getVelocity(int trackBarValue)
         {
-            return Math.Round(fhn[0].getVelocity(trackBarValue), 3);
+            List<double> result = new List<double>();
+
+            for (int i = 0; i < fhn.Length; i++)
+                result.Add(fhn[i].getVelocity(trackBarValue));
+
+            return result;
         }
 
         /// <summary>
@@ -104,15 +112,18 @@ namespace FHN_nonlocal_coupling.Controller
         private void calculateProperties(int start)
         {
             abort = false;
-            int max = fhn[0].M;
-            
+
             Stopwatch stopwatch = Stopwatch.StartNew();
-            for (int j = start; j < max; j++)
+            for (int i = 0; i < fhn.Length; i++)
             {
-                if (abort)
-                    break;
-                fhn[0].getHeight(j);
-                fhn[0].getVelocity(j);
+                int max = fhn[i].M;
+                for (int j = start; j < max; j++)
+                {
+                    if (abort)
+                        break;
+                    fhn[i].getHeight(j);
+                    fhn[i].getVelocity(j);
+                }
             }
             stopwatch.Stop();
             Debug.WriteLineIf(!abort, "Properties calculated in " + stopwatch.ElapsedMilliseconds / 1000.0 + "sec");

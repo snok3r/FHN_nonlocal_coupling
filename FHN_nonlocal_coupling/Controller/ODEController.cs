@@ -113,6 +113,15 @@ namespace FHN_nonlocal_coupling.Controller
             }
         }
 
+        public override bool solve(IProgress<int> progress)
+        {
+            if (!base.solve(progress))
+                return false;
+
+            progress.Report(100);
+            return true;
+        }
+
         /// <summary>
         /// Clears all the plot data
         /// </summary>

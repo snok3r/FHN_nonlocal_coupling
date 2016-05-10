@@ -94,7 +94,7 @@ namespace FHN_nonlocal_coupling.Controller
                     fhn[i].allocate();
                 else
                     fhn[i].reload();
-            progress.Report(1);
+            progress.Report(33);
 
             for (int i = 0; i < fhn.Length; i++)
             {
@@ -113,12 +113,11 @@ namespace FHN_nonlocal_coupling.Controller
                         fhn[i].initials();
                 }
             }
-            progress.Report(2);
+            progress.Report(66);
 
             for (int i = 0; i < fhn.Length; i++)
                 if (!fhn[i].solve())
                     return false;
-            progress.Report(3);
 
             stopwatch.Stop();
             Debug.WriteLine("Solved in " + stopwatch.ElapsedMilliseconds / 1000.0 + "sec");
@@ -127,12 +126,20 @@ namespace FHN_nonlocal_coupling.Controller
 
         /// <summary>
         /// Caclulates and then returns two stationary
-        /// point in double array: [u_stationary, v_stationary]
+        /// point in List: {u_stationary1, v_stationary1, u_stationary2, ...}
         /// </summary>
-        public double[] getStat()
+        public List<double> getStat()
         {
-            fhn[0].calculateStationary();
-            return new double[] { fhn[0].getUStat(), fhn[0].getVStat() };
+            List<double> result = new List<double>();
+
+            for (int i = 0; i < fhn.Length; i++)
+            {
+                fhn[i].calculateStationary();
+                result.Add(fhn[i].getUStat());
+                result.Add(fhn[i].getVStat());
+            }
+
+            return result;
         }
 
         /// <summary>

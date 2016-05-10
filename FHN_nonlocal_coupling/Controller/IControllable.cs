@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace FHN_nonlocal_coupling.Controller
 {
@@ -18,6 +19,6 @@ namespace FHN_nonlocal_coupling.Controller
         void plot();
         void plot(int j);
 
-        double[] getStat();
+        List<double> getStat();
     }
 }

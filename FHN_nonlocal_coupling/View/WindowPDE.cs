@@ -23,8 +23,7 @@ namespace FHN_nonlocal_coupling.View
             };
 
             InitializeComponent();
-            controller = new PDEController(new ViewElements(chart, propertyGrid1, propertyGrid2, prBarSolve, trBarT, txtBoxUX0, txtBoxVX0, checkBoxInitials));
-            prBarSolve.Maximum = 4;
+            controller = new PDEController(new ViewElements(chart, propertyGrid1, propertyGrid2, trBarT, txtBoxUX0, txtBoxVX0, checkBoxInitials));
         }
 
         protected override void btnPlot_Click(object sender, EventArgs e)
@@ -58,12 +57,25 @@ namespace FHN_nonlocal_coupling.View
 
         private void btnGetHeight_Click(object sender, EventArgs e)
         {
-            lblHeight.Text = ((PDEController)controller).getHeight(trBarT.Value).ToString();
+            double[] result = ((PDEController)controller).getHeight(trBarT.Value).ToArray();
+
+            showParameters(lblHeight, result, 4);
         }
 
         private void btnGetVelocity_Click(object sender, EventArgs e)
         {
-            lblVelocity.Text = ((PDEController)controller).getVelocity(trBarT.Value).ToString();
+            double[] result = ((PDEController)controller).getVelocity(trBarT.Value).ToArray();
+
+            showParameters(lblVelocity, result, 4);
+        }
+
+        private void showParameters(System.Windows.Forms.Label lbl, double[] data, int s)
+        {
+            String param = Math.Round(data[0], s).ToString();
+            if (data.Length == 2)
+                param += "  (" + Math.Round(data[1], s).ToString() + ")";
+
+            lbl.Text = param;
         }
 
         protected override void disablePlotBtn()

@@ -56,6 +56,7 @@
             this.MaximizeBox = false;
             this.Name = "AboutODE";
             this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AboutODE";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
