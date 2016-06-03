@@ -12,7 +12,7 @@ namespace FHN_nonlocal_coupling.Controller
         public TextBox ux0, vx0;
         public CheckBox customInitials;
 
-        public ViewElements(Chart chart, Chart chartPhase, PropertyGrid pg1, PropertyGrid pg2, TrackBar trackBar, TextBox ux0, TextBox vx0, CheckBox customInitials)
+        private ViewElements(Chart chart, Chart chartPhase, PropertyGrid pg1, PropertyGrid pg2, TrackBar trackBar, TextBox ux0, TextBox vx0, CheckBox customInitials)
         {
             this.chart = chart;
             this.chartPhase = chartPhase;
@@ -24,10 +24,14 @@ namespace FHN_nonlocal_coupling.Controller
             this.customInitials = customInitials;
         }
 
-        public ViewElements(Chart chart, Chart chartPhase, PropertyGrid pg1, PropertyGrid pg2, TrackBar trackBar)
-            : this(chart, chartPhase, pg1, pg2, trackBar, null, null, null) { }
+        public static ViewElements ODEViewElements(Chart chart, Chart chartPhase, PropertyGrid pg1, PropertyGrid pg2, TrackBar trackBar)
+        {
+            return new ViewElements(chart, chartPhase, pg1, pg2, trackBar, null, null, null);
+        }
 
-        public ViewElements(Chart chart, PropertyGrid pg1, PropertyGrid pg2, TrackBar trackBar, TextBox ux0, TextBox vx0, CheckBox customInitials)
-            : this(chart, null, pg1, pg2, trackBar, ux0, vx0, customInitials) { }
+        public static ViewElements PDEViewElements(Chart chart, PropertyGrid pg1, PropertyGrid pg2, TrackBar trackBar, TextBox ux0, TextBox vx0, CheckBox customInitials)
+        {
+            return new ViewElements(chart, null, pg1, pg2, trackBar, ux0, vx0, customInitials);
+        }
     }
 }

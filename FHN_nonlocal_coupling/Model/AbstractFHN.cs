@@ -122,7 +122,7 @@ namespace FHN_nonlocal_coupling.Model
         protected double f(double u)
         {
             if (Classical)
-                return u - u * u * u / 3;
+                return u - Math.Pow(u, 3) / 3;
             else
                 return -u * (u - 1) * (u - A);
         }

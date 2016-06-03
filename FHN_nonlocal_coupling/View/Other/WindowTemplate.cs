@@ -22,6 +22,7 @@ namespace FHN_nonlocal_coupling.View.Other
         private void WindowTemplate_Load(object sender, EventArgs e)
         {
             if (controller != null) controller.reallocate(checkBox2ndEq.Checked);
+            change2ndLegendVisibility(checkBox2ndEq.Checked);
         }
 
         private void WindowTemplate_FormClosing(object sender, FormClosingEventArgs e)
@@ -90,14 +91,22 @@ namespace FHN_nonlocal_coupling.View.Other
             chart.ChartAreas[0].AxisX.Interval = Convert.ToInt32((controller.chartXMax() - controller.chartXMin()) / 10.0);
             chart.ChartAreas[0].AxisY.Interval = (chart.ChartAreas[0].AxisY.Maximum - chart.ChartAreas[0].AxisY.Minimum) / 10.0;
 
-            chart.Series[2].Color = Color.Blue;
-            chart.Series[3].Color = Color.OrangeRed;
+            chart.Series[2].Color = Color.DarkRed;
+            chart.Series[3].Color = Color.LimeGreen;
+        }
+
+        protected virtual void change2ndLegendVisibility(bool isSecondEqChecked)
+        {
+            for (int i = 0; i < 2; i++)
+                chart.Series[i + 2].IsVisibleInLegend = isSecondEqChecked;
         }
 
         private void checkBox2ndEq_CheckedChanged(object sender, EventArgs e)
         {
             controller.reallocate(checkBox2ndEq.Checked);
             disablePlotBtn();
+
+            change2ndLegendVisibility(checkBox2ndEq.Checked);
         }
 
         private async void btnSolve_Click(object sender, EventArgs e)
@@ -107,16 +116,14 @@ namespace FHN_nonlocal_coupling.View.Other
                 try
                 {
                     Monitor.Enter(monitor);
+                    btnStat.PerformClick();
                     bool result = false;
                     var progress = new Progress<int>(percent => prBarSolve.Value = percent);
 
                     result = await Task.Factory.StartNew(() => controller.solve(progress));
 
                     if (result)
-                    {
                         enablePlotBtn();
-                        btnStat_Click(sender, e);
-                    }
                     else
                         lblError.Visible = true;
                 }
@@ -146,6 +153,7 @@ namespace FHN_nonlocal_coupling.View.Other
 
         private void btnSolveFurther_Click(object sender, EventArgs e)
         {
+            disablePlotBtn();
             controller.toSolveFurther(true);
             btnSolve_Click(sender, e);
         }

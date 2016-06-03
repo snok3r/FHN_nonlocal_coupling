@@ -278,7 +278,7 @@ namespace FHN_nonlocal_coupling.Model
                     else // if x + d < L
                         uxplusd = u[j, i + k];
 
-                    di[i] = u[j, i] + ht * (B * (uxminusd + uxplusd - 2 * u[j, i]) + f(u[j, i]) - v[j, i] + I);
+                    di[i] = u[j, i] + ht * (B * ((uxminusd + uxplusd) * 0.5 - u[j, i]) + f(u[j, i]) - v[j, i] + I);
                 }
                 else
                     di[i] = u[j, i] + ht * (B * (integral(j, i) - u[j, i]) + f(u[j, i]) - v[j, i] + I);
@@ -298,15 +298,69 @@ namespace FHN_nonlocal_coupling.Model
             if (j0 > M - 1)
                 return;
 
+            double velocity = 0;
+
+            if (B == 0 && I == 0)
+                velocity = calculateVelocityB0(j0);
+            else
+                velocity = calculateVelocityBNotEquals0(j0);
+
+            velocities[j0].velocity = velocity;
+            velocities[j0].calculated = true;
+        }
+
+        private double calculateVelocityB0(int j0)
+        {
+            double nominator = 0;
+            double denominator = 0;
+
+            nominator += 0.5 * nominatorFunction(N - 1, j0);
+            denominator += 0.5 * denominatorFunction(N - 1, j0);
+            for (int i = 1; i < N - 1; i++)
+            {
+                nominator += nominatorFunction(i, j0);
+                denominator += denominatorFunction(i, j0);
+            }
+
+            return -nominator / denominator;
+        }
+
+        private double denominatorFunction(int i, int j)
+        {
+            return Math.Pow(diffUx(i, j), 2) + Math.Pow(diffVx(i, j), 2);
+        }
+
+        private double nominatorFunction(int i, int j)
+        {
+            double uij = u[j, i];
+            double vij = v[j, i];
+
+            return diffUx(i, j) * (f(uij) - vij) + diffVx(i, j) * Eps * (uij + Beta - Gamma * vij);
+        }
+
+        private double diffUx(int i, int j)
+        {
+            if (i <= 0 || i > N - 1 || j < 0 || j > M - 1)
+                return 0;
+
+            return (u[j, i] - u[j, i - 1]) / hx;
+        }
+
+        private double diffVx(int i, int j)
+        {
+            if (i <= 0 || i > N - 1 || j < 0 || j > M - 1)
+                return 0;
+
+            return (v[j, i] - v[j, i - 1]) / hx;
+        }
+
+        private double calculateVelocityBNotEquals0(int j0)
+        {
             int deltaj = (int)(1 / ht);
 
             int j1 = (j0 + deltaj);
             if (j1 > M - 1) // we're out of frame and no need to find X0 max
-            {
-                velocities[j0].velocity = 0;
-                velocities[j0].calculated = true;
-                return;
-            }
+                return 0;
 
             int i0 = 0; // X0 max = u[j0, i0]
             int i1 = 0; // X1 max = u[j1, i0]
@@ -324,8 +378,7 @@ namespace FHN_nonlocal_coupling.Model
             double x0 = i0 * hx; double x1 = i1 * hx;
             double t0 = j0 * ht; double t1 = j1 * ht;
 
-            velocities[j0].velocity = (x1 - x0) / (t1 - t0);
-            velocities[j0].calculated = true;
+            return (x1 - x0) / (t1 - t0);
         }
 
         public double getHeight(int j0)
@@ -368,17 +421,17 @@ namespace FHN_nonlocal_coupling.Model
             double sum = 0;
             double xi = x[i];
 
-            sum += kernel(xi - x[0]) * u[j, 0];
-            for (int k = 1; k < N - 1; k++) sum += 2 * kernel(xi - x[k]) * u[j, k];
-            sum += kernel(xi - x[N - 1]) * u[j, N - 1];
+            sum += 0.5 * (kernel(xi - x[0]) * u[j, 0] + kernel(xi - x[N - 1]) * u[j, N - 1]);
+            for (int k = 1; k < N - 1; k++)
+                sum += kernel(xi - x[k]) * u[j, k];
 
-            return hx * sum / 2;
+            return hx * sum;
         }
 
         private double kernel(double z)
         {
-            //return Math.Exp(-z * z / 2) / Math.Sqrt(2 * Math.PI);
-            return 1.0 / 2 * Math.Exp(-Math.Abs(z + 2));
+            return Math.Exp(-z * z / 2) / Math.Sqrt(2 * Math.PI);
+            //return 1.0 / 2 * Math.Exp(-Math.Abs(z + 2));
         }
 
         private double u_x_0(double x)

@@ -23,7 +23,7 @@ namespace FHN_nonlocal_coupling.View
             };
 
             InitializeComponent();
-            controller = new PDEController(new ViewElements(chart, propertyGrid1, propertyGrid2, trBarT, txtBoxUX0, txtBoxVX0, checkBoxInitials));
+            controller = new PDEController(ViewElements.PDEViewElements(chart, propertyGrid1, propertyGrid2, trBarT, txtBoxUX0, txtBoxVX0, checkBoxInitials));
         }
 
         protected override void btnPlot_Click(object sender, EventArgs e)
@@ -33,26 +33,27 @@ namespace FHN_nonlocal_coupling.View
             base.btnPlot_Click(sender, e);
         }
 
+        private void parameterBtnsClick(bool measureContinuously)
+        {
+            if (measureContinuously)
+            {
+                btnGetVelocity.PerformClick();
+                btnGetHeight.PerformClick();
+            }
+        }
+
         protected override void timerT_Tick(object sender, EventArgs e)
         {
             base.timerT_Tick(sender, e);
 
-            if (checkBoxContiniousVelocity.Checked)
-            {
-                btnGetHeight_Click(sender, e);
-                btnGetVelocity_Click(sender, e);
-            }
+            parameterBtnsClick(checkBoxContiniousVelocity.Checked);
         }
 
         protected override void trBarT_Scroll(object sender, EventArgs e)
         {
             base.trBarT_Scroll(sender, e);
 
-            if (checkBoxContiniousVelocity.Checked)
-            {
-                btnGetHeight_Click(sender, e);
-                btnGetVelocity_Click(sender, e);
-            }
+            parameterBtnsClick(checkBoxContiniousVelocity.Checked);
         }
 
         private void btnGetHeight_Click(object sender, EventArgs e)

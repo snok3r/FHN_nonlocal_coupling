@@ -10,7 +10,7 @@ namespace FHN_nonlocal_coupling.View
         public WindowODE()
         {
             InitializeComponent();
-            controller = new ODEController(new ViewElements(chart, chartPhase, propertyGrid1, propertyGrid2, trBarT));
+            controller = new ODEController(ViewElements.ODEViewElements(chart, chartPhase, propertyGrid1, propertyGrid2, trBarT));
         }
 
         protected override void btnPlot_Click(object sender, EventArgs e)
@@ -42,6 +42,14 @@ namespace FHN_nonlocal_coupling.View
             chartPhase.ChartAreas[0].AxisY.Interval = (chartPhase.ChartAreas[0].AxisY.Maximum - chartPhase.ChartAreas[0].AxisY.Minimum) / 10.0;
 
             chartPhase.Series[3].Color = Color.Blue;
+        }
+
+        protected override void change2ndLegendVisibility(bool isSecondEqChecked)
+        {
+            base.change2ndLegendVisibility(isSecondEqChecked);
+
+            for (int i = 0; i < 3; i++)
+                chartPhase.Series[i + 3].IsVisibleInLegend = isSecondEqChecked;
         }
 
         protected override void btnAbout_Click(object sender, EventArgs e)
