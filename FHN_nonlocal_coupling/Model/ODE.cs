@@ -63,12 +63,6 @@ namespace FHN_nonlocal_coupling.Model
             v2 = new double[N];
         }
 
-        public override void reload()
-        {
-            if (u == null || v == null || v1 == null || v2 == null || u_null == null || t == null)
-                allocate();
-        }
-
         public override void initials()
         {   // Initialize initials
             u[0] = U0;

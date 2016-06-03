@@ -26,13 +26,6 @@ namespace FHN_nonlocal_coupling.Controller
 
         /// <summary>
         /// if 'b' is true, then
-        /// arrays need to be reallocated
-        /// </summary>
-        public void toAllocate(bool b)
-        { allocate = b; }
-
-        /// <summary>
-        /// if 'b' is true, then
         /// we're solving further
         /// </summary>
         public void toSolveFurther(bool b)
@@ -75,10 +68,10 @@ namespace FHN_nonlocal_coupling.Controller
         /// Checks whether you need to reallocate
         /// arrays or not
         /// </summary>
-        public void checkToLoad(String label)
+        public void checkToLoad(IEnumerable<String> parameters)
         {
             // need to reallocate, if paramsNeedReload contains given label
-            allocate = paramsNeedReload.Contains(label);
+            allocate = paramsNeedReload.Overlaps(parameters);
         }
 
         /// <summary>

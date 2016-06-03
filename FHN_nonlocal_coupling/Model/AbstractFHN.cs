@@ -19,10 +19,10 @@ namespace FHN_nonlocal_coupling.Model
         private double varT;
 
         public abstract void allocate();
-        public abstract void reload();
         public abstract void initials();
         public abstract void initialsFurther();
         public abstract bool solve();
+        public virtual void reload() { }
 
         public AbstractFHN()
         {

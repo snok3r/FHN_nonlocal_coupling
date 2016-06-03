@@ -5,11 +5,10 @@ namespace FHN_nonlocal_coupling.Controller
 {
     public interface IControllable
     {
-        void toAllocate(bool b);
         void toSolveFurther(bool b);
         void dispose();
         void reallocate(bool chckd);
-        void checkToLoad(String label);
+        void checkToLoad(IEnumerable<String> paramsNeedReload);
         bool solve(IProgress<int> progress);
         void clearPlot();
 

@@ -1,5 +1,6 @@
 ﻿using FHN_nonlocal_coupling.Controller;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Threading;
@@ -12,6 +13,7 @@ namespace FHN_nonlocal_coupling.View.Other
     {
         protected IControllable controller;
         private Object monitor = new Object();
+        private HashSet<String> paramsNeedReload = new HashSet<String>();
 
         protected WindowTemplate()
         {
@@ -23,6 +25,7 @@ namespace FHN_nonlocal_coupling.View.Other
         {
             if (controller != null) controller.reallocate(checkBox2ndEq.Checked);
             change2ndLegendVisibility(checkBox2ndEq.Checked);
+            paramsNeedReload.Add("start");
         }
 
         private void WindowTemplate_FormClosing(object sender, FormClosingEventArgs e)
@@ -65,7 +68,6 @@ namespace FHN_nonlocal_coupling.View.Other
 
             prBarSolve.Value = 0;
 
-            controller.toAllocate(true);
             controller.toSolveFurther(false);
         }
 
@@ -104,6 +106,7 @@ namespace FHN_nonlocal_coupling.View.Other
         private void checkBox2ndEq_CheckedChanged(object sender, EventArgs e)
         {
             controller.reallocate(checkBox2ndEq.Checked);
+            paramsNeedReload.Add("start");
             disablePlotBtn();
 
             change2ndLegendVisibility(checkBox2ndEq.Checked);
@@ -116,6 +119,7 @@ namespace FHN_nonlocal_coupling.View.Other
                 try
                 {
                     Monitor.Enter(monitor);
+                    controller.checkToLoad(paramsNeedReload);
                     btnStat.PerformClick();
                     bool result = false;
                     var progress = new Progress<int>(percent => prBarSolve.Value = percent);
@@ -133,6 +137,7 @@ namespace FHN_nonlocal_coupling.View.Other
                 }
                 finally
                 {
+                    paramsNeedReload.Clear();
                     Monitor.Exit(monitor);
                 }
             }
@@ -164,7 +169,7 @@ namespace FHN_nonlocal_coupling.View.Other
                 return;
 
             disablePlotBtn();
-            controller.checkToLoad(e.ChangedItem.Label);
+            paramsNeedReload.Add(e.ChangedItem.Label);
         }
 
         private void btnTune_Click(object sender, EventArgs e)

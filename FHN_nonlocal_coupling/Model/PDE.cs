@@ -116,14 +116,11 @@ namespace FHN_nonlocal_coupling.Model
 
         public override void reload()
         {
-            if (u == null || v == null || velocities == null || heights == null || x == null || t == null)
-                allocate();
-            else
-                for (int j = 0; j < M; j++)
-                {
-                    velocities[j].calculated = false;
-                    heights[j].calculated = false;
-                }
+            for (int j = 0; j < M; j++)
+            {
+                velocities[j].calculated = false;
+                heights[j].calculated = false;
+            }
         }
 
         public override void initials()

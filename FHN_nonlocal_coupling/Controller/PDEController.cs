@@ -13,7 +13,7 @@ namespace FHN_nonlocal_coupling.Controller
             : base(viewElements)
         {
             if (paramsNeedReload == null)
-                paramsNeedReload = new HashSet<String>(new String[] { "N", "M", "T", "L" });
+                paramsNeedReload = new HashSet<String>(new String[] { "N", "M", "T", "L", "start"});
         }
 
         /// <summary>
