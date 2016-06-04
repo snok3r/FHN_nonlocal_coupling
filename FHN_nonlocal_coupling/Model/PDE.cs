@@ -263,23 +263,26 @@ namespace FHN_nonlocal_coupling.Model
             else
             {
                 if (DeltaCoupling)
-                {
-                    double uxminusd = 0, uxplusd = 0;
-                    if (i - k <= 0) // if x - d <= -L
-                        uxminusd = u[j, 0];
-                    else // if x - d > -L
-                        uxminusd = u[j, i - k];
-
-                    if (i + k >= N - 1) // x + d >= L
-                        uxplusd = u[j, N - 1];
-                    else // if x + d < L
-                        uxplusd = u[j, i + k];
-
-                    di[i] = u[j, i] + ht * (B * ((uxminusd + uxplusd) * 0.5 - u[j, i]) + f(u[j, i]) - v[j, i] + I);
-                }
+                    di[i] = u[j, i] + ht * (B * uDelta(i, j, k) + f(u[j, i]) - v[j, i] + I);
                 else
                     di[i] = u[j, i] + ht * (B * (integral(j, i) - u[j, i]) + f(u[j, i]) - v[j, i] + I);
             }
+        }
+
+        private double uDelta(int i, int j, int k)
+        {
+            double uxminusd = 0, uxplusd = 0;
+            if (i - k <= 0) // if x - d <= -L
+                uxminusd = u[j, 0];
+            else // if x - d > -L
+                uxminusd = u[j, i - k];
+
+            if (i + k >= N - 1) // x + d >= L
+                uxplusd = u[j, N - 1];
+            else // if x + d < L
+                uxplusd = u[j, i + k];
+
+            return uxminusd + uxplusd - 2 * u[j, i];
         }
 
         public double getVelocity(int j0)
@@ -297,25 +300,27 @@ namespace FHN_nonlocal_coupling.Model
 
             double velocity = 0;
 
-            if (B == 0 && I == 0)
-                velocity = calculateVelocityB0(j0);
+            if (B > -1.5 && I == 0)
+                velocity = calculateVelocityBPositive(j0);
             else
-                velocity = calculateVelocityBNotEquals0(j0);
+                velocity = calculateVelocityNumerical(j0);
 
             velocities[j0].velocity = velocity;
             velocities[j0].calculated = true;
         }
 
-        private double calculateVelocityB0(int j0)
+        private double calculateVelocityBPositive(int j0)
         {
+            int k = Convert.ToInt32(d / hx);
+
             double nominator = 0;
             double denominator = 0;
 
-            nominator += 0.5 * nominatorFunction(N - 1, j0);
+            nominator += 0.5 * nominatorFunction(N - 1, j0, k);
             denominator += 0.5 * denominatorFunction(N - 1, j0);
             for (int i = 1; i < N - 1; i++)
             {
-                nominator += nominatorFunction(i, j0);
+                nominator += nominatorFunction(i, j0, k);
                 denominator += denominatorFunction(i, j0);
             }
 
@@ -327,12 +332,15 @@ namespace FHN_nonlocal_coupling.Model
             return Math.Pow(diffUx(i, j), 2) + Math.Pow(diffVx(i, j), 2);
         }
 
-        private double nominatorFunction(int i, int j)
+        private double nominatorFunction(int i, int j, int k)
         {
             double uij = u[j, i];
             double vij = v[j, i];
 
-            return diffUx(i, j) * (f(uij) - vij) + diffVx(i, j) * Eps * (uij + Beta - Gamma * vij);
+            if (B == 0)
+                return diffUx(i, j) * (f(uij) - vij) + diffVx(i, j) * Eps * (uij + Beta - Gamma * vij);
+            else
+                return diffUx(i, j) * (f(uij) + B * uDelta(i, j, k) - vij) + diffVx(i, j) * Eps * (uij + Beta - Gamma * vij);
         }
 
         private double diffUx(int i, int j)
@@ -351,7 +359,7 @@ namespace FHN_nonlocal_coupling.Model
             return (v[j, i] - v[j, i - 1]) / hx;
         }
 
-        private double calculateVelocityBNotEquals0(int j0)
+        private double calculateVelocityNumerical(int j0)
         {
             int deltaj = (int)(1 / ht);
 
