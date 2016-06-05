@@ -386,6 +386,30 @@ namespace FHN_nonlocal_coupling.Model
             return (x1 - x0) / (t1 - t0);
         }
 
+        public double getWidth(int j0)
+        {
+            double width = 0;
+
+            int idx_left = Int32.MinValue;
+            int idx_right = Int32.MaxValue;
+
+            int i = 0;
+            double ustat = getUStat();
+            double height = getHeight(j0);
+            while ((u[j0, i++] < ustat + 0.05 * height) && i < N - 1) ;
+            idx_left = i;
+
+            while ((u[j0, i++] > ustat + 0.05 * height) && i < N - 1) ;
+            idx_right = i;
+
+            if (idx_right >= N - 1 || idx_left < 0)
+                width = 0;
+            else
+                width = (idx_right - idx_left) * hx;
+
+            return width;
+        }
+
         public double getHeight(int j0)
         {
             if (!heights[j0].calculated)

@@ -70,6 +70,12 @@ namespace FHN_nonlocal_coupling.View
             showParameters(lblVelocity, result, 4);
         }
 
+        private void btnGetWidth_Click(object sender, EventArgs e)
+        {
+            double[] result = ((PDEController)controller).getWidth(trBarT.Value).ToArray();
+            showParameters(lblWidth, result, 4);
+        }
+
         private void showParameters(System.Windows.Forms.Label lbl, double[] data, int s)
         {
             String param = Math.Round(data[0], s).ToString();
@@ -86,8 +92,10 @@ namespace FHN_nonlocal_coupling.View
             ((PDEController)controller).interruptThread();
             lblVelocity.Text = "---";
             lblHeight.Text = "---";
+            lblWidth.Text = "---";
             btnGetVelocity.Enabled = false;
             btnGetHeight.Enabled = false;
+            btnGetWidth.Enabled = false;
         }
 
         protected override void enablePlotBtn()
@@ -96,6 +104,7 @@ namespace FHN_nonlocal_coupling.View
 
             btnGetVelocity.Enabled = true;
             btnGetHeight.Enabled = true;
+            btnGetWidth.Enabled = true;
         }
 
         private void checkBoxInitials_CheckedChanged(object sender, EventArgs e)

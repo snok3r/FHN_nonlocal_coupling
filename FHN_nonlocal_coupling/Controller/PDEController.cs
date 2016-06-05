@@ -13,7 +13,7 @@ namespace FHN_nonlocal_coupling.Controller
             : base(viewElements)
         {
             if (paramsNeedReload == null)
-                paramsNeedReload = new HashSet<String>(new String[] { "N", "M", "T", "L", "start"});
+                paramsNeedReload = new HashSet<String>(new String[] { "N", "M", "T", "L", "start" });
         }
 
         /// <summary>
@@ -102,6 +102,19 @@ namespace FHN_nonlocal_coupling.Controller
 
             for (int i = 0; i < fhn.Length; i++)
                 result.Add(fhn[i].getVelocity(trackBarValue));
+
+            return result;
+        }
+
+        /// <summary>
+        /// Returns width at trackBarValue point
+        /// </summary>
+        public List<double> getWidth(int trackBarValue)
+        {
+            List<double> result = new List<double>();
+
+            for (int i = 0; i < fhn.Length; i++)
+                result.Add(fhn[i].getWidth(trackBarValue));
 
             return result;
         }

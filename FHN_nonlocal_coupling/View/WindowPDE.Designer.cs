@@ -38,6 +38,8 @@
             this.lblVX0 = new System.Windows.Forms.Label();
             this.lblHeight = new System.Windows.Forms.Label();
             this.btnGetHeight = new System.Windows.Forms.Button();
+            this.lblWidth = new System.Windows.Forms.Label();
+            this.btnGetWidth = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trBarT)).BeginInit();
             this.SuspendLayout();
@@ -47,7 +49,7 @@
             this.checkBoxContiniousVelocity.AutoSize = true;
             this.checkBoxContiniousVelocity.Checked = true;
             this.checkBoxContiniousVelocity.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxContiniousVelocity.Location = new System.Drawing.Point(28, 547);
+            this.checkBoxContiniousVelocity.Location = new System.Drawing.Point(28, 540);
             this.checkBoxContiniousVelocity.Name = "checkBoxContiniousVelocity";
             this.checkBoxContiniousVelocity.Size = new System.Drawing.Size(126, 17);
             this.checkBoxContiniousVelocity.TabIndex = 113;
@@ -58,7 +60,7 @@
             // 
             this.lblVelocity.AutoSize = true;
             this.lblVelocity.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblVelocity.Location = new System.Drawing.Point(108, 524);
+            this.lblVelocity.Location = new System.Drawing.Point(108, 517);
             this.lblVelocity.Name = "lblVelocity";
             this.lblVelocity.Size = new System.Drawing.Size(20, 16);
             this.lblVelocity.TabIndex = 112;
@@ -67,7 +69,7 @@
             // btnGetVelocity
             // 
             this.btnGetVelocity.Enabled = false;
-            this.btnGetVelocity.Location = new System.Drawing.Point(27, 524);
+            this.btnGetVelocity.Location = new System.Drawing.Point(27, 517);
             this.btnGetVelocity.Name = "btnGetVelocity";
             this.btnGetVelocity.Size = new System.Drawing.Size(75, 21);
             this.btnGetVelocity.TabIndex = 111;
@@ -128,7 +130,7 @@
             // 
             this.lblHeight.AutoSize = true;
             this.lblHeight.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblHeight.Location = new System.Drawing.Point(108, 503);
+            this.lblHeight.Location = new System.Drawing.Point(108, 496);
             this.lblHeight.Name = "lblHeight";
             this.lblHeight.Size = new System.Drawing.Size(20, 16);
             this.lblHeight.TabIndex = 120;
@@ -137,7 +139,7 @@
             // btnGetHeight
             // 
             this.btnGetHeight.Enabled = false;
-            this.btnGetHeight.Location = new System.Drawing.Point(27, 501);
+            this.btnGetHeight.Location = new System.Drawing.Point(27, 494);
             this.btnGetHeight.Name = "btnGetHeight";
             this.btnGetHeight.Size = new System.Drawing.Size(75, 21);
             this.btnGetHeight.TabIndex = 119;
@@ -145,11 +147,34 @@
             this.btnGetHeight.UseVisualStyleBackColor = true;
             this.btnGetHeight.Click += new System.EventHandler(this.btnGetHeight_Click);
             // 
+            // lblWidth
+            // 
+            this.lblWidth.AutoSize = true;
+            this.lblWidth.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblWidth.Location = new System.Drawing.Point(108, 556);
+            this.lblWidth.Name = "lblWidth";
+            this.lblWidth.Size = new System.Drawing.Size(20, 16);
+            this.lblWidth.TabIndex = 122;
+            this.lblWidth.Text = "---";
+            // 
+            // btnGetWidth
+            // 
+            this.btnGetWidth.Enabled = false;
+            this.btnGetWidth.Location = new System.Drawing.Point(27, 556);
+            this.btnGetWidth.Name = "btnGetWidth";
+            this.btnGetWidth.Size = new System.Drawing.Size(75, 21);
+            this.btnGetWidth.TabIndex = 121;
+            this.btnGetWidth.Text = "Get Width";
+            this.btnGetWidth.UseVisualStyleBackColor = true;
+            this.btnGetWidth.Click += new System.EventHandler(this.btnGetWidth_Click);
+            // 
             // WindowPDE
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1284, 711);
+            this.Controls.Add(this.lblWidth);
+            this.Controls.Add(this.btnGetWidth);
             this.Controls.Add(this.lblHeight);
             this.Controls.Add(this.btnGetHeight);
             this.Controls.Add(this.lblVX0);
@@ -188,6 +213,8 @@
             this.Controls.SetChildIndex(this.lblVX0, 0);
             this.Controls.SetChildIndex(this.btnGetHeight, 0);
             this.Controls.SetChildIndex(this.lblHeight, 0);
+            this.Controls.SetChildIndex(this.btnGetWidth, 0);
+            this.Controls.SetChildIndex(this.lblWidth, 0);
             ((System.ComponentModel.ISupportInitialize)(this.chart)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trBarT)).EndInit();
             this.ResumeLayout(false);
@@ -207,5 +234,7 @@
         private System.Windows.Forms.Label lblVX0;
         private System.Windows.Forms.Label lblHeight;
         private System.Windows.Forms.Button btnGetHeight;
+        private System.Windows.Forms.Label lblWidth;
+        private System.Windows.Forms.Button btnGetWidth;
     }
 }
