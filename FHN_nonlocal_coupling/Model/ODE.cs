@@ -11,7 +11,8 @@ namespace FHN_nonlocal_coupling.Model
         private double[] u_null, v1, v2; // nullclines
 
         // Constructor with default parameters
-        public ODE() : base()
+        public ODE()
+            : base()
         {
             N = 1000;
             L = 2.5;
@@ -42,14 +43,16 @@ namespace FHN_nonlocal_coupling.Model
             Parallel.Invoke(
                 () =>
                 {
-                    for (int j = 0; j < N; j++)
-                        if (t != null) t[j] = j * ht;
+                    if (t != null)
+                        for (int j = 0; j < N; j++)
+                            t[j] = j * ht;
                 },
 
                 () =>
                 {
-                    for (int j = 0; j < N; j++)
-                        if (u_null != null) u_null[j] = -L + j * hx;
+                    if (u_null != null)
+                        for (int j = 0; j < N; j++)
+                            u_null[j] = -L + j * hx;
                 }
             );
 
@@ -58,12 +61,6 @@ namespace FHN_nonlocal_coupling.Model
 
             v1 = new double[N];
             v2 = new double[N];
-        }
-
-        public override void reload()
-        {
-            if (u == null || v == null || v1 == null || v2 == null || u_null == null || t == null)
-                allocate();
         }
 
         public override void initials()
@@ -97,7 +94,7 @@ namespace FHN_nonlocal_coupling.Model
                 u[j + 1] = u[j] + ht * 0.5 * (u_j + f1(utemp, vtemp));
                 v[j + 1] = v[j] + ht * 0.5 * (v_j + f2(utemp, vtemp));
             }
-            
+
             nullclines();
 
             return true;
@@ -110,13 +107,15 @@ namespace FHN_nonlocal_coupling.Model
                 Parallel.Invoke(
                     () =>
                     {
-                        for (int j = 0; j < N; j++)
-                            if (v1 != null) v1[j] = f(u_null[j]) + I;
+                        if (v1 != null)
+                            for (int j = 0; j < N; j++)
+                                v1[j] = f(u_null[j]) + I;
                     },
                     () =>
                     {
-                        for (int j = 0; j < N; j++)
-                            if (v2 != null) v2[j] = (u_null[j] + Beta) / Gamma;
+                        if (v2 != null)
+                            for (int j = 0; j < N; j++)
+                                v2[j] = (u_null[j] + Beta) / Gamma;
                     }
                 );
             }
@@ -125,7 +124,7 @@ namespace FHN_nonlocal_coupling.Model
                 for (int j = 0; j < N; j++)
                 {
                     v1[j] = f(u_null[j]) + I;
-                    v2[j] = -100;
+                    v2[j] = (u_null[j] + Beta) / 0.000001;
                 }
             }
         }

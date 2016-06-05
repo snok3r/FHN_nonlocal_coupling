@@ -2,19 +2,18 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading;
 
 namespace FHN_nonlocal_coupling.Controller
 {
     public class PDEController : AbstractController<PDE>
     {
-        private bool threadStarted = false;
+        private bool abort;
 
         public PDEController(ViewElements viewElements)
-            : base(viewElements) 
+            : base(viewElements)
         {
             if (paramsNeedReload == null)
-                paramsNeedReload = new HashSet<String>(new String[] { "N", "M", "T", "L" });
+                paramsNeedReload = new HashSet<String>(new String[] { "N", "M", "T", "L", "start" });
         }
 
         /// <summary>
@@ -53,7 +52,7 @@ namespace FHN_nonlocal_coupling.Controller
         {
             if (viewElements.trackBar.Value < trackBarMax())
                 plot(viewElements.trackBar.Value++);
-            else 
+            else
                 viewElements.trackBar.Value = 0;
         }
 
@@ -71,61 +70,85 @@ namespace FHN_nonlocal_coupling.Controller
             }
         }
 
+        public override bool solve(IProgress<int> progress)
+        {
+            if (!base.solve(progress))
+                return false;
+
+            calculateProperties(0);
+            progress.Report(100);
+            return true;
+        }
+
+        /// <summary>
+        /// Returns height at trackBarValue point
+        /// </summary>
+        public List<double> getHeight(int trackBarValue)
+        {
+            List<double> result = new List<double>();
+
+            for (int i = 0; i < fhn.Length; i++)
+                result.Add(fhn[i].getHeight(trackBarValue));
+
+            return result;
+        }
+
         /// <summary>
         /// Returns velocity at trackBarValue point
         /// </summary>
-        public double getVelocity(int trackBarValue)
+        public List<double> getVelocity(int trackBarValue)
         {
-            if (!threadStarted)
-                calculateVelocityInThread(trackBarValue);
+            List<double> result = new List<double>();
 
-            return Math.Round(fhn[0].getVelocity(trackBarValue), 3);
+            for (int i = 0; i < fhn.Length; i++)
+                result.Add(fhn[i].getVelocity(trackBarValue));
+
+            return result;
         }
 
-        private void calculateVelocityInThread(int startingJ)
+        /// <summary>
+        /// Returns width at trackBarValue point
+        /// </summary>
+        public List<double> getWidth(int trackBarValue)
         {
-            int M = fhn[0].M;
+            List<double> result = new List<double>();
 
-            threadStarted = true;
-            // (max - start) calculates around 90% (if startingJ = 0) of left velocities in concurrent thread
-            int start = startingJ + (M - 1) / 10;
-            int max = M - 1;
+            for (int i = 0; i < fhn.Length; i++)
+                result.Add(fhn[i].getWidth(trackBarValue));
 
-            if (max - start > 100) // if there's a sense to calculate it concurrently
+            return result;
+        }
+
+        /// <summary>
+        /// calculates 100% (if start = 0) of velocities in concurrent thread
+        /// </summary>
+        private void calculateProperties(int start)
+        {
+            abort = false;
+
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            for (int i = 0; i < fhn.Length; i++)
             {
-                ThreadPool.QueueUserWorkItem(delegate
+                int max = fhn[i].M;
+                for (int j = start; j < max; j++)
                 {
-                    try
-                    {
-                        while (Thread.CurrentThread.IsAlive)
-                        {
-                            for (int j = start; j < max; j++)
-                            {
-                                if (!threadStarted)
-                                {
-                                    Debug.WriteLine("Interrupted velocity calculation on j = " + j);
-                                    throw new ThreadInterruptedException();
-                                }
-                                fhn[0].getVelocity(j);
-                            }
-                            Debug.WriteLine("Velocity calculation finished");
-                            throw new ThreadInterruptedException();
-                        }
-                    }
-                    catch (ThreadInterruptedException)
-                    {
-                        Thread.CurrentThread.Interrupt();
-                    }
-                });
+                    if (abort)
+                        break;
+                    fhn[i].getHeight(j);
+                    fhn[i].getVelocity(j);
+                }
             }
+            stopwatch.Stop();
+            Debug.WriteLineIf(!abort, "Properties calculated in " + stopwatch.ElapsedMilliseconds / 1000.0 + "sec");
         }
 
         public void interruptThread()
         {
-            threadStarted = false;
+            abort = true;
         }
 
-        public override void dispose(){
+        public override void dispose()
+        {
             interruptThread();
             base.dispose();
         }

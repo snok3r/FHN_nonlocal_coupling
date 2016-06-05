@@ -1,8 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using FHN_nonlocal_coupling.Model;
+using System;
 using System.Collections.Generic;
-using FHN_nonlocal_coupling.Model;
 using System.Diagnostics;
+using System.Linq;
 
 namespace FHN_nonlocal_coupling.Controller
 {
@@ -23,13 +23,6 @@ namespace FHN_nonlocal_coupling.Controller
 
         protected AbstractController(ViewElements viewElements)
         { this.viewElements = viewElements; }
-
-        /// <summary>
-        /// if 'b' is true, then
-        /// arrays need to be reallocated
-        /// </summary>
-        public void toAllocate(bool b)
-        { allocate = b; }
 
         /// <summary>
         /// if 'b' is true, then
@@ -75,10 +68,10 @@ namespace FHN_nonlocal_coupling.Controller
         /// Checks whether you need to reallocate
         /// arrays or not
         /// </summary>
-        public void checkToLoad(String label)
+        public void checkToLoad(IEnumerable<String> parameters)
         {
             // need to reallocate, if paramsNeedReload contains given label
-            allocate = paramsNeedReload.Contains(label);
+            allocate = paramsNeedReload.Overlaps(parameters);
         }
 
         /// <summary>
@@ -86,33 +79,60 @@ namespace FHN_nonlocal_coupling.Controller
         /// <para>Returns false, if computation error occurred,
         /// true otherwise.</para>
         /// </summary>
-        public bool solve()
+        public virtual bool solve(IProgress<int> progress)
         {
-            viewElements.progressBar.Value = 0;
-            viewElements.progressBar.Maximum = 3;
-            viewElements.trackBar.Maximum = trackBarMax();
-
             Stopwatch stopwatch = Stopwatch.StartNew(); //creates and start the instance of Stopwatch
             for (int i = 0; i < fhn.Length; i++)
                 if (allocate && !solveFurther)
                     fhn[i].allocate();
                 else
                     fhn[i].reload();
-            viewElements.progressBar.Value++;
+            progress.Report(33);
 
             for (int i = 0; i < fhn.Length; i++)
+            {
                 if (solveFurther)
                     fhn[i].initialsFurther();
                 else
-                    fhn[i].initials();
-            viewElements.progressBar.Value++;
+                {
+                    if (viewElements.ux0 != null && viewElements.vx0 != null && viewElements.customInitials != null)
+                    {
+                        if (viewElements.customInitials.Checked)
+                            fhn[i].initials(viewElements.ux0.Text, viewElements.vx0.Text);
+                        else
+                            fhn[i].initials();
+                    }
+                    else
+                        fhn[i].initials();
+                }
+            }
+            progress.Report(66);
 
             for (int i = 0; i < fhn.Length; i++)
-                if (!fhn[i].solve()) return false;
-            viewElements.progressBar.Value++;
+                if (!fhn[i].solve())
+                    return false;
+
             stopwatch.Stop();
             Debug.WriteLine("Solved in " + stopwatch.ElapsedMilliseconds / 1000.0 + "sec");
             return true;
+        }
+
+        /// <summary>
+        /// Caclulates and then returns two stationary
+        /// point in List: {u_stationary1, v_stationary1, u_stationary2, ...}
+        /// </summary>
+        public List<double> getStat()
+        {
+            List<double> result = new List<double>();
+
+            for (int i = 0; i < fhn.Length; i++)
+            {
+                fhn[i].calculateStationary();
+                result.Add(fhn[i].getUStat());
+                result.Add(fhn[i].getVStat());
+            }
+
+            return result;
         }
 
         /// <summary>

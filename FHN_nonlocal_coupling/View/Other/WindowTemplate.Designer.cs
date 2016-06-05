@@ -57,6 +57,9 @@
             this.btnTune = new System.Windows.Forms.Button();
             this.txtBoxMinUV = new System.Windows.Forms.TextBox();
             this.txtBoxMaxUV = new System.Windows.Forms.TextBox();
+            this.lblUStat = new System.Windows.Forms.Label();
+            this.lblVStat = new System.Windows.Forms.Label();
+            this.btnStat = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -82,7 +85,7 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 41);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(171, 395);
+            this.tabControl1.Size = new System.Drawing.Size(171, 341);
             this.tabControl1.TabIndex = 103;
             // 
             // tabPage1
@@ -91,7 +94,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(163, 369);
+            this.tabPage1.Size = new System.Drawing.Size(163, 315);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "First eq";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -101,7 +104,7 @@
             this.propertyGrid1.Location = new System.Drawing.Point(-4, 0);
             this.propertyGrid1.Name = "propertyGrid1";
             this.propertyGrid1.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
-            this.propertyGrid1.Size = new System.Drawing.Size(171, 369);
+            this.propertyGrid1.Size = new System.Drawing.Size(171, 315);
             this.propertyGrid1.TabIndex = 85;
             this.propertyGrid1.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.propertyGrid_PropertyValueChanged);
             // 
@@ -111,7 +114,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(163, 369);
+            this.tabPage2.Size = new System.Drawing.Size(163, 315);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Second eq";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -121,7 +124,7 @@
             this.propertyGrid2.Location = new System.Drawing.Point(-4, 0);
             this.propertyGrid2.Name = "propertyGrid2";
             this.propertyGrid2.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
-            this.propertyGrid2.Size = new System.Drawing.Size(171, 369);
+            this.propertyGrid2.Size = new System.Drawing.Size(171, 315);
             this.propertyGrid2.TabIndex = 86;
             this.propertyGrid2.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.propertyGrid_PropertyValueChanged);
             // 
@@ -222,7 +225,7 @@
             // prBarSolve
             // 
             this.prBarSolve.Location = new System.Drawing.Point(27, 661);
-            this.prBarSolve.Maximum = 4;
+            this.prBarSolve.Maximum = 3;
             this.prBarSolve.Name = "prBarSolve";
             this.prBarSolve.Size = new System.Drawing.Size(156, 23);
             this.prBarSolve.Step = 1;
@@ -257,7 +260,7 @@
             // checkBox2ndEq
             // 
             this.checkBox2ndEq.AutoSize = true;
-            this.checkBox2ndEq.Location = new System.Drawing.Point(16, 442);
+            this.checkBox2ndEq.Location = new System.Drawing.Point(12, 384);
             this.checkBox2ndEq.Name = "checkBox2ndEq";
             this.checkBox2ndEq.Size = new System.Drawing.Size(59, 17);
             this.checkBox2ndEq.TabIndex = 105;
@@ -311,11 +314,42 @@
             this.txtBoxMaxUV.Text = "2,0";
             this.txtBoxMaxUV.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // lblUStat
+            // 
+            this.lblUStat.AutoSize = true;
+            this.lblUStat.Location = new System.Drawing.Point(105, 461);
+            this.lblUStat.Name = "lblUStat";
+            this.lblUStat.Size = new System.Drawing.Size(26, 13);
+            this.lblUStat.TabIndex = 111;
+            this.lblUStat.Text = "u* =";
+            // 
+            // lblVStat
+            // 
+            this.lblVStat.AutoSize = true;
+            this.lblVStat.Location = new System.Drawing.Point(105, 477);
+            this.lblVStat.Name = "lblVStat";
+            this.lblVStat.Size = new System.Drawing.Size(26, 13);
+            this.lblVStat.TabIndex = 112;
+            this.lblVStat.Text = "v* =";
+            // 
+            // btnStat
+            // 
+            this.btnStat.Location = new System.Drawing.Point(27, 467);
+            this.btnStat.Name = "btnStat";
+            this.btnStat.Size = new System.Drawing.Size(75, 23);
+            this.btnStat.TabIndex = 113;
+            this.btnStat.Text = "Stationary";
+            this.btnStat.UseVisualStyleBackColor = true;
+            this.btnStat.Click += new System.EventHandler(this.btnStat_Click);
+            // 
             // WindowTemplate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1284, 711);
+            this.Controls.Add(this.btnStat);
+            this.Controls.Add(this.lblVStat);
+            this.Controls.Add(this.lblUStat);
             this.Controls.Add(this.lblMinUV);
             this.Controls.Add(this.lblMaxUV);
             this.Controls.Add(this.btnTune);
@@ -335,6 +369,7 @@
             this.Controls.Add(this.btnStopTimer);
             this.Name = "WindowTemplate";
             this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.WindowTemplate_FormClosing);
             this.Load += new System.EventHandler(this.WindowTemplate_Load);
             this.tabControl1.ResumeLayout(false);
@@ -349,14 +384,11 @@
 
         #endregion
 
-        private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Timer timerT;
         protected System.Windows.Forms.DataVisualization.Charting.Chart chart;
         protected System.Windows.Forms.Button btnSolveFurther;
-        protected System.Windows.Forms.PropertyGrid propertyGrid1;
-        protected System.Windows.Forms.PropertyGrid propertyGrid2;
         protected System.Windows.Forms.Button btnAbout;
         protected System.Windows.Forms.Label lblError;
         protected System.Windows.Forms.Button btnSolve;
@@ -371,5 +403,11 @@
         protected System.Windows.Forms.Button btnTune;
         protected System.Windows.Forms.TextBox txtBoxMinUV;
         protected System.Windows.Forms.TextBox txtBoxMaxUV;
+        private System.Windows.Forms.TabControl tabControl1;
+        protected System.Windows.Forms.PropertyGrid propertyGrid1;
+        protected System.Windows.Forms.PropertyGrid propertyGrid2;
+        private System.Windows.Forms.Label lblUStat;
+        private System.Windows.Forms.Label lblVStat;
+        private System.Windows.Forms.Button btnStat;
     }
 }

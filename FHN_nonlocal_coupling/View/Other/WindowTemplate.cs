@@ -1,6 +1,10 @@
 ﻿using FHN_nonlocal_coupling.Controller;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FHN_nonlocal_coupling.View.Other
@@ -8,15 +12,20 @@ namespace FHN_nonlocal_coupling.View.Other
     public partial class WindowTemplate : Form
     {
         protected IControllable controller;
+        private Object monitor = new Object();
+        private HashSet<String> paramsNeedReload = new HashSet<String>();
 
         protected WindowTemplate()
         {
             InitializeComponent();
+            prBarSolve.Maximum = 100;
         }
 
         private void WindowTemplate_Load(object sender, EventArgs e)
         {
             if (controller != null) controller.reallocate(checkBox2ndEq.Checked);
+            change2ndLegendVisibility(checkBox2ndEq.Checked);
+            paramsNeedReload.Add("start");
         }
 
         private void WindowTemplate_FormClosing(object sender, FormClosingEventArgs e)
@@ -34,7 +43,7 @@ namespace FHN_nonlocal_coupling.View.Other
             // start timer, if radio button is checked
             timerT.Enabled = rdBtnTmr.Checked;
         }
-        
+
         protected virtual void timerT_Tick(object sender, EventArgs e)
         {
             controller.plot();
@@ -57,7 +66,8 @@ namespace FHN_nonlocal_coupling.View.Other
             trBarT.Enabled = false;
             timerT.Enabled = false;
 
-            controller.toAllocate(true);
+            prBarSolve.Value = 0;
+
             controller.toSolveFurther(false);
         }
 
@@ -67,6 +77,7 @@ namespace FHN_nonlocal_coupling.View.Other
             btnPlot.Enabled = true;
             btnSolveFurther.Enabled = true;
 
+            trBarT.Maximum = controller.trackBarMax();
             trBarT.Value = 0;
             trBarT.Enabled = true;
         }
@@ -79,29 +90,75 @@ namespace FHN_nonlocal_coupling.View.Other
             chart.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(txtBoxMinUV.Text);
             chart.ChartAreas[0].AxisY.Maximum = Convert.ToDouble(txtBoxMaxUV.Text);
 
-            chart.ChartAreas[0].AxisX.Interval = Convert.ToInt32((controller.chartXMax() + controller.chartXMin()) / 6.0);
-            chart.ChartAreas[0].AxisY.Interval = Convert.ToInt32((chart.ChartAreas[0].AxisY.Maximum + chart.ChartAreas[0].AxisY.Minimum) / 6.0);
+            chart.ChartAreas[0].AxisX.Interval = Convert.ToInt32((controller.chartXMax() - controller.chartXMin()) / 10.0);
+            chart.ChartAreas[0].AxisY.Interval = (chart.ChartAreas[0].AxisY.Maximum - chart.ChartAreas[0].AxisY.Minimum) / 10.0;
 
-            chart.Series[2].Color = Color.Blue;
-            chart.Series[3].Color = Color.OrangeRed;
+            chart.Series[2].Color = Color.DarkRed;
+            chart.Series[3].Color = Color.LimeGreen;
+        }
+
+        protected virtual void change2ndLegendVisibility(bool isSecondEqChecked)
+        {
+            for (int i = 0; i < 2; i++)
+                chart.Series[i + 2].IsVisibleInLegend = isSecondEqChecked;
         }
 
         private void checkBox2ndEq_CheckedChanged(object sender, EventArgs e)
         {
             controller.reallocate(checkBox2ndEq.Checked);
+            paramsNeedReload.Add("start");
             disablePlotBtn();
+
+            change2ndLegendVisibility(checkBox2ndEq.Checked);
         }
 
-        private void btnSolve_Click(object sender, EventArgs e)
+        private async void btnSolve_Click(object sender, EventArgs e)
         {
-            if (controller.solve())
-                enablePlotBtn();
-            else
-                lblError.Visible = true;
+            if (!Monitor.IsEntered(monitor))
+            {
+                try
+                {
+                    Monitor.Enter(monitor);
+                    controller.checkToLoad(paramsNeedReload);
+                    btnStat.PerformClick();
+                    bool result = false;
+                    var progress = new Progress<int>(percent => prBarSolve.Value = percent);
+
+                    result = await Task.Factory.StartNew(() => controller.solve(progress));
+
+                    if (result)
+                        enablePlotBtn();
+                    else
+                        lblError.Visible = true;
+                }
+                catch (NullReferenceException)
+                {
+                    Debug.WriteLine("Solution failed");
+                }
+                finally
+                {
+                    paramsNeedReload.Clear();
+                    Monitor.Exit(monitor);
+                }
+            }
+        }
+
+        private void btnStat_Click(object sender, EventArgs e)
+        {
+            double[] result = controller.getStat().ToArray();
+            lblUStat.Text = "u* = " + Math.Round(result[0], 5).ToString();
+            lblVStat.Text = "v* = " + Math.Round(result[1], 5).ToString();
+
+            if (result.Length == 4)
+            {
+                lblUStat.Text += "  (" + Math.Round(result[2], 5).ToString() + ")";
+                lblVStat.Text += "  (" + Math.Round(result[3], 5).ToString() + ")";
+            }
         }
 
         private void btnSolveFurther_Click(object sender, EventArgs e)
         {
+            disablePlotBtn();
             controller.toSolveFurther(true);
             btnSolve_Click(sender, e);
         }
@@ -112,13 +169,15 @@ namespace FHN_nonlocal_coupling.View.Other
                 return;
 
             disablePlotBtn();
-            controller.checkToLoad(e.ChangedItem.Label);
+            paramsNeedReload.Add(e.ChangedItem.Label);
         }
 
         private void btnTune_Click(object sender, EventArgs e)
         {
             chart.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(txtBoxMinUV.Text);
             chart.ChartAreas[0].AxisY.Maximum = Convert.ToDouble(txtBoxMaxUV.Text);
+
+            chart.ChartAreas[0].AxisY.Interval = (chart.ChartAreas[0].AxisY.Maximum - chart.ChartAreas[0].AxisY.Minimum) / 10.0;
         }
 
         private void btnStopTimer_Click(object sender, EventArgs e)

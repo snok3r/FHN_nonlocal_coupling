@@ -9,9 +9,9 @@ namespace FHN_nonlocal_coupling.Controller
     {
         public ODEController(ViewElements viewElements)
             : base(viewElements)
-        { 
+        {
             if (paramsNeedReload == null)
-                paramsNeedReload = new HashSet<String>(new String[] { "N", "T", "L" });
+                paramsNeedReload = new HashSet<String>(new String[] { "N", "T", "L", "start"});
         }
 
         /// <summary>
@@ -113,6 +113,15 @@ namespace FHN_nonlocal_coupling.Controller
             }
         }
 
+        public override bool solve(IProgress<int> progress)
+        {
+            if (!base.solve(progress))
+                return false;
+
+            progress.Report(100);
+            return true;
+        }
+
         /// <summary>
         /// Clears all the plot data
         /// </summary>
@@ -144,9 +153,9 @@ namespace FHN_nonlocal_coupling.Controller
             {
                 viewElements.chartPhase.Series[3 * i + 1].Points.Clear();
                 viewElements.chartPhase.Series[3 * i + 2].Points.Clear();
-            }  
+            }
         }
-        
+
         /// <summary>
         /// Returns phase's chart minimum X bound
         /// </summary>
